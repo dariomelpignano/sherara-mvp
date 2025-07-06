@@ -2075,6 +2075,44 @@ a:hover {
     max-width: 800px;
 }
 
+/* Chat Upload Styles */
+.chat-file-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    background: var(--gray-100);
+    border-top: 1px solid var(--gray-200);
+    font-size: 0.875rem;
+}
+
+.chat-file-preview .file-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.chat-file-preview .file-name::before {
+    content: '\f15b';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 400;
+    color: var(--primary);
+}
+
+.chat-file-preview .remove-file {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: color var(--transition-base);
+}
+
+.chat-file-preview .remove-file:hover {
+    color: var(--danger);
+}
+
 .update-item {
     display: flex;
     gap: 1rem;

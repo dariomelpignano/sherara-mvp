@@ -319,11 +319,21 @@
                         </div>
 
                         <form id="chat-form" class="chat-input-form">
-                            <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+                            <button type="button" class="btn btn-icon" onclick="triggerChatUpload()" title="Upload document">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <input type="file" id="chat-file-input" accept=".pdf,.doc,.docx,.txt" hidden onchange="handleChatFileSelect(event)">
+                            <input type="text" id="chat-input" placeholder="Type your message or upload a document..." autocomplete="off">
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </form>
+                        <div id="chat-file-preview" class="chat-file-preview" style="display: none;">
+                            <span class="file-name"></span>
+                            <button class="remove-file" onclick="removeChatFile()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="chat-sidebar">
