@@ -41,9 +41,9 @@ function initializeApp() {
     // Core initialization
     initializeNavigation();
     initializeFileUpload();
-    initializeAnalysis();
     initializeChat();
     initializeCharts();
+    setupTaxonomy();
     
     // Load initial data
     loadDashboard();
