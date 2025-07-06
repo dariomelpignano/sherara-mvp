@@ -1,0 +1,201 @@
+MARKETS IN FINANCIAL INSTRUMENTS DIRECTIVE II (MiFID II) - DIRECTIVE 2014/65/EU
+[LAST UPDATED: 2025-07-06]
+[VERSION: 2014/65/EU]
+[STATUS: in-force]
+[OFFICIAL SOURCE: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014L0065]
+
+TITLE I - SCOPE AND DEFINITIONS
+
+Article 1 - Scope
+1. This Directive applies to investment firms, market operators, data reporting services providers, and third-country firms providing services through establishment of branch.
+2. Establishes requirements in relation to:
+   - Authorization and operating conditions for investment firms
+   - Provision of investment services by third-country firms
+   - Authorization and operation of regulated markets
+   - Authorization of data reporting services providers
+   - Supervision by competent authorities
+
+Article 2 - Exemptions
+Exemptions include:
+- Insurance undertakings
+- Persons providing investment services exclusively for parent undertakings
+- Persons dealing on own account (with conditions)
+- Central banks and public debt management bodies
+
+TITLE II - AUTHORIZATION AND OPERATING CONDITIONS FOR INVESTMENT FIRMS
+
+Chapter I - Conditions and procedures for authorization
+
+Article 5 - Requirement for authorization
+Investment services or activities may only be provided on regular basis professionally with prior authorization.
+
+Article 7 - Procedures for granting and refusing authorization
+- Application must contain program of operations
+- Competent authority shall assess within 6 months
+- Must provide reasons for refusal
+
+Article 8 - Withdrawal of authorizations
+Authorization may be withdrawn when investment firm:
+- Does not make use within 12 months
+- No longer meets authorization conditions
+- Has seriously infringed provisions
+- Falls within national law withdrawal cases
+
+Article 9 - Management body
+Management body must:
+- Define and oversee implementation of governance arrangements
+- Ensure effective risk management
+- Members must have sufficient knowledge, skills and experience
+- Adequate time commitment
+- Diversity policy required
+
+Chapter II - Operating conditions for investment firms
+
+Section 1 - General provisions
+
+Article 16 - Organizational requirements
+1. Investment firms must have robust governance arrangements including:
+   - Clear organizational structure
+   - Effective processes for risk management
+   - Adequate internal control mechanisms
+   - Effective procedures for personnel transactions
+
+2. Arrangements must be comprehensive and proportionate to nature, scale and complexity.
+
+3. Must establish and maintain effective risk management policies identifying risks relating to activities, processes and systems.
+
+Article 17 - Algorithmic trading
+Investment firms engaging in algorithmic trading shall:
+- Have effective systems and risk controls
+- Ensure trading systems are resilient
+- Have business continuity arrangements
+- Ensure systems cannot create market disorder
+- Keep records of all orders including cancellations
+
+Article 18 - Trading process and finalization of transactions in MTF and OTF
+- Must have transparent rules and procedures
+- Must have objective criteria for efficient execution
+- Must have arrangements for sound management of technical operations
+- Must have at least three materially active members
+
+Section 2 - Provisions to ensure investor protection
+
+Article 24 - General principles and information to clients
+1. Act honestly, fairly and professionally in best interests of clients
+2. Information must be fair, clear and not misleading
+3. Must understand financial instruments offered
+4. Must provide appropriate information about:
+   - Firm and its services
+   - Financial instruments and strategies
+   - Execution venues
+   - All costs and charges
+
+Article 25 - Assessment of suitability and appropriateness
+1. Suitability assessment required for investment advice and portfolio management:
+   - Obtain necessary information about knowledge and experience
+   - Financial situation including ability to bear losses
+   - Investment objectives including risk tolerance
+
+2. Appropriateness assessment for other services:
+   - Assess whether client has necessary experience and knowledge
+   - Warn if service/product not appropriate
+
+Article 27 - Obligation to execute orders on terms most favorable to client
+1. Must take all sufficient steps to obtain best possible result considering:
+   - Price
+   - Costs
+   - Speed
+   - Likelihood of execution and settlement
+   - Size and nature
+   - Any other relevant consideration
+
+2. Must establish and implement effective execution arrangements
+3. Must monitor effectiveness and review annually
+
+Article 28 - Client order handling rules
+1. Must implement procedures for prompt, fair and expeditious execution
+2. Must not misuse information relating to pending client orders
+3. Must execute comparable orders sequentially unless impracticable
+
+Article 29 - Obligations of investment firms when appointing tied agents
+Must ensure tied agents:
+- Are of good repute
+- Have appropriate knowledge and competence
+- Disclose capacity when contacting clients
+- Are entered in public register
+
+Section 3 - Market transparency and integrity
+
+Article 31 - Monitoring compliance with MTF/OTF rules
+Must monitor orders sent and transactions undertaken to detect:
+- Breaches of rules
+- Disorderly trading conditions
+- Market abuse
+
+TITLE III - REGULATED MARKETS
+
+Article 44 - Authorization and applicable law
+Operation of regulated market requires prior authorization
+Must comply with Title III requirements
+
+Article 47 - Organizational requirements
+Regulated market must:
+- Have arrangements to identify and manage risks
+- Have arrangements for sound management
+- Have sufficient financial resources
+- Have transparent rules regarding admission of financial instruments
+
+Article 48 - Systems resilience, circuit breakers and electronic trading
+Must have:
+- Effective systems and procedures for resilient trading
+- Ability to reject orders exceeding thresholds
+- Ability to halt or constrain trading
+- Business continuity arrangements
+
+TITLE IV - POSITION LIMITS AND CONTROLS FOR COMMODITY DERIVATIVES
+
+Article 57 - Position limits and position management controls
+1. Member States shall ensure competent authorities establish position limits on size of net position in commodity derivatives
+2. Limits shall be set for purpose of:
+   - Preventing market abuse
+   - Supporting orderly pricing and settlement
+   - Preventing positions distorting price discovery
+
+TITLE V - DATA REPORTING SERVICES
+
+Article 59 - Requirement for authorization
+Provision of data reporting services requires prior authorization
+
+Article 65 - Organizational requirements
+Must have:
+- Adequate policies and arrangements for information disclosure
+- Sound security mechanisms
+- Systems to check completeness and correctness
+- Business continuity arrangements
+
+TITLE VI - COMPETENT AUTHORITIES
+
+Article 67 - Designation of competent authorities
+Each Member State shall designate competent authorities for carrying out duties
+
+Article 69 - Supervisory powers
+Competent authorities shall have all supervisory powers necessary including:
+- Access to documents
+- Demand information
+- Carry out on-site inspections
+- Require cessation of practices
+- Freeze/sequester assets
+
+Article 70 - Administrative sanctions
+For breaches, competent authorities may apply:
+- Public statement
+- Order to cease conduct
+- Withdrawal of authorization
+- Temporary ban on management functions
+- Administrative pecuniary sanctions
+
+PENALTIES
+Maximum administrative pecuniary sanctions:
+- Legal persons: up to 10% of total annual turnover or EUR 5 million
+- Natural persons: up to EUR 5 million
+- Up to twice the benefit derived from breach

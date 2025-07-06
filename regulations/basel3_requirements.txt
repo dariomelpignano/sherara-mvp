@@ -1,0 +1,200 @@
+BASEL III INTERNATIONAL REGULATORY FRAMEWORK FOR BANKS
+[LAST UPDATED: 2025-07-06]
+[VERSION: Basel III - December 2017 (rev. June 2023)]
+[STATUS: in-force with transitional arrangements]
+[OFFICIAL SOURCE: https://www.bis.org/basel_framework/]
+
+PART A - MINIMUM CAPITAL REQUIREMENTS
+
+1. DEFINITION OF CAPITAL
+
+1.1 Components of Capital
+Capital consists of the sum of Tier 1 Capital (going-concern capital) and Tier 2 Capital (gone-concern capital).
+
+Tier 1 Capital = Common Equity Tier 1 + Additional Tier 1
+
+1.2 Common Equity Tier 1 (CET1)
+- Common shares issued by the bank
+- Stock surplus (share premium)
+- Retained earnings
+- Accumulated other comprehensive income
+- Common shares issued by consolidated subsidiaries
+- Regulatory adjustments and deductions
+
+1.3 Additional Tier 1 (AT1)
+- Instruments issued by the bank that meet criteria
+- Stock surplus from AT1 instruments
+- Instruments issued by consolidated subsidiaries
+- Regulatory adjustments
+
+1.4 Tier 2 Capital
+- Instruments that meet criteria
+- Stock surplus from Tier 2 instruments
+- Instruments issued by consolidated subsidiaries
+- Certain loan loss provisions
+- Regulatory adjustments
+
+2. RISK COVERAGE
+
+2.1 Credit Risk
+Standardised Approach:
+- Risk weights based on external ratings
+- Due diligence requirements
+- Exposures to sovereigns, banks, corporates
+- Retail exposures
+- Real estate exposures
+- Off-balance sheet items
+
+Internal Ratings-Based (IRB) Approach:
+- Foundation IRB (F-IRB)
+- Advanced IRB (A-IRB)
+- Probability of Default (PD)
+- Loss Given Default (LGD)
+- Exposure at Default (EAD)
+- Effective Maturity (M)
+
+2.2 Market Risk
+- Standardised approach
+- Internal models approach
+- Fundamental Review of the Trading Book (FRTB)
+- Value-at-Risk (VaR)
+- Stressed VaR
+- Incremental Risk Charge (IRC)
+- Comprehensive Risk Measure (CRM)
+
+2.3 Operational Risk
+- Basic Indicator Approach (BIA)
+- Standardised Approach (TSA)
+- Advanced Measurement Approaches (AMA)
+- New Standardised Approach (2023)
+
+3. MINIMUM CAPITAL RATIOS
+
+3.1 Minimum Requirements
+- Common Equity Tier 1: 4.5% of RWA
+- Tier 1 Capital: 6.0% of RWA
+- Total Capital: 8.0% of RWA
+
+3.2 Capital Conservation Buffer
+- Additional CET1 of 2.5% of RWA
+- Restrictions on distributions when buffer breached
+
+3.3 Countercyclical Capital Buffer
+- Range of 0-2.5% of RWA
+- Set by national authorities
+- CET1 capital requirement
+
+3.4 Capital Buffers for Systemically Important Banks
+- Global Systemically Important Banks (G-SIBs): 1.0-3.5%
+- Domestic Systemically Important Banks (D-SIBs): determined nationally
+
+4. LEVERAGE RATIO
+
+4.1 Definition
+Leverage Ratio = Tier 1 Capital / Exposure Measure
+
+4.2 Minimum Requirement
+- 3% minimum leverage ratio
+
+4.3 Exposure Measure
+- On-balance sheet exposures
+- Derivative exposures
+- Securities financing transaction exposures
+- Off-balance sheet items
+
+4.4 G-SIB Leverage Ratio Buffer
+- Additional leverage ratio buffer for G-SIBs
+- Set at 50% of risk-weighted G-SIB buffer
+
+5. LIQUIDITY STANDARDS
+
+5.1 Liquidity Coverage Ratio (LCR)
+LCR = High-Quality Liquid Assets / Total Net Cash Outflows over 30 days ≥ 100%
+
+HQLA Categories:
+- Level 1: Cash, central bank reserves, sovereign debt
+- Level 2A: Certain sovereign, corporate and covered bonds
+- Level 2B: Lower rated corporate bonds, RMBS, equities
+
+5.2 Net Stable Funding Ratio (NSFR)
+NSFR = Available Stable Funding / Required Stable Funding ≥ 100%
+
+ASF factors based on:
+- Capital items
+- Retail and SME deposits
+- Wholesale funding
+- Other liabilities
+
+RSF factors based on:
+- Cash and central bank reserves
+- Securities
+- Loans
+- Other assets
+
+6. PILLAR 2 - SUPERVISORY REVIEW PROCESS
+
+6.1 Four Key Principles
+1. Banks should have process for assessing capital adequacy
+2. Supervisors should review banks' assessments
+3. Supervisors should expect banks to operate above minimum
+4. Supervisors should intervene to prevent capital falling below minimum
+
+6.2 Main Features
+- Internal Capital Adequacy Assessment Process (ICAAP)
+- Supervisory Review and Evaluation Process (SREP)
+- Interest Rate Risk in Banking Book (IRRBB)
+- Credit concentration risk
+- Operational risk
+- Enhanced stress testing
+
+7. PILLAR 3 - MARKET DISCIPLINE
+
+7.1 Disclosure Requirements
+- Scope of application
+- Capital structure
+- Capital adequacy
+- Credit risk exposures
+- Credit risk mitigation
+- Securitisation
+- Market risk
+- Operational risk
+- Interest rate risk in banking book
+- Remuneration
+
+7.2 Frequency and Timeliness
+- Quarterly for large banks
+- Semi-annual for others
+- Annual for qualitative disclosures
+
+8. IMPLEMENTATION AND TRANSITIONAL ARRANGEMENTS
+
+8.1 Implementation Timeline
+- 2013: Initial implementation
+- 2015: Full deductions from CET1
+- 2016: Conservation buffer phase-in begins
+- 2019: Full implementation of all buffers
+- 2022: Revised market risk framework
+- 2023: Revised operational risk and credit risk frameworks
+
+8.2 Grandfathering Provisions
+- Capital instruments that no longer qualify
+- Phase-out arrangements over 10 years from 2013
+
+9. RECENT REVISIONS (BASEL III FINALISATION)
+
+9.1 Credit Risk Revisions
+- Revised standardised approach
+- Constraints on use of internal models
+- Output floor of 72.5% of standardised approach
+
+9.2 Operational Risk
+- New standardised approach only
+- Removal of internal models
+
+9.3 CVA Risk
+- Revised framework for credit valuation adjustment risk
+
+9.4 Market Risk (FRTB)
+- Revised boundary between banking and trading books
+- Revised internal models approach
+- Revised standardised approach

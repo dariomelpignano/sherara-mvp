@@ -1,69 +1,161 @@
-EU AI Act - Key Requirements for AI Systems
+ARTIFICIAL INTELLIGENCE ACT - PROPOSAL FOR A REGULATION
 [LAST UPDATED: 2025-07-06]
 [VERSION: 2021/0106(COD)]
-[STATUS: proposal]
+[STATUS: proposal - adopted by European Parliament]
 [OFFICIAL SOURCE: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206]
 
+TITLE I - GENERAL PROVISIONS
 
-Risk-Based Approach
-The AI Act establishes a risk-based regulatory framework with four categories: unacceptable risk (prohibited), high risk (strict requirements), limited risk (transparency obligations), and minimal risk (voluntary codes). Organizations must assess and categorize their AI systems accordingly.
+Article 1 - Subject matter
+This Regulation lays down:
+(a) harmonised rules for placing on the market and putting into service AI systems;
+(b) prohibitions of certain AI practices;
+(c) specific requirements for high-risk AI systems;
+(d) harmonised transparency rules;
+(e) rules on market monitoring and surveillance.
 
-Prohibited AI Practices
-AI systems are prohibited that: deploy subliminal techniques causing harm, exploit vulnerabilities of specific groups, enable social scoring by public authorities, or use real-time remote biometric identification in public spaces for law enforcement (with limited exceptions).
+Article 2 - Scope
+This Regulation applies to:
+(a) providers placing on the market or putting into service AI systems in the Union;
+(b) users of AI systems located within the Union;
+(c) providers and users of AI systems located in third countries where output is used in the Union.
 
-High-Risk AI Systems - Definition
-High-risk AI systems include those used in: critical infrastructure, educational/vocational training, employment and worker management, essential services access, law enforcement, migration and border control, justice administration, and democratic processes. Systems must undergo conformity assessment before market placement.
+TITLE II - PROHIBITED ARTIFICIAL INTELLIGENCE PRACTICES
 
-Requirements for High-Risk AI Systems
-High-risk AI systems must implement: risk management systems throughout lifecycle, data governance ensuring training data quality, technical documentation before market placement, automatic logging capabilities, transparency and information provision to users, human oversight measures, and accuracy/robustness/cybersecurity standards.
+Article 5 - Prohibited AI practices
+The following AI practices shall be prohibited:
+(a) AI systems using subliminal techniques beyond consciousness to materially distort behavior;
+(b) AI systems exploiting vulnerabilities of specific groups due to age, disability causing harm;
+(c) AI systems for social scoring by public authorities;
+(d) Real-time remote biometric identification in publicly accessible spaces for law enforcement (with exceptions).
 
-Data Governance and Management
-Training, validation and testing datasets must be relevant, representative, free of errors and complete. Data collection and processing must comply with applicable laws. Special attention required for personal data processing and bias mitigation.
+TITLE III - HIGH-RISK AI SYSTEMS
 
-Technical Documentation
-Comprehensive documentation required including: general system description, detailed algorithm information, development process description, risk assessment results, validation and testing procedures, and post-market monitoring plans. Documentation must be kept for 10 years.
+Chapter 1 - Classification of AI systems as high-risk
 
-Transparency and Information Provision
-Users must be informed that they are interacting with an AI system. Clear information about capabilities and limitations required. Instructions for use must enable appropriate human oversight. Providers must ensure sufficient transparency for users to interpret system output.
+Article 6 - Classification rules for high-risk AI systems
+AI systems shall be considered high-risk when:
+1. Intended as safety component or is itself a product covered by Union harmonisation legislation;
+2. Required to undergo third-party conformity assessment;
+3. Listed in Annex III areas including:
+   - Biometric identification
+   - Critical infrastructure
+   - Education and vocational training
+   - Employment and workers management
+   - Essential services and benefits
+   - Law enforcement
+   - Migration and border control
+   - Justice and democratic processes
 
-Human Oversight
-High-risk AI systems must be designed for effective human oversight. Human operators must: fully understand system capabilities and limitations, be able to correctly interpret outputs, be able to decide not to use the system, and be able to intervene or stop the system.
+Chapter 2 - Requirements for high-risk AI systems
 
-Accuracy, Robustness and Cybersecurity
-Systems must achieve appropriate levels of accuracy as declared in instructions. Performance metrics must be provided. Systems must be resilient against errors, faults and inconsistencies. Appropriate cybersecurity measures required throughout lifecycle.
+Article 8 - Compliance with requirements
+High-risk AI systems shall comply with requirements concerning:
+- Risk management system
+- Data and data governance
+- Technical documentation
+- Record-keeping
+- Transparency and information to users
+- Human oversight
+- Accuracy, robustness and cybersecurity
 
-Quality Management System
-Providers of high-risk AI systems must establish quality management covering: regulatory compliance strategy, techniques for design and quality control, development/quality assurance procedures, examination/testing procedures, data management systems, and post-market monitoring system.
+Article 9 - Risk management system
+A risk management system shall be established consisting of:
+(a) identification and analysis of known and foreseeable risks;
+(b) estimation and evaluation of risks;
+(c) evaluation of other risks based on data analysis;
+(d) adoption of risk management measures.
 
-Conformity Assessment Procedures
-High-risk AI systems require conformity assessment before market placement. This may involve internal control or third-party assessment depending on system type. Assessment covers compliance with all applicable requirements.
+Article 10 - Data and data governance
+Training, validation and testing data sets shall be:
+- Relevant, representative, free of errors and complete;
+- Subject to appropriate data governance practices;
+- Taking into account the specific geographical, behavioral or functional setting.
 
-CE Marking
-High-risk AI systems must bear CE marking indicating conformity with requirements. Marking must be visible, legible and indelible. Accompanied by EU declaration of conformity with required information.
+Article 11 - Technical documentation
+Technical documentation shall be drawn up before placing on market and include:
+- General description of the AI system;
+- Detailed description of system elements and development process;
+- Information on monitoring, functioning and control;
+- Description of risk management measures;
+- Description of changes made throughout lifecycle.
 
-Registration Obligations
-High-risk AI systems must be registered in EU database before placement on market. Registration includes: provider identification, system description, intended purpose, and conformity status. Database publicly accessible with some information restricted.
+Article 12 - Record-keeping
+High-risk AI systems shall be designed with capabilities enabling automatic recording of events ('logs').
 
-Post-Market Monitoring
-Providers must establish and document post-market monitoring system proportionate to risk. System must actively collect and review experience from use, identify need for corrective actions, and ensure continuous compliance.
+Article 13 - Transparency and provision of information
+High-risk AI systems shall be designed to ensure operation is sufficiently transparent to enable users to interpret output and use it appropriately.
 
-Incident Reporting
-Providers must report serious incidents and malfunctions to relevant authorities. Reports required within 15 days of awareness. Must include incident description, corrective actions taken, and risk assessment.
+Article 14 - Human oversight
+High-risk AI systems shall be designed to enable effective oversight by natural persons including:
+- Understanding capabilities and limitations;
+- Monitoring operation for anomalies;
+- Ability to intervene or interrupt;
+- Ability to refuse, override or reverse output.
 
-Obligations for Providers
-Providers must: ensure conformity with requirements, have quality management system, conduct conformity assessment, draw up technical documentation, maintain logs, ensure human oversight capability, and register system in EU database.
+Article 15 - Accuracy, robustness and cybersecurity
+High-risk AI systems shall be designed to achieve appropriate levels of accuracy, robustness and cybersecurity, and perform consistently throughout lifecycle.
 
-Obligations for Deployers
-Deployers must: use systems according to instructions, ensure human oversight, monitor operation for risks, inform provider/authorities of incidents, conduct DPIA where required, and use logs for compliance verification.
+Chapter 3 - Obligations of providers and users
 
-General Purpose AI Models
-Providers of general-purpose AI models must: provide technical documentation, provide information for downstream providers, establish copyright compliance policy, and publish summary of training data. Additional requirements for systemic risk models.
+Article 16 - Obligations of providers
+Providers of high-risk AI systems shall:
+- Ensure compliance with requirements;
+- Have quality management system in place;
+- Draw up technical documentation;
+- Keep logs automatically generated;
+- Ensure conformity assessment;
+- Register system in EU database;
+- Take corrective actions;
+- Inform authorities of risks.
 
-Codes of Conduct
-Commission and Member States encourage drawing up codes of conduct for non-high-risk AI systems. Codes should foster voluntary application of requirements and additional commitments such as environmental sustainability.
+Article 28 - Obligations of users
+Users of high-risk AI systems shall:
+- Use systems in accordance with instructions;
+- Ensure input data is relevant;
+- Monitor operation;
+- Keep logs;
+- Inform provider of risks or incidents.
 
-Penalties
-Penalties for non-compliance range up to €35 million or 7% of total worldwide annual turnover for prohibited practices, and up to €15 million or 3% for other violations. Providers of foundational models face specific penalty structure.
+TITLE IV - TRANSPARENCY OBLIGATIONS
 
-Innovation Support
-Regulatory sandboxes established to facilitate development and testing of innovative AI systems. Priority access for SMEs and startups. Reduced fees and administrative burden for small-scale providers.
+Article 52 - Transparency obligations for certain AI systems
+1. AI systems intended to interact with natural persons shall inform of AI interaction;
+2. Emotion recognition or biometric categorization shall inform of operation;
+3. Deep fake systems shall disclose content is artificially generated.
+
+TITLE V - MEASURES IN SUPPORT OF INNOVATION
+
+Article 53 - AI regulatory sandboxes
+AI regulatory sandboxes shall provide controlled environment to develop, test and validate innovative AI systems.
+
+Article 54 - Further processing of data for AI development
+Personal data may be processed for AI development in regulatory sandbox under specific conditions.
+
+TITLE VI - GOVERNANCE
+
+Article 56 - European Artificial Intelligence Board
+A European Artificial Intelligence Board shall be established to:
+- Facilitate cooperation between national authorities;
+- Coordinate and contribute to guidance;
+- Assist Commission;
+- Collect and share expertise.
+
+Article 59 - National competent authorities
+Member States shall designate national competent authorities for supervising application and implementation.
+
+TITLE VIII - POST-MARKET MONITORING
+
+Article 61 - Post-market monitoring by providers
+Providers shall establish post-market monitoring system proportionate to nature of AI technologies.
+
+Article 62 - Reporting of serious incidents
+Providers shall report serious incidents or malfunctioning to relevant authorities.
+
+TITLE X - PENALTIES
+
+Article 71 - Administrative fines
+Non-compliance shall be subject to administrative fines up to:
+- 30,000,000 EUR or 6% of worldwide annual turnover for prohibited practices;
+- 20,000,000 EUR or 4% for non-compliance with requirements;
+- 10,000,000 EUR or 2% for incorrect information.
