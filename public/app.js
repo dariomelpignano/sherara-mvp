@@ -575,6 +575,39 @@ function renderGapItem(gap) {
     `;
 }
 
+// Chat Upload Functions
+let chatAttachedFile = null;
+
+function triggerChatUpload() {
+    document.getElementById('chat-file-input').click();
+}
+
+async function handleChatFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Check file size (10MB limit)
+    if (file.size > 10 * 1024 * 1024) {
+        showNotification('Error', 'File size must be less than 10MB', 'error');
+        return;
+    }
+    
+    // Show file preview
+    chatAttachedFile = file;
+    const preview = document.getElementById('chat-file-preview');
+    preview.querySelector('.file-name').textContent = file.name;
+    preview.style.display = 'flex';
+    
+    // Focus back on input
+    document.getElementById('chat-input').focus();
+}
+
+function removeChatFile() {
+    chatAttachedFile = null;
+    document.getElementById('chat-file-input').value = '';
+    document.getElementById('chat-file-preview').style.display = 'none';
+}
+
 // Enhanced Chat System
 function initializeChat() {
     const form = document.getElementById('chat-form');
@@ -584,7 +617,7 @@ function initializeChat() {
         e.preventDefault();
         const message = input.value.trim();
         
-        if (message) {
+        if (message || chatAttachedFile) {
             await sendChatMessage(message);
             input.value = '';
         }
@@ -601,7 +634,60 @@ function initializeChat() {
 }
 
 async function sendChatMessage(message) {
-    addChatMessage('user', message);
+    // Show user message
+    if (message) {
+        addChatMessage('user', message);
+    }
+    
+    // Handle file upload if present
+    let finalMessage = message;
+    if (chatAttachedFile) {
+        const fileName = chatAttachedFile.name;
+        addChatMessage('user', `📎 ${fileName}`);
+        
+        // Upload the file first
+        const formData = new FormData();
+        formData.append('document', chatAttachedFile);
+        formData.append('documentType', 'chat_upload');
+        formData.append('tags', 'chat-assistant');
+        
+        try {
+            showLoading('Uploading document...', 'Please wait while we process your file');
+            
+            const uploadResponse = await fetch(`${API.BASE}${API.endpoints.upload}`, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const uploadResult = await uploadResponse.json();
+            hideLoading();
+            
+            if (uploadResult.success) {
+                // Clear the attached file
+                removeChatFile();
+                
+                // If no message, auto-generate one
+                if (!message) {
+                    finalMessage = `I've uploaded ${fileName}. Can you analyze this document for compliance?`;
+                } else {
+                    finalMessage = `${message} (Document: ${fileName})`;
+                }
+                
+                // Add document context to the message
+                finalMessage = `[Document uploaded: ${uploadResult.documentId}] ${finalMessage}`;
+            } else {
+                showNotification('Error', 'Failed to upload document', 'error');
+                return;
+            }
+        } catch (error) {
+            hideLoading();
+            showNotification('Error', 'Failed to upload document', 'error');
+            console.error('Upload error:', error);
+            return;
+        }
+    }
+    
+    if (!finalMessage) return;
     
     // Show typing indicator
     const typingIndicator = addChatMessage('assistant', '...', true);
@@ -610,7 +696,7 @@ async function sendChatMessage(message) {
         const response = await fetch(`${API.BASE}${API.endpoints.chat}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message })
+            body: JSON.stringify({ message: finalMessage })
         });
         
         const result = await response.json();
@@ -620,7 +706,7 @@ async function sendChatMessage(message) {
         
         if (result.success) {
             addChatMessage('assistant', result.response);
-            AppState.chatHistory.push({ user: message, assistant: result.response });
+            AppState.chatHistory.push({ user: finalMessage, assistant: result.response });
         } else {
             addChatMessage('assistant', 'I apologize, but I encountered an error. Please try again.');
         }

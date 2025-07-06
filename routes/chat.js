@@ -7,17 +7,35 @@ const router = express.Router();
 // Chat endpoint
 router.post('/', async (req, res) => {
   try {
-    const { message, context } = req.body;
+    let { message, context } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
+    }
+
+    // Extract document ID if present in message
+    let documentContext = null;
+    const docMatch = message.match(/\[Document uploaded: ([^\]]+)\]/);
+    if (docMatch) {
+      const documentId = docMatch[1];
+      message = message.replace(docMatch[0], '').trim();
+      
+      // Get document from session
+      if (req.session.documents && req.session.documents[documentId]) {
+        documentContext = {
+          documentId: documentId,
+          document: req.session.documents[documentId],
+          content: req.session.documents[documentId].content
+        };
+      }
     }
 
     // Gather context from session
     const sessionContext = {
       uploadedDocuments: Object.keys(req.session.documents || {}).length,
       analysisResults: req.session.analysisResults || {},
-      specificContext: context || 'general'
+      specificContext: context || 'general',
+      currentDocument: documentContext
     };
 
     // Load relevant regulatory knowledge
