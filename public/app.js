@@ -2686,7 +2686,319 @@ function generateNewReport() {
 }
 
 function viewRegulation(regulationId) {
-    showNotification('Info', 'Regulation viewer feature coming soon', 'info');
+    const regulation = AppState.regulations.find(reg => reg.id === regulationId);
+    
+    if (!regulation) {
+        showNotification('Error', 'Regulation not found', 'error');
+        return;
+    }
+    
+    // Show the modal
+    document.getElementById('regulation-modal').classList.add('active');
+    document.getElementById('regulation-modal-title').textContent = regulation.displayName;
+    
+    // Load detailed regulation information
+    loadRegulationDetails(regulation);
+}
+
+function closeRegulationModal() {
+    document.getElementById('regulation-modal').classList.remove('active');
+}
+
+async function loadRegulationDetails(regulation) {
+    const content = document.getElementById('regulation-modal-content');
+    
+    // Show loading state
+    content.innerHTML = `
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading regulation details...
+        </div>
+    `;
+    
+    // Create detailed regulation content based on regulation type
+    const detailsContent = getRegulationDetailsContent(regulation);
+    
+    content.innerHTML = detailsContent;
+}
+
+function getRegulationDetailsContent(regulation) {
+    const regulationDetails = {
+        'gdpr': {
+            fullName: 'General Data Protection Regulation',
+            jurisdiction: 'European Union',
+            effectiveDate: 'May 25, 2018',
+            lastUpdated: 'December 2024',
+            summary: 'The GDPR is a comprehensive data protection law that regulates how personal data is collected, processed, and stored within the EU and EEA.',
+            keyPrinciples: [
+                'Lawfulness, fairness and transparency',
+                'Purpose limitation',
+                'Data minimisation',
+                'Accuracy',
+                'Storage limitation',
+                'Integrity and confidentiality',
+                'Accountability'
+            ],
+            keyRequirements: [
+                {
+                    title: 'Consent Management',
+                    description: 'Obtain clear, specific consent for data processing',
+                    articles: ['Article 6', 'Article 7']
+                },
+                {
+                    title: 'Data Subject Rights',
+                    description: 'Implement mechanisms for data subject rights (access, rectification, erasure, etc.)',
+                    articles: ['Articles 15-22']
+                },
+                {
+                    title: 'Privacy by Design',
+                    description: 'Implement privacy considerations from the design phase',
+                    articles: ['Article 25']
+                },
+                {
+                    title: 'Data Protection Impact Assessment',
+                    description: 'Conduct DPIA for high-risk processing activities',
+                    articles: ['Article 35']
+                },
+                {
+                    title: 'Breach Notification',
+                    description: 'Report data breaches within 72 hours',
+                    articles: ['Articles 33-34']
+                }
+            ],
+            penalties: 'Up to €20 million or 4% of annual global turnover, whichever is higher',
+            applicability: 'All organizations processing personal data of EU residents'
+        },
+        'ai_act': {
+            fullName: 'EU Artificial Intelligence Act',
+            jurisdiction: 'European Union',
+            effectiveDate: 'August 1, 2024 (phased implementation)',
+            lastUpdated: 'December 2024',
+            summary: 'The AI Act is the first comprehensive AI regulation globally, establishing a risk-based approach to AI governance.',
+            keyPrinciples: [
+                'Risk-based approach',
+                'Human oversight',
+                'Transparency and explainability',
+                'Robustness and accuracy',
+                'Privacy and data governance'
+            ],
+            keyRequirements: [
+                {
+                    title: 'Prohibited AI Systems',
+                    description: 'Ban on AI systems that pose unacceptable risks',
+                    articles: ['Article 5']
+                },
+                {
+                    title: 'High-Risk AI Systems',
+                    description: 'Strict requirements for high-risk AI applications',
+                    articles: ['Articles 6-15']
+                },
+                {
+                    title: 'Foundation Models',
+                    description: 'Specific obligations for general-purpose AI models',
+                    articles: ['Articles 51-55']
+                },
+                {
+                    title: 'Transparency Requirements',
+                    description: 'Clear disclosure when interacting with AI systems',
+                    articles: ['Article 50']
+                }
+            ],
+            penalties: 'Up to €35 million or 7% of annual global turnover for prohibited AI practices',
+            applicability: 'AI providers, deployers, and importers in the EU market'
+        },
+        'financial_compliance': {
+            fullName: 'Financial Services Compliance Framework',
+            jurisdiction: 'Multiple (EU, US, UK)',
+            effectiveDate: 'Ongoing',
+            lastUpdated: 'December 2024',
+            summary: 'Comprehensive framework covering anti-money laundering, know your customer, and financial crime prevention requirements.',
+            keyPrinciples: [
+                'Customer due diligence',
+                'Transaction monitoring',
+                'Suspicious activity reporting',
+                'Record keeping',
+                'Risk assessment'
+            ],
+            keyRequirements: [
+                {
+                    title: 'Customer Due Diligence (CDD)',
+                    description: 'Verify customer identity and assess risk profiles',
+                    articles: ['AML Directive Articles 13-14']
+                },
+                {
+                    title: 'Enhanced Due Diligence (EDD)',
+                    description: 'Additional measures for high-risk customers',
+                    articles: ['AML Directive Article 18']
+                },
+                {
+                    title: 'Transaction Monitoring',
+                    description: 'Monitor transactions for suspicious patterns',
+                    articles: ['Various regulatory guidance']
+                },
+                {
+                    title: 'Suspicious Activity Reporting',
+                    description: 'Report suspicious transactions to authorities',
+                    articles: ['AML Directive Articles 33-34']
+                }
+            ],
+            penalties: 'Varies by jurisdiction - significant fines and sanctions possible',
+            applicability: 'Financial institutions, payment service providers, crypto exchanges'
+        },
+        'data_security': {
+            fullName: 'Data Security Standards Framework',
+            jurisdiction: 'International',
+            effectiveDate: 'Ongoing',
+            lastUpdated: 'December 2024',
+            summary: 'Comprehensive security standards including ISO 27001, SOC 2, and industry-specific requirements.',
+            keyPrinciples: [
+                'Confidentiality',
+                'Integrity',
+                'Availability',
+                'Risk management',
+                'Continuous improvement'
+            ],
+            keyRequirements: [
+                {
+                    title: 'Information Security Management System (ISMS)',
+                    description: 'Establish and maintain systematic approach to security',
+                    articles: ['ISO 27001 Clause 4-10']
+                },
+                {
+                    title: 'Access Control',
+                    description: 'Implement proper access controls and authentication',
+                    articles: ['ISO 27001 A.9']
+                },
+                {
+                    title: 'Encryption',
+                    description: 'Protect data in transit and at rest',
+                    articles: ['ISO 27001 A.10']
+                },
+                {
+                    title: 'Incident Response',
+                    description: 'Establish incident detection and response procedures',
+                    articles: ['ISO 27001 A.16']
+                }
+            ],
+            penalties: 'Certification requirements, potential regulatory fines',
+            applicability: 'All organizations handling sensitive data'
+        }
+    };
+    
+    const details = regulationDetails[regulation.id] || {
+        fullName: regulation.displayName,
+        jurisdiction: 'Not specified',
+        effectiveDate: 'Not specified',
+        lastUpdated: 'Not specified',
+        summary: regulation.description || 'No detailed description available.',
+        keyPrinciples: [],
+        keyRequirements: [],
+        penalties: 'Not specified',
+        applicability: 'Not specified'
+    };
+    
+    return `
+        <div class="regulation-details">
+            <div class="regulation-overview">
+                <div class="regulation-meta">
+                    <div class="meta-item">
+                        <strong>Full Name:</strong> ${details.fullName}
+                    </div>
+                    <div class="meta-item">
+                        <strong>Jurisdiction:</strong> ${details.jurisdiction}
+                    </div>
+                    <div class="meta-item">
+                        <strong>Effective Date:</strong> ${details.effectiveDate}
+                    </div>
+                    <div class="meta-item">
+                        <strong>Last Updated:</strong> ${details.lastUpdated}
+                    </div>
+                </div>
+                
+                <div class="regulation-summary">
+                    <h4>Summary</h4>
+                    <p>${details.summary}</p>
+                </div>
+            </div>
+            
+            ${details.keyPrinciples.length > 0 ? `
+                <div class="regulation-section">
+                    <h4>Key Principles</h4>
+                    <ul class="principles-list">
+                        ${details.keyPrinciples.map(principle => `<li>${principle}</li>`).join('')}
+                    </ul>
+                </div>
+            ` : ''}
+            
+            ${details.keyRequirements.length > 0 ? `
+                <div class="regulation-section">
+                    <h4>Key Requirements</h4>
+                    <div class="requirements-list">
+                        ${details.keyRequirements.map(req => `
+                            <div class="requirement-item">
+                                <h5>${req.title}</h5>
+                                <p>${req.description}</p>
+                                ${req.articles ? `<div class="requirement-articles">
+                                    <strong>References:</strong> ${req.articles.join(', ')}
+                                </div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : ''}
+            
+            <div class="regulation-section">
+                <h4>Compliance Information</h4>
+                <div class="compliance-info">
+                    <div class="info-item">
+                        <strong>Penalties:</strong> ${details.penalties}
+                    </div>
+                    <div class="info-item">
+                        <strong>Applicability:</strong> ${details.applicability}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="regulation-actions">
+                <button class="btn btn-primary" onclick="analyzeDocumentsAgainstRegulation('${regulation.id}')">
+                    <i class="fas fa-microscope"></i> Analyze Documents
+                </button>
+                <button class="btn btn-secondary" onclick="generateComplianceChecklist('${regulation.id}')">
+                    <i class="fas fa-list-check"></i> Generate Checklist
+                </button>
+                <button class="btn btn-secondary" onclick="exportRegulationDetails('${regulation.id}')">
+                    <i class="fas fa-download"></i> Export Details
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function analyzeDocumentsAgainstRegulation(regulationId) {
+    closeRegulationModal();
+    navigateToSection('analysis');
+    showNotification('Info', `Analysis wizard opened for ${regulationId.toUpperCase()}`, 'info');
+}
+
+function generateComplianceChecklist(regulationId) {
+    showNotification('Info', 'Compliance checklist generation coming soon', 'info');
+}
+
+function exportRegulationDetails(regulationId) {
+    const regulation = AppState.regulations.find(reg => reg.id === regulationId);
+    if (!regulation) return;
+    
+    const details = getRegulationDetailsContent(regulation);
+    const blob = new Blob([details.replace(/<[^>]*>/g, '\n')], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${regulation.displayName}_details.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    showNotification('Success', 'Regulation details exported', 'success');
 }
 
 function viewReport(reportId) {

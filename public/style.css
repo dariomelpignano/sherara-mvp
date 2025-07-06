@@ -2843,3 +2843,208 @@ a:hover {
         max-width: none;
     }
 }
+
+/* Regulation Details Modal */
+.modal-content.large {
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.regulation-details {
+    padding: 0;
+}
+
+.regulation-overview {
+    margin-bottom: 2rem;
+}
+
+.regulation-meta {
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-item {
+    display: flex;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.meta-item:last-child {
+    margin-bottom: 0;
+}
+
+.meta-item strong {
+    min-width: 120px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.regulation-summary {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.regulation-summary h4 {
+    margin: 0 0 1rem 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.regulation-summary p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.regulation-section {
+    margin-bottom: 2rem;
+    background: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.regulation-section h4 {
+    margin: 0 0 1rem 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.principles-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 0.5rem;
+}
+
+.principles-list li {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    position: relative;
+    padding-left: 2rem;
+}
+
+.principles-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0.75rem;
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.requirements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.requirement-item {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+}
+
+.requirement-item h5 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.requirement-item p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.requirement-articles {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--background-light);
+    padding: 0.5rem;
+    border-radius: 4px;
+    border-left: 3px solid var(--primary-color);
+}
+
+.compliance-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-item {
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+.info-item strong {
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.regulation-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+.regulation-actions .btn {
+    min-width: 150px;
+}
+
+/* Responsive Design for Regulation Modal */
+@media (max-width: 768px) {
+    .modal-content.large {
+        max-width: 95vw;
+        margin: 1rem;
+    }
+    
+    .regulation-meta {
+        padding: 1rem;
+    }
+    
+    .meta-item {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .meta-item strong {
+        min-width: auto;
+    }
+    
+    .principles-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .regulation-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .regulation-actions .btn {
+        min-width: auto;
+    }
+}
