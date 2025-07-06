@@ -634,8 +634,6 @@ function renderGapItem(gap) {
 }
 
 // Chat Upload Functions
-let chatAttachedFile = null;
-
 function triggerChatUpload() {
     document.getElementById('chat-file-input').click();
 }
