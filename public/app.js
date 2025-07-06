@@ -2627,7 +2627,69 @@ async function loadTaxonomyStats() {
     }
 }
 
-// Initialize taxonomy system when app loads
-document.addEventListener('DOMContentLoaded', function() {
-    setupTaxonomy();
-});
+// Missing functions that are called by onclick handlers
+function refreshDashboard() {
+    loadDashboard();
+    showNotification('Success', 'Dashboard refreshed', 'success');
+}
+
+function generateReport() {
+    showNotification('Info', 'Report generation feature coming soon', 'info');
+}
+
+function analyzeDocument(documentId) {
+    navigateToSection('analysis');
+}
+
+function downloadDocument(documentId) {
+    showNotification('Info', 'Document download feature coming soon', 'info');
+}
+
+function showAnalysisHistory() {
+    showNotification('Info', 'Analysis history feature coming soon', 'info');
+}
+
+function generateNewReport() {
+    showNotification('Info', 'New report generation feature coming soon', 'info');
+}
+
+function viewRegulation(regulationId) {
+    showNotification('Info', 'Regulation viewer feature coming soon', 'info');
+}
+
+function viewReport(reportId) {
+    showNotification('Info', 'Report viewer feature coming soon', 'info');
+}
+
+function downloadReport(reportId) {
+    showNotification('Info', 'Report download feature coming soon', 'info');
+}
+
+function generateRemediation(analysisId) {
+    showNotification('Info', 'Remediation generation feature coming soon', 'info');
+}
+
+function runSanityCheck() {
+    showNotification('Info', 'Sanity check feature coming soon', 'info');
+}
+
+function addCustomSource() {
+    showNotification('Info', 'Add custom source feature coming soon', 'info');
+}
+
+function closeSanityCheck() {
+    const modal = document.getElementById('sanity-check-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function switchSourceTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const targetBtn = document.querySelector(`[onclick="switchSourceTab('${tabName}')"]`);
+    if (targetBtn) {
+        targetBtn.classList.add('active');
+    }
+}
