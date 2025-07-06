@@ -1,0 +1,145 @@
+# Information Security Policy
+
+## 1. Overview
+
+This Information Security Policy defines the security requirements and controls for protecting our organization's information assets.
+
+## 2. Information Classification
+
+### 2.1 Classification Levels
+- Public: Information intended for public disclosure
+- Internal: Information for internal use only
+- Confidential: Sensitive business information
+- Highly Confidential: Critical sensitive information
+
+### 2.2 Handling Requirements
+Each classification level has specific handling, storage, and transmission requirements that must be followed.
+
+## 3. Access Control
+
+### 3.1 User Access Management
+- Access based on principle of least privilege
+- Regular access reviews conducted quarterly
+- Immediate revocation upon termination
+
+### 3.2 Authentication
+- Strong password requirements enforced
+- Multi-factor authentication for privileged accounts
+- Password rotation every 90 days
+
+## 4. Data Protection
+
+### 4.1 Encryption
+- Data at rest encrypted using AES-256
+- Data in transit protected with TLS 1.2 or higher
+- Encryption keys managed securely
+
+### 4.2 Data Loss Prevention
+- DLP tools monitor data movement
+- Policies prevent unauthorized data exfiltration
+- Regular reviews of DLP alerts
+
+## 5. Network Security
+
+### 5.1 Perimeter Security
+- Firewalls configured with deny-by-default rules
+- Intrusion detection systems monitor network traffic
+- Regular security assessments conducted
+
+### 5.2 Network Segmentation
+- Critical systems isolated in secure segments
+- Access between segments strictly controlled
+- Regular review of network architecture
+
+## 6. Endpoint Security
+
+### 6.1 Device Protection
+- Antivirus software required on all endpoints
+- Automatic security updates enabled
+- Device encryption mandatory
+
+### 6.2 Mobile Device Management
+- Corporate mobile devices managed through MDM
+- Remote wipe capability enabled
+- Application whitelisting enforced
+
+## 7. Security Monitoring
+
+### 7.1 Logging and Monitoring
+- Security events logged centrally
+- Real-time alerting for security incidents
+- Logs retained for minimum 12 months
+
+### 7.2 Incident Response
+- Documented incident response procedures
+- Incident response team trained and ready
+- Regular incident response drills conducted
+
+## 8. Physical Security
+
+### 8.1 Facility Access
+- Badge access required for all facilities
+- Visitor access logged and escorted
+- CCTV monitoring of sensitive areas
+
+### 8.2 Clean Desk Policy
+- Sensitive information secured when unattended
+- Screens locked when away from desk
+- Documents disposed of securely
+
+## 9. Third-Party Security
+
+### 9.1 Vendor Assessment
+- Security assessments required before engagement
+- Contractual security requirements defined
+- Regular reviews of vendor security
+
+### 9.2 Data Sharing
+- Data sharing agreements required
+- Encryption mandatory for sensitive data
+- Access limited to necessary personnel
+
+## 10. Business Continuity
+
+### 10.1 Backup Procedures
+- Daily backups of critical data
+- Off-site backup storage maintained
+- Regular restoration testing
+
+### 10.2 Disaster Recovery
+- Documented disaster recovery plan
+- Recovery time objectives defined
+- Annual DR testing conducted
+
+## 11. Security Awareness
+
+### 11.1 Training Program
+- Annual security awareness training mandatory
+- Phishing simulation exercises conducted
+- Role-specific security training provided
+
+### 11.2 Security Communications
+- Regular security updates shared
+- Security policies readily accessible
+- Incident reporting procedures communicated
+
+## 12. Compliance
+
+### 12.1 Regulatory Requirements
+- Compliance with applicable regulations maintained
+- Regular compliance assessments conducted
+- Findings tracked to resolution
+
+### 12.2 Internal Audits
+- Annual security audits performed
+- Audit findings addressed promptly
+- Management review of audit results
+
+## 13. Exceptions
+
+Any exceptions to this policy require written approval from the Chief Information Security Officer and must be reviewed annually.
+
+---
+Version: 2.0
+Effective Date: January 2024
+Next Review: July 2024

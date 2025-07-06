@@ -1,0 +1,70 @@
+Financial Services Compliance Requirements
+
+Know Your Customer (KYC) Requirements
+Financial institutions must implement robust customer identification procedures including: verification of customer identity using reliable documents, understanding the nature of customer's business, assessing money laundering risks, and ongoing monitoring of business relationships. Enhanced due diligence required for high-risk customers.
+
+Anti-Money Laundering (AML) Policies
+Institutions must establish comprehensive AML programs including: appointment of compliance officer, implementation of internal controls, ongoing employee training programs, independent audit function, and risk-based approach to customer due diligence. Suspicious activity must be reported to relevant authorities.
+
+Customer Due Diligence (CDD)
+CDD measures must include: identifying and verifying customer identity, identifying beneficial ownership and control structure, understanding purpose and nature of business relationship, and conducting ongoing monitoring. Simplified or enhanced measures applied based on risk assessment.
+
+Transaction Monitoring
+Continuous monitoring of transactions required to detect unusual patterns. Systems must flag: transactions inconsistent with customer profile, complex or unusually large transactions, transactions with high-risk jurisdictions, and patterns indicative of money laundering or terrorist financing.
+
+Sanctions Screening
+Real-time screening against sanctions lists mandatory for: new customers during onboarding, existing customers against updated lists, transaction counterparties, and beneficial owners. Positive matches require immediate action and potential reporting.
+
+Record Keeping Requirements
+Financial institutions must maintain records for minimum 5 years including: customer identification documents, transaction records, correspondence with customers, internal suspicious activity reports, and risk assessments. Records must be readily retrievable for regulatory inspection.
+
+Suspicious Activity Reporting (SAR)
+Institutions must file SARs for transactions that: involve funds from illegal activities, designed to evade reporting requirements, have no business purpose, or involve use of institution to facilitate criminal activity. Reports must be filed within prescribed timeframes.
+
+Capital Adequacy Requirements
+Banks must maintain minimum capital ratios: Common Equity Tier 1 of 4.5%, Tier 1 Capital of 6%, Total Capital of 8%. Additional buffers required including capital conservation buffer and countercyclical buffer. Regular stress testing required.
+
+Liquidity Requirements
+Institutions must maintain: Liquidity Coverage Ratio (LCR) of 100% minimum, Net Stable Funding Ratio (NSFR) of 100% minimum, contingency funding plans, and regular liquidity stress testing. Daily monitoring and reporting required.
+
+Market Conduct Rules
+Fair treatment of customers mandatory including: clear and not misleading communications, suitable product recommendations, transparent pricing and fees, proper handling of complaints, and protection of customer assets. Regular monitoring of conduct risks required.
+
+Operational Risk Management
+Comprehensive framework required covering: identification and assessment of operational risks, implementation of controls and mitigation measures, business continuity planning, cybersecurity measures, and third-party risk management. Regular testing and updating mandatory.
+
+Credit Risk Management
+Sound credit risk management including: clear credit policies and procedures, appropriate credit approval process, ongoing monitoring of credit exposures, adequate provisions for credit losses, and stress testing of credit portfolios. Independent credit review function required.
+
+Regulatory Reporting
+Timely and accurate regulatory reporting mandatory including: financial statements, capital adequacy reports, liquidity reports, large exposure reports, and transaction reports. Institutions must have systems ensuring data quality and timeliness.
+
+Internal Audit Function
+Independent internal audit required to: assess effectiveness of risk management, evaluate internal controls, review compliance with regulations, report directly to board/audit committee, and maintain appropriate expertise and resources.
+
+Compliance Function
+Dedicated compliance function must: identify and assess compliance risks, advise on regulatory requirements, monitor compliance levels, provide compliance training, and maintain relationship with regulators. Chief Compliance Officer must have appropriate seniority.
+
+Board Governance
+Board of directors must: approve risk appetite and strategy, oversee risk management framework, ensure adequate resources for compliance, review effectiveness of controls, and maintain appropriate expertise. Regular training on regulatory matters required.
+
+Whistleblowing Procedures
+Institutions must establish: secure channels for reporting breaches, protection for whistleblowers, procedures for investigation, appropriate remedial actions, and record keeping of reports. Anonymous reporting must be facilitated.
+
+Data Protection in Financial Services
+Compliance with data protection laws including: lawful basis for processing customer data, appropriate security measures, data breach notification procedures, customer rights management, and cross-border transfer safeguards. Privacy by design principles apply.
+
+Consumer Credit Regulations
+For consumer lending: clear disclosure of terms and costs, assessment of affordability, responsible lending practices, fair debt collection procedures, and handling of customers in financial difficulty. Pre-contractual information requirements apply.
+
+Investment Services Requirements
+When providing investment services: suitability and appropriateness assessments, best execution obligations, conflicts of interest management, client asset segregation, and clear disclosure of costs and charges. Product governance requirements for manufacturers and distributors.
+
+Cross-Border Requirements
+For cross-border operations: compliance with host country regulations, notification procedures for passporting, adherence to local conduct rules, and cooperation with host supervisors. Substance requirements for booking entities.
+
+Outsourcing and Third-Party Management
+Outsourcing arrangements require: due diligence on service providers, written agreements with clear terms, ongoing monitoring of performance, contingency plans for service disruption, and regulatory notification where required. Critical functions need special attention.
+
+Cyber Resilience Requirements
+Institutions must implement: comprehensive cybersecurity framework, regular vulnerability assessments, incident response procedures, cyber risk training programs, and testing of cyber defenses. Board oversight of cyber risks mandatory.

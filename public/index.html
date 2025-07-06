@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sherara - AI Compliance Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sherara</h1>
+            <p>AI-Powered Regulatory Compliance Platform</p>
+        </header>
+
+        <nav class="main-nav">
+            <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="documents">Documents</button>
+            <button class="nav-btn" data-section="analysis">Analysis</button>
+            <button class="nav-btn" data-section="chat">AI Assistant</button>
+        </nav>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <h2>Compliance Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Documents</h3>
+                    <p class="stat-number" id="doc-count">0</p>
+                    <p class="stat-label">Uploaded</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Compliance Gaps</h3>
+                    <p class="stat-number" id="gap-count">0</p>
+                    <p class="stat-label">Identified</p>
+                </div>
+                <div class="stat-card high-risk">
+                    <h3>High Risk Items</h3>
+                    <p class="stat-number" id="high-risk-count">0</p>
+                    <p class="stat-label">Require Attention</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Compliance Score</h3>
+                    <p class="stat-number" id="compliance-score">-</p>
+                    <p class="stat-label">Overall</p>
+                </div>
+            </div>
+
+            <div class="risk-distribution">
+                <h3>Risk Distribution</h3>
+                <div id="risk-chart" class="chart-container">
+                    <canvas id="riskCanvas"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documents Section -->
+        <section id="documents" class="content-section">
+            <h2>Document Management</h2>
+            
+            <div class="upload-area">
+                <h3>Upload Policy Documents</h3>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-input" name="document" accept=".pdf,.doc,.docx,.txt" required>
+                        <label for="file-input" class="file-label">
+                            <span>Choose file or drag here</span>
+                        </label>
+                    </div>
+                    <select name="documentType" class="doc-type-select">
+                        <option value="internal_policy">Internal Policy</option>
+                        <option value="procedure">Procedure Document</option>
+                        <option value="privacy_policy">Privacy Policy</option>
+                        <option value="security_policy">Security Policy</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Upload Document</button>
+                </form>
+            </div>
+
+            <div class="documents-list">
+                <h3>Uploaded Documents</h3>
+                <div id="documents-container">
+                    <p class="empty-state">No documents uploaded yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Section -->
+        <section id="analysis" class="content-section">
+            <h2>Compliance Analysis</h2>
+            
+            <div class="analysis-controls">
+                <h3>Run Compliance Check</h3>
+                <form id="analysis-form">
+                    <select id="analysis-doc-select" required>
+                        <option value="">Select a document</option>
+                    </select>
+                    <div class="regulation-checkboxes">
+                        <label><input type="checkbox" name="regulations" value="GDPR" checked> GDPR</label>
+                        <label><input type="checkbox" name="regulations" value="AI_Act" checked> EU AI Act</label>
+                        <label><input type="checkbox" name="regulations" value="Financial_Compliance"> Financial Compliance</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Analyze Compliance</button>
+                </form>
+            </div>
+
+            <div class="analysis-results">
+                <h3>Analysis Results</h3>
+                <div id="analysis-container">
+                    <p class="empty-state">No analysis performed yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="content-section">
+            <h2>AI Compliance Assistant</h2>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message assistant">
+                        <p>Hello! I'm your AI compliance assistant. I can help you understand regulatory requirements, analyze your compliance gaps, and provide recommendations. How can I assist you today?</p>
+                    </div>
+                </div>
+                
+                <div class="chat-suggestions" id="chat-suggestions">
+                    <!-- Suggestions will be loaded here -->
+                </div>
+
+                <form id="chat-form" class="chat-input-form">
+                    <input type="text" id="chat-input" placeholder="Ask about compliance requirements..." required>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Processing...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

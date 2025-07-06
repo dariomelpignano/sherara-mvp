@@ -1,0 +1,61 @@
+AML - Anti-Money Laundering Requirements
+
+Customer Due Diligence (CDD) Obligations
+Financial institutions must conduct thorough customer due diligence when establishing business relationships. This includes identifying and verifying customer identity using reliable, independent source documents. The institution must understand the ownership and control structure of the customer, particularly for corporate entities. Ongoing monitoring of transactions and periodic reviews of customer information are mandatory.
+
+Enhanced Due Diligence (EDD) Requirements
+Enhanced due diligence must be applied to high-risk customers including politically exposed persons (PEPs), customers from high-risk jurisdictions, and complex ownership structures. Additional measures include obtaining senior management approval, establishing source of wealth and funds, and conducting enhanced ongoing monitoring. Documentation of EDD rationale and measures taken must be maintained.
+
+Beneficial Ownership Identification
+Institutions must identify and verify the identity of beneficial owners who ultimately own or control the customer. For companies, this means identifying individuals who own more than 25% of shares or voting rights. For trusts and similar arrangements, identify settlors, trustees, beneficiaries, and any person exercising control. Reasonable measures must be taken to verify beneficial ownership information.
+
+Suspicious Activity Detection and Reporting
+Systems must be in place to detect suspicious transactions and activities. This includes automated transaction monitoring systems calibrated to customer risk profiles. Staff must be trained to recognize red flags and escalate concerns. Suspicious Activity Reports (SARs) must be filed within prescribed timeframes when suspicious activity is detected. Tipping off customers about SARs is strictly prohibited.
+
+Transaction Monitoring Systems
+Automated systems must monitor customer transactions for unusual patterns, including: transactions inconsistent with known customer profile, structuring to avoid reporting thresholds, rapid movement of funds, transactions with high-risk jurisdictions, and round-dollar transactions. Systems must generate alerts for manual review. Regular tuning and testing of monitoring scenarios is required.
+
+Sanctions Screening Requirements
+Real-time screening against relevant sanctions lists is mandatory for all customers and transactions. This includes screening against UN, EU, OFAC, and national sanctions lists. Screening must cover customer names, beneficial owners, and transaction counterparties. Positive matches require immediate action including potential asset freezing and regulatory reporting.
+
+Record Keeping Obligations
+Comprehensive records must be maintained for at least five years after end of business relationship. Records include: customer identification documents, business correspondence, transaction records, account files, and analysis undertaken. Records must be sufficient to reconstruct individual transactions and must be readily available to competent authorities upon request.
+
+AML Program Requirements
+A comprehensive AML program must include: board-approved AML policies and procedures, designation of AML compliance officer with appropriate seniority, ongoing employee training program, independent audit function to test AML controls, and risk assessment methodology. The program must be reviewed and updated regularly.
+
+Risk Assessment Framework
+Institutions must implement risk-based approach including: customer risk assessment considering factors like geography, products, and customer type, institutional risk assessment identifying inherent risks, periodic reviews and updates of risk assessments, and documentation of risk mitigation measures. Risk assessments must inform the design of controls.
+
+Training and Awareness
+All relevant employees must receive AML training upon hiring and regularly thereafter. Training must cover: money laundering typologies and red flags, internal policies and procedures, reporting obligations and escalation procedures, and consequences of non-compliance. Training completion and effectiveness must be documented and monitored.
+
+Internal Controls and Governance
+Robust internal controls must include: clear reporting lines and escalation procedures, segregation of duties in high-risk processes, management information systems for AML metrics, regular testing of controls effectiveness, and board oversight of AML program. Three lines of defense model should be implemented.
+
+Cross-Border Correspondent Banking
+Enhanced requirements apply to correspondent banking relationships including: gathering information about respondent institution's AML controls, assessing respondent's AML program adequacy, obtaining senior management approval for new relationships, documenting respective AML responsibilities, and prohibiting relationships with shell banks.
+
+Wire Transfer Requirements
+Wire transfers must include required originator and beneficiary information. For cross-border wires over threshold amounts, verify and record originator information. Beneficiary institutions must have procedures to identify wire transfers lacking required information. Suspicious wire transfer patterns must be monitored and reported.
+
+Trade Finance Controls
+Trade finance transactions require specific controls including: verification of underlying trade documentation, screening of all parties to trade transactions, identification of dual-use goods and restricted items, monitoring for trade-based money laundering indicators, and enhanced scrutiny for high-risk trade corridors.
+
+Virtual Asset Considerations
+If dealing with virtual assets, additional requirements include: implementation of Travel Rule for virtual asset transfers, enhanced customer due diligence for virtual asset service providers, monitoring for mixing services and anonymity-enhanced cryptocurrencies, and specific risk assessment for virtual asset activities.
+
+Proliferation Financing
+Controls must address proliferation financing risks including: screening against proliferation-related sanctions lists, monitoring for dual-use goods transactions, awareness of proliferation financing typologies, and enhanced scrutiny for transactions involving sensitive jurisdictions or industries.
+
+Tax Evasion Prevention
+Institutions must have procedures to prevent facilitation of tax evasion including: obtaining self-certifications of tax residency, reporting under Common Reporting Standard (CRS), identifying indicia of tax evasion, and maintaining policies against assisting tax evasion.
+
+Regulatory Reporting Obligations
+Beyond SARs, institutions must submit: Currency Transaction Reports (CTRs) for large cash transactions, international wire transfer reports, cross-border movement of monetary instruments reports, and any other reports required by national legislation. Timeliness and accuracy of reporting is critical.
+
+Penalties and Enforcement
+Non-compliance with AML requirements can result in: substantial monetary penalties up to millions of euros, criminal prosecution of institutions and individuals, loss of banking license, reputational damage and loss of correspondent relationships, and personal liability for senior management.
+
+Emerging Risks and Updates
+Institutions must stay current with evolving risks including: new money laundering typologies and methods, updates to sanctions lists and high-risk jurisdictions, technological developments affecting AML risks, and regulatory guidance and enforcement trends. Regular review and update of AML program is essential.

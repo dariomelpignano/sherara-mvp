@@ -1,0 +1,49 @@
+GDPR - Key Requirements for Compliance
+
+Article 5 - Principles relating to processing of personal data
+Personal data shall be processed lawfully, fairly and in a transparent manner. Organizations must ensure data is collected for specified, explicit and legitimate purposes and not further processed in a manner incompatible with those purposes. Data minimization is mandatory - only data that is adequate, relevant and limited to what is necessary should be processed.
+
+Article 6 - Lawfulness of processing
+Processing shall be lawful only if at least one legal basis applies: consent of the data subject, necessary for contract performance, compliance with legal obligation, protection of vital interests, public interest task, or legitimate interests. Organizations must document and be able to demonstrate the legal basis for each processing activity.
+
+Article 7 - Conditions for consent
+Where processing is based on consent, controllers must be able to demonstrate that consent was given. Consent requests must be clearly distinguishable, in clear and plain language. Data subjects have the right to withdraw consent at any time, and withdrawal must be as easy as giving consent.
+
+Article 12 - Transparent information and communication
+Controllers must provide information to data subjects in a concise, transparent, intelligible and easily accessible form, using clear and plain language. Information must be provided free of charge and within one month of request.
+
+Article 13-14 - Information to be provided
+Controllers must provide comprehensive information including: identity and contact details, purposes and legal basis of processing, recipients of personal data, retention periods, data subject rights, and right to lodge a complaint with supervisory authority.
+
+Article 15 - Right of access
+Data subjects have the right to obtain confirmation of processing, access to their personal data, and information about processing purposes, categories of data, recipients, retention periods, and their rights. Controllers must provide a copy of personal data undergoing processing.
+
+Article 16 - Right to rectification
+Data subjects have the right to obtain rectification of inaccurate personal data without undue delay. They also have the right to have incomplete personal data completed.
+
+Article 17 - Right to erasure (Right to be forgotten)
+Data subjects have the right to obtain erasure of personal data when: data is no longer necessary, consent is withdrawn, data has been unlawfully processed, or erasure is required for legal compliance. This right is not absolute and has specific exceptions.
+
+Article 25 - Data protection by design and by default
+Controllers must implement appropriate technical and organizational measures to ensure data protection principles are integrated into processing activities. Only personal data necessary for each specific purpose should be processed by default.
+
+Article 32 - Security of processing
+Controllers and processors must implement appropriate technical and organizational measures to ensure a level of security appropriate to the risk, including: pseudonymization and encryption, ability to ensure confidentiality and integrity, ability to restore availability and access, and regular testing of security measures.
+
+Article 33 - Notification of breach to supervisory authority
+In case of a personal data breach, the controller shall notify the supervisory authority within 72 hours after becoming aware of it, unless the breach is unlikely to result in a risk to rights and freedoms. The notification must describe the breach, likely consequences, and measures taken.
+
+Article 34 - Communication of breach to data subject
+When a breach is likely to result in high risk to rights and freedoms, the controller must communicate the breach to the data subject without undue delay in clear and plain language.
+
+Article 35 - Data protection impact assessment
+A DPIA is required when processing is likely to result in high risk, particularly when using new technologies, conducting systematic evaluation, or processing special categories of data on a large scale.
+
+Article 37 - Designation of data protection officer
+Controllers and processors must designate a DPO when: processing is carried out by a public authority, core activities require regular and systematic monitoring on a large scale, or core activities consist of large scale processing of special categories of data.
+
+Article 44-49 - International transfers
+Transfers of personal data to third countries may only take place if appropriate safeguards are in place, such as adequacy decisions, standard contractual clauses, binding corporate rules, or explicit consent for specific transfers.
+
+Penalties and enforcement
+Infringements can result in administrative fines up to €20 million or 4% of total worldwide annual turnover, whichever is higher. Supervisory authorities have investigative, corrective, and advisory powers.
