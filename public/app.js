@@ -379,42 +379,38 @@ function proceedToStep2() {
 function renderAnalysisStep2(docId) {
     const wizardContent = document.getElementById('analysis-wizard-content');
     
+    // Generate regulation cards from loaded regulations
+    const regulationCards = AppState.regulations.map((reg, index) => {
+        // Map regulation IDs to appropriate icons
+        const iconMap = {
+            'gdpr': 'fa-shield-alt',
+            'ai_act': 'fa-robot',
+            'financial_compliance': 'fa-coins',
+            'aml': 'fa-money-check-alt',
+            'data_security': 'fa-lock'
+        };
+        const icon = iconMap[reg.id] || 'fa-gavel';
+        
+        // Check first few by default
+        const isChecked = index < 3 ? 'checked' : '';
+        
+        return `
+            <label class="regulation-option">
+                <input type="checkbox" name="regulations" value="${reg.id}" ${isChecked}>
+                <div class="regulation-card">
+                    <i class="fas ${icon}"></i>
+                    <h4>${reg.displayName}</h4>
+                    <p>${reg.description}</p>
+                </div>
+            </label>
+        `;
+    }).join('');
+    
     wizardContent.innerHTML = `
         <div class="wizard-step-content">
             <h3>Select Regulations to Check</h3>
             <div class="regulations-grid">
-                <label class="regulation-option">
-                    <input type="checkbox" name="regulations" value="gdpr" checked>
-                    <div class="regulation-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h4>GDPR</h4>
-                        <p>General Data Protection Regulation</p>
-                    </div>
-                </label>
-                <label class="regulation-option">
-                    <input type="checkbox" name="regulations" value="ai_act" checked>
-                    <div class="regulation-card">
-                        <i class="fas fa-robot"></i>
-                        <h4>EU AI Act</h4>
-                        <p>Artificial Intelligence Regulation</p>
-                    </div>
-                </label>
-                <label class="regulation-option">
-                    <input type="checkbox" name="regulations" value="financial_compliance">
-                    <div class="regulation-card">
-                        <i class="fas fa-coins"></i>
-                        <h4>Financial Compliance</h4>
-                        <p>AML/KYC Requirements</p>
-                    </div>
-                </label>
-                <label class="regulation-option">
-                    <input type="checkbox" name="regulations" value="data_security">
-                    <div class="regulation-card">
-                        <i class="fas fa-lock"></i>
-                        <h4>Data Security</h4>
-                        <p>Security Standards & Requirements</p>
-                    </div>
-                </label>
+                ${regulationCards}
             </div>
             <div class="wizard-actions">
                 <button class="btn btn-secondary" onclick="backToStep1()">
@@ -847,13 +843,21 @@ function initializeCharts() {
     }
     
     if (coverageCtx) {
+        // Use dynamic regulations for coverage chart
+        const regulationLabels = AppState.regulations.length > 0 
+            ? AppState.regulations.map(r => r.displayName)
+            : ['GDPR', 'AI Act', 'Financial', 'Security', 'AML'];
+        
+        // Generate random coverage data for now (would come from real analysis)
+        const coverageData = regulationLabels.map(() => Math.floor(Math.random() * 30) + 70);
+        
         AppState.charts.coverage = new Chart(coverageCtx, {
             type: 'radar',
             data: {
-                labels: ['GDPR', 'AI Act', 'Financial', 'Security', 'AML'],
+                labels: regulationLabels,
                 datasets: [{
                     label: 'Coverage',
-                    data: [85, 70, 90, 75, 80],
+                    data: coverageData,
                     borderColor: '#06b6d4',
                     backgroundColor: 'rgba(6, 182, 212, 0.2)'
                 }]
@@ -939,7 +943,7 @@ function renderComplianceMap() {
 }
 
 function renderComplianceMapItems() {
-    const regulations = ['GDPR', 'AI Act', 'Financial', 'Security', 'AML'];
+    const regulations = AppState.regulations.map(r => r.displayName);
     const categories = ['Data Protection', 'Risk Management', 'Documentation', 'Technical Measures', 'Governance'];
     
     return categories.map(category => `
@@ -998,13 +1002,33 @@ async function loadInsights() {
 
 // Regulations Library
 async function loadRegulations() {
-    // Load available regulations
-    AppState.regulations = [
-        { id: 'gdpr', name: 'GDPR', description: 'General Data Protection Regulation' },
-        { id: 'ai_act', name: 'EU AI Act', description: 'Artificial Intelligence Regulation' },
-        { id: 'financial', name: 'Financial Compliance', description: 'AML/KYC Requirements' },
-        { id: 'security', name: 'Data Security', description: 'Security Standards' }
-    ];
+    try {
+        const response = await fetch(`${API.BASE}/analyze/regulations`);
+        const data = await response.json();
+        
+        if (data.success) {
+            AppState.regulations = data.regulations;
+            console.log('Loaded regulations:', AppState.regulations);
+        } else {
+            console.error('Failed to load regulations:', data.error);
+            // Fallback to default regulations
+            AppState.regulations = [
+                { id: 'gdpr', displayName: 'GDPR', description: 'General Data Protection Regulation' },
+                { id: 'ai_act', displayName: 'EU AI Act', description: 'Artificial Intelligence Regulation' },
+                { id: 'financial_compliance', displayName: 'Financial Compliance', description: 'AML/KYC Requirements' },
+                { id: 'data_security', displayName: 'Data Security', description: 'Security Standards' }
+            ];
+        }
+    } catch (error) {
+        console.error('Error loading regulations:', error);
+        // Fallback to default regulations
+        AppState.regulations = [
+            { id: 'gdpr', displayName: 'GDPR', description: 'General Data Protection Regulation' },
+            { id: 'ai_act', displayName: 'EU AI Act', description: 'Artificial Intelligence Regulation' },
+            { id: 'financial_compliance', displayName: 'Financial Compliance', description: 'AML/KYC Requirements' },
+            { id: 'data_security', displayName: 'Data Security', description: 'Security Standards' }
+        ];
+    }
 }
 
 function renderRegulations() {
@@ -1014,12 +1038,12 @@ function renderRegulations() {
         <div class="regulation-card-large">
             <div class="regulation-header">
                 <i class="fas fa-gavel"></i>
-                <h3>${reg.name}</h3>
+                <h3>${reg.displayName}</h3>
             </div>
             <p>${reg.description}</p>
             <div class="regulation-stats">
-                <span><i class="fas fa-file-alt"></i> 50+ Requirements</span>
-                <span><i class="fas fa-clock"></i> Updated 2024</span>
+                <span><i class="fas fa-file-alt"></i> Multiple Requirements</span>
+                <span><i class="fas fa-clock"></i> Active</span>
             </div>
             <button class="btn btn-primary" onclick="viewRegulation('${reg.id}')">
                 View Details

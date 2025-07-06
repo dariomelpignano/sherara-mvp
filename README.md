@@ -1,7 +1,7 @@
 # Sherara MVP - Installation and Usage Guide
 
 ## Overview
-Sherara is an AI-powered regulatory compliance platform that helps organizations monitor, analyze, and ensure compliance with various regulations including GDPR, EU AI Act, and financial compliance requirements.
+Sherara is an AI-powered regulatory compliance platform that helps organizations monitor, analyze, and ensure compliance with various regulations. The platform dynamically loads all regulations from the `/regulations` folder, allowing you to easily add custom compliance frameworks beyond the included GDPR, EU AI Act, AML, Data Security, and Financial Compliance requirements.
 
 ## Prerequisites
 - Node.js (v14 or higher)
@@ -56,7 +56,8 @@ http://localhost:3000
 
 ### 2. Compliance Analysis
 - Analyze uploaded documents against regulatory requirements
-- Supports GDPR, EU AI Act, and Financial Compliance checks
+- Automatically detects all regulations in the `/regulations` folder
+- Supports any compliance framework you add
 - Identifies compliance gaps with risk scoring
 - Provides actionable recommendations
 
@@ -153,9 +154,34 @@ sherara-mvp/
 ```
 
 ### Adding New Regulations
+Sherara now automatically discovers and loads all regulation files from the `/regulations` folder:
+
 1. Create a new .txt file in `/regulations`
-2. Follow the existing format for requirements
-3. Update the file mapping in `regulatoryAnalyzer.js`
+   - Use descriptive filename (e.g., `iso27001_requirements.txt`, `hipaa_compliance.txt`)
+   - The system will automatically parse the filename for display
+
+2. Follow the existing format for requirements:
+   ```
+   REGULATION TITLE
+   Brief description of the regulation
+
+   1. REQUIREMENT CATEGORY
+   Detailed requirement description including:
+   - Specific controls or measures
+   - Implementation guidelines
+   - Compliance criteria
+
+   2. ANOTHER REQUIREMENT
+   Description of the requirement...
+   ```
+
+3. The regulation will automatically appear in:
+   - Analysis wizard for document checking
+   - Regulations library
+   - Compliance dashboard
+   - Coverage charts
+
+Example: See `regulations/sample_new_regulation.txt` for a template
 
 ### Extending the AI Service
 - Modify prompts in `aiService.js`

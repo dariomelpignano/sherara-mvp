@@ -4,6 +4,23 @@ const gapAnalysis = require('../services/gapAnalysis');
 
 const router = express.Router();
 
+// Get available regulations
+router.get('/regulations', async (req, res) => {
+  try {
+    const availableRegulations = await regulatoryAnalyzer.getAvailableRegulations();
+    res.json({
+      success: true,
+      regulations: availableRegulations
+    });
+  } catch (error) {
+    console.error('Error fetching regulations:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch available regulations',
+      message: error.message 
+    });
+  }
+});
+
 // Analyze compliance endpoint
 router.post('/', async (req, res) => {
   try {
@@ -20,8 +37,13 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Document not found. Please upload a document first.' });
     }
 
-    // Default to all available regulations if none specified
-    const targetRegulations = regulations || ['GDPR', 'AI_Act', 'Financial_Compliance'];
+    // If no regulations specified, use all available regulations
+    let targetRegulations = regulations;
+    if (!targetRegulations || targetRegulations.length === 0) {
+      const availableRegulations = await regulatoryAnalyzer.getAvailableRegulations();
+      targetRegulations = availableRegulations.map(r => r.id);
+      console.log('Using all available regulations:', targetRegulations);
+    }
 
     // Load and parse regulatory requirements
     const regulatoryRequirements = await regulatoryAnalyzer.loadRegulations(targetRegulations);

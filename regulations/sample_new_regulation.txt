@@ -1,0 +1,82 @@
+SAMPLE REGULATION - CYBERSECURITY FRAMEWORK
+This is a sample regulation file to demonstrate how to add new regulations to Sherara
+
+1. INCIDENT RESPONSE REQUIREMENTS
+Organizations must establish and maintain an incident response plan that includes:
+- Clear escalation procedures
+- Defined roles and responsibilities
+- Communication protocols
+- Recovery procedures
+- Post-incident review processes
+
+2. VULNERABILITY MANAGEMENT
+Organizations shall implement a vulnerability management program including:
+- Regular vulnerability assessments
+- Patch management procedures
+- Risk-based prioritization
+- Remediation timelines
+- Third-party software monitoring
+
+3. ACCESS CONTROL MEASURES
+Implement appropriate access control measures:
+- Multi-factor authentication for critical systems
+- Role-based access control (RBAC)
+- Regular access reviews
+- Privileged access management
+- Session monitoring and logging
+
+4. DATA ENCRYPTION STANDARDS
+All sensitive data must be protected using:
+- Encryption at rest using AES-256 or equivalent
+- Encryption in transit using TLS 1.2 or higher
+- Key management procedures
+- Certificate management
+- Cryptographic controls
+
+5. SECURITY AWARENESS TRAINING
+Organizations must provide security awareness training covering:
+- Phishing and social engineering
+- Password security
+- Data handling procedures
+- Incident reporting
+- Physical security
+
+6. BUSINESS CONTINUITY PLANNING
+Maintain business continuity plans that include:
+- Risk assessments
+- Recovery time objectives (RTO)
+- Recovery point objectives (RPO)
+- Testing procedures
+- Communication plans
+
+7. THIRD-PARTY RISK MANAGEMENT
+Implement controls for third-party risks:
+- Vendor assessment procedures
+- Contract security requirements
+- Ongoing monitoring
+- Supply chain security
+- Data processing agreements
+
+8. NETWORK SECURITY CONTROLS
+Deploy appropriate network security measures:
+- Firewalls and intrusion detection
+- Network segmentation
+- Secure configuration standards
+- Wireless security protocols
+- Remote access controls
+
+9. AUDIT AND COMPLIANCE
+Establish audit and compliance procedures:
+- Regular security audits
+- Compliance monitoring
+- Gap assessments
+- Corrective action plans
+- Management reporting
+
+10. PRIVACY BY DESIGN
+Integrate privacy considerations including:
+- Data minimization
+- Purpose limitation
+- Transparency requirements
+- User consent mechanisms
+- Data retention policies
