@@ -108,7 +108,7 @@ function navigateToSection(section, pushState = true) {
     loadSectionData(section);
 }
 
-function loadSectionData(section) {
+async function loadSectionData(section) {
     switch (section) {
         case 'dashboard':
             loadDashboard();
@@ -117,7 +117,7 @@ function loadSectionData(section) {
             loadDocuments();
             break;
         case 'analysis':
-            initializeAnalysisWizard();
+            await initializeAnalysisWizard();
             break;
         case 'compliance-map':
             renderComplianceMap();
@@ -326,13 +326,36 @@ async function deleteDocument(documentId) {
 }
 
 // Enhanced Analysis Wizard
-function initializeAnalysisWizard() {
+async function initializeAnalysisWizard() {
     const wizardContent = document.getElementById('analysis-wizard-content');
+    
+    // Ensure regulations are loaded
+    if (!AppState.regulations || AppState.regulations.length === 0) {
+        await loadRegulations();
+    }
+    
     renderAnalysisStep1();
 }
 
 function renderAnalysisStep1() {
     const wizardContent = document.getElementById('analysis-wizard-content');
+    
+    // Check if we have documents
+    if (!AppState.documents || AppState.documents.length === 0) {
+        wizardContent.innerHTML = `
+            <div class="wizard-step-content">
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>No documents available</h3>
+                    <p>Upload documents first to start compliance analysis</p>
+                    <button class="btn btn-primary" onclick="showUploadModal()">
+                        <i class="fas fa-upload"></i> Upload Document
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
     
     wizardContent.innerHTML = `
         <div class="wizard-step-content">
@@ -367,17 +390,42 @@ function renderAnalysisStep1() {
     });
 }
 
-function proceedToStep2() {
+async function proceedToStep2() {
     const selectedDoc = document.querySelector('.selectable-document.selected');
     if (!selectedDoc) return;
     
     const docId = selectedDoc.dataset.docId;
+    
+    // Ensure regulations are loaded before proceeding
+    if (!AppState.regulations || AppState.regulations.length === 0) {
+        showLoading('Loading regulations...', 'Please wait while we fetch available regulations');
+        await loadRegulations();
+        hideLoading();
+    }
+    
     updateWizardStep(2);
     renderAnalysisStep2(docId);
 }
 
 function renderAnalysisStep2(docId) {
     const wizardContent = document.getElementById('analysis-wizard-content');
+    
+    // Check if regulations are available
+    if (!AppState.regulations || AppState.regulations.length === 0) {
+        wizardContent.innerHTML = `
+            <div class="wizard-step-content">
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>No regulations available</h3>
+                    <p>Unable to load regulations. Please try again.</p>
+                    <button class="btn btn-primary" onclick="loadRegulations().then(() => renderAnalysisStep2('${docId}'))">
+                        <i class="fas fa-sync"></i> Retry Loading Regulations
+                    </button>
+                </div>
+            </div>
+        `;
+        return;
+    }
     
     // Generate regulation cards from loaded regulations
     const regulationCards = AppState.regulations.map((reg, index) => {
@@ -387,7 +435,10 @@ function renderAnalysisStep2(docId) {
             'ai_act': 'fa-robot',
             'financial_compliance': 'fa-coins',
             'aml': 'fa-money-check-alt',
-            'data_security': 'fa-lock'
+            'data_security': 'fa-lock',
+            'basel3': 'fa-university',
+            'mifid2': 'fa-chart-line',
+            'psd2': 'fa-credit-card'
         };
         const icon = iconMap[reg.id] || 'fa-gavel';
         
@@ -400,7 +451,7 @@ function renderAnalysisStep2(docId) {
                 <div class="regulation-card">
                     <i class="fas ${icon}"></i>
                     <h4>${reg.displayName}</h4>
-                    <p>${reg.description}</p>
+                    <p>${reg.description.substring(0, 100)}${reg.description.length > 100 ? '...' : ''}</p>
                 </div>
             </label>
         `;
@@ -409,6 +460,7 @@ function renderAnalysisStep2(docId) {
     wizardContent.innerHTML = `
         <div class="wizard-step-content">
             <h3>Select Regulations to Check</h3>
+            <p class="step-description">Choose which regulations to analyze your document against. We've pre-selected the most common ones.</p>
             <div class="regulations-grid">
                 ${regulationCards}
             </div>
