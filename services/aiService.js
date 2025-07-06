@@ -51,17 +51,52 @@ Focus on being accurate and specific. If the document doesn't address the requir
       });
 
       const content = response.choices[0].message.content;
+      console.log('Raw AI response:', content);
       
       // Try to parse as JSON, fallback to structured response if needed
       try {
+        // First try direct JSON parsing
         return JSON.parse(content);
       } catch (parseError) {
-        // If not valid JSON, create structured response from text
+        console.log('Direct JSON parsing failed, trying to extract JSON from text');
+        
+        // Try to extract JSON from markdown code blocks or other formatting
+        const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
+        if (jsonMatch) {
+          try {
+            return JSON.parse(jsonMatch[1]);
+          } catch (innerParseError) {
+            console.log('JSON extraction from code block failed');
+          }
+        }
+        
+        // Try to find JSON-like structure anywhere in the text
+        const jsonLikeMatch = content.match(/\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/);
+        if (jsonLikeMatch) {
+          try {
+            return JSON.parse(jsonLikeMatch[0]);
+          } catch (innerParseError) {
+            console.log('JSON-like structure parsing failed');
+          }
+        }
+        
+        // If all JSON parsing fails, use text parsing
+        console.log('All JSON parsing methods failed, using text parsing');
         return this.parseTextResponse(content);
       }
 
     } catch (error) {
       console.error('AI analysis error:', error);
+      
+      // Check if it's an API key issue
+      if (error.message && error.message.includes('API key')) {
+        return {
+          status: 'non-compliant',
+          evidence: 'Analysis performed using rule-based method',
+          gaps: 'AI analysis unavailable - using fallback analysis',
+          recommendation: `Review document for ${requirement.title} compliance manually`
+        };
+      }
       
       // Fallback analysis without AI
       return this.fallbackAnalysis(documentContent, requirement);
@@ -143,30 +178,65 @@ Provide a helpful, accurate, and actionable response. If the question relates to
   }
 
   parseTextResponse(text) {
+    console.log('Parsing AI text response:', text);
+    
     // Basic parsing of text response to create structured data
     const response = {
       status: 'non-compliant',
       evidence: '',
-      gaps: 'Unable to parse AI response',
+      gaps: 'AI analysis completed but response format needs improvement',
       recommendation: 'Manual review required'
     };
 
     // Look for keywords to determine status
-    if (text.toLowerCase().includes('compliant') && !text.toLowerCase().includes('non-compliant')) {
+    const textLower = text.toLowerCase();
+    if (textLower.includes('compliant') && !textLower.includes('non-compliant')) {
       response.status = 'compliant';
-    } else if (text.toLowerCase().includes('partially')) {
+      response.gaps = 'Document appears to meet the requirement';
+    } else if (textLower.includes('partially')) {
       response.status = 'partially-compliant';
+      response.gaps = 'Document partially addresses the requirement';
     }
 
-    // Extract other information if possible
-    const evidenceMatch = text.match(/evidence[:\s]+([^.]+)/i);
-    if (evidenceMatch) response.evidence = evidenceMatch[1].trim();
+    // Try to extract structured information from the text
+    // Look for evidence section
+    const evidenceMatch = text.match(/evidence[:\s]+([^.]+(?:\.[^.]*)*)/i);
+    if (evidenceMatch) {
+      response.evidence = evidenceMatch[1].trim();
+    } else {
+      // Try to extract the first meaningful sentence as evidence
+      const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 20);
+      if (sentences.length > 0) {
+        response.evidence = sentences[0].trim();
+      }
+    }
 
-    const gapsMatch = text.match(/gaps?[:\s]+([^.]+)/i);
-    if (gapsMatch) response.gaps = gapsMatch[1].trim();
+    // Look for gaps/issues
+    const gapsMatch = text.match(/gaps?[:\s]+([^.]+(?:\.[^.]*)*)/i);
+    if (gapsMatch) {
+      response.gaps = gapsMatch[1].trim();
+    } else if (textLower.includes('missing') || textLower.includes('lacks') || textLower.includes('insufficient')) {
+      // Extract context around these keywords
+      const issueMatch = text.match(/(?:missing|lacks|insufficient)[^.]+/i);
+      if (issueMatch) {
+        response.gaps = issueMatch[0].trim();
+      }
+    }
 
-    const recommendationMatch = text.match(/recommend[:\s]+([^.]+)/i);
-    if (recommendationMatch) response.recommendation = recommendationMatch[1].trim();
+    // Look for recommendations
+    const recommendationMatch = text.match(/recommend[:\s]+([^.]+(?:\.[^.]*)*)/i);
+    if (recommendationMatch) {
+      response.recommendation = recommendationMatch[1].trim();
+    } else {
+      // Generate a basic recommendation based on status
+      if (response.status === 'compliant') {
+        response.recommendation = 'Continue current practices and monitor for changes';
+      } else if (response.status === 'partially-compliant') {
+        response.recommendation = 'Review and enhance current implementation';
+      } else {
+        response.recommendation = 'Implement comprehensive policies and procedures';
+      }
+    }
 
     return response;
   }
