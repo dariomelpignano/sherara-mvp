@@ -1279,6 +1279,135 @@ function initializeUI() {
     });
 }
 
+// Regulations Management Functions
+function switchRegulationTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    document.getElementById(`${tabName}-tab`).classList.add('active');
+    
+    // Load content for the active tab
+    if (tabName === 'library') {
+        renderRegulations();
+    }
+}
+
+async function syncSource(sourceId) {
+    showLoading('Syncing regulations...', `Fetching latest updates from ${sourceId}`);
+    
+    try {
+        const response = await fetch(`${API.BASE}/regulations/sync`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sourceId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Success', `Successfully synced ${result.count} regulations`, 'success');
+            addRegulationUpdate('success', `${sourceId} Synced`, `Updated ${result.count} regulations`);
+            
+            // Refresh regulations list
+            await loadRegulations();
+        } else {
+            showNotification('Error', result.error || 'Sync failed', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', 'Failed to sync regulations', 'error');
+        console.error('Sync error:', error);
+    } finally {
+        hideLoading();
+    }
+}
+
+async function activateSource(sourceId) {
+    try {
+        const response = await fetch(`${API.BASE}/regulations/sources/${sourceId}/activate`, {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Success', 'Source activated successfully', 'success');
+            updateSourceStatus(sourceId, 'active');
+            
+            // Trigger initial sync
+            await syncSource(sourceId);
+        } else {
+            showNotification('Error', result.error || 'Activation failed', 'error');
+        }
+    } catch (error) {
+        showNotification('Error', 'Failed to activate source', 'error');
+        console.error('Activation error:', error);
+    }
+}
+
+function updateSourceStatus(sourceId, status) {
+    const sourceCard = document.querySelector(`[data-source-id="${sourceId}"]`);
+    if (!sourceCard) return;
+    
+    const statusElement = sourceCard.querySelector('.source-status');
+    if (status === 'active') {
+        statusElement.className = 'source-status active';
+        statusElement.innerHTML = '<i class="fas fa-check-circle"></i> Active';
+        
+        // Update action buttons
+        const actions = sourceCard.querySelector('.source-actions');
+        actions.innerHTML = `
+            <button class="btn btn-small btn-secondary" onclick="configureSource('${sourceId}')">
+                <i class="fas fa-cog"></i> Configure
+            </button>
+            <button class="btn btn-small btn-primary" onclick="syncSource('${sourceId}')">
+                <i class="fas fa-sync"></i> Sync Now
+            </button>
+        `;
+    }
+}
+
+function configureSource(sourceId) {
+    // Would open a configuration modal
+    showNotification('Info', 'Source configuration coming soon', 'info');
+}
+
+function showAddSourceModal() {
+    // Would open a modal to add custom source
+    showNotification('Info', 'Custom source addition coming soon', 'info');
+}
+
+function refreshRegulations() {
+    loadRegulations();
+    showNotification('Success', 'Regulations refreshed', 'success');
+}
+
+function addRegulationUpdate(type, title, description) {
+    const timeline = document.querySelector('.updates-timeline');
+    if (!timeline) return;
+    
+    const updateItem = document.createElement('div');
+    updateItem.className = 'update-item';
+    updateItem.innerHTML = `
+        <div class="update-icon ${type}">
+            <i class="fas fa-${type === 'success' ? 'check' : type === 'warning' ? 'exclamation' : 'info'}"></i>
+        </div>
+        <div class="update-content">
+            <h4>${title}</h4>
+            <p>${description}</p>
+            <span class="update-time">Just now</span>
+        </div>
+    `;
+    
+    timeline.insertBefore(updateItem, timeline.firstChild);
+}
+
 // Export functions for external use
 window.sherara = {
     showUploadModal,
@@ -1298,5 +1427,11 @@ window.sherara = {
     requestGapAnalysis,
     requestRemediation,
     requestCompliance,
-    clearChat
+    clearChat,
+    switchRegulationTab,
+    syncSource,
+    activateSource,
+    configureSource,
+    showAddSourceModal,
+    refreshRegulations
 };

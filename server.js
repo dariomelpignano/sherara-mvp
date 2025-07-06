@@ -8,6 +8,7 @@ require('dotenv').config();
 const uploadRoutes = require('./routes/upload');
 const analysisRoutes = require('./routes/analysis');
 const chatRoutes = require('./routes/chat');
+const regulationsRoutes = require('./routes/regulations');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,6 +45,7 @@ app.use((req, res, next) => {
 app.use('/api/upload', uploadRoutes);
 app.use('/api/analyze', analysisRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/regulations', regulationsRoutes);
 
 // Dashboard endpoint
 app.get('/api/dashboard', (req, res) => {

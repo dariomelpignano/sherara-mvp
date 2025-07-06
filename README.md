@@ -54,19 +54,27 @@ http://localhost:3000
 - Documents are parsed and stored in session memory
 - Support for multiple document types (policies, procedures, etc.)
 
-### 2. Compliance Analysis
+### 2. Regulations Management
+- Manage multiple regulation data sources (EU, US Federal, ISO Standards)
+- Activate/deactivate sources as needed
+- Sync regulations from external sources
+- Add custom regulation sources
+- Track updates and changes to regulations
+- All synced regulations automatically appear in compliance analysis
+
+### 3. Compliance Analysis
 - Analyze uploaded documents against regulatory requirements
 - Automatically detects all regulations in the `/regulations` folder
 - Supports any compliance framework you add
 - Identifies compliance gaps with risk scoring
 - Provides actionable recommendations
 
-### 3. AI Assistant
+### 4. AI Assistant
 - Chat interface for compliance questions
 - Context-aware responses based on uploaded documents
 - Provides regulatory guidance and explanations
 
-### 4. Dashboard
+### 5. Dashboard
 - Overview of compliance status
 - Risk distribution visualization
 - Quick stats on documents and identified gaps
@@ -78,18 +86,25 @@ http://localhost:3000
    - Click "Choose file" or drag and drop your policy documents
    - Select the document type and upload
 
-2. **Run Analysis**
+2. **Manage Regulations**
+   - Navigate to the "Regulations" section
+   - View available data sources
+   - Activate sources you need (EU, US, ISO)
+   - Click "Sync Now" to download latest regulations
+   - Check the Updates tab for sync history
+
+3. **Run Analysis**
    - Go to the "Analysis" section
    - Select a document to analyze
    - Choose which regulations to check against
    - Click "Analyze Compliance"
 
-3. **Review Results**
+4. **Review Results**
    - View identified compliance gaps
    - Check risk scores and recommendations
    - Generate remediation plans
 
-4. **Ask Questions**
+5. **Ask Questions**
    - Use the AI Assistant for specific queries
    - Get clarification on regulations
    - Receive tailored compliance advice
@@ -102,6 +117,9 @@ http://localhost:3000
 - `POST /api/analyze` - Run compliance analysis
 - `POST /api/chat` - Send chat messages
 - `GET /api/dashboard` - Get dashboard statistics
+- `GET /api/regulations/sources` - List regulation sources
+- `POST /api/regulations/sources/:id/activate` - Activate a source
+- `POST /api/regulations/sync` - Sync regulations from a source
 
 ## Limitations (MVP)
 

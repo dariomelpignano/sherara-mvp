@@ -55,6 +55,10 @@
                     <span>Documents</span>
                     <span class="nav-badge" id="docs-badge">0</span>
                 </button>
+                <button class="nav-item" data-section="regulations">
+                    <i class="fas fa-book"></i>
+                    <span>Regulations</span>
+                </button>
                 <button class="nav-item" data-section="analysis">
                     <i class="fas fa-microscope"></i>
                     <span>Analysis</span>
@@ -78,10 +82,6 @@
             </div>
             <div class="nav-section">
                 <h3>Resources</h3>
-                <button class="nav-item" data-section="regulations">
-                    <i class="fas fa-gavel"></i>
-                    <span>Regulations</span>
-                </button>
                 <button class="nav-item" data-section="reports">
                     <i class="fas fa-file-alt"></i>
                     <span>Reports</span>
@@ -357,16 +357,173 @@
                 </div>
             </section>
 
-            <!-- New Regulations Section -->
+            <!-- Enhanced Regulations Section -->
             <section id="regulations" class="content-section">
                 <div class="section-header">
-                    <h2>Regulatory Library</h2>
+                    <h2>Regulations Management</h2>
                     <div class="header-actions">
-                        <input type="search" class="search-input" placeholder="Search regulations..." id="reg-search">
+                        <button class="btn btn-secondary" onclick="refreshRegulations()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="btn btn-primary" onclick="showAddSourceModal()">
+                            <i class="fas fa-plus"></i> Add Source
+                        </button>
                     </div>
                 </div>
-                <div class="regulations-grid" id="regulations-grid">
-                    <!-- Regulations will be loaded here -->
+
+                <!-- Regulations Tabs -->
+                <div class="regulations-tabs">
+                    <button class="tab-button active" onclick="switchRegulationTab('sources')">
+                        <i class="fas fa-database"></i> Data Sources
+                    </button>
+                    <button class="tab-button" onclick="switchRegulationTab('library')">
+                        <i class="fas fa-book"></i> Regulation Library
+                    </button>
+                    <button class="tab-button" onclick="switchRegulationTab('updates')">
+                        <i class="fas fa-download"></i> Updates
+                    </button>
+                </div>
+
+                <!-- Data Sources Tab -->
+                <div id="sources-tab" class="tab-content active">
+                    <div class="sources-grid" id="regulation-sources">
+                        <!-- Predefined sources -->
+                        <div class="source-card" data-source-id="eu-official">
+                            <div class="source-header">
+                                <div class="source-icon">
+                                    <i class="fas fa-european-sign"></i>
+                                </div>
+                                <div class="source-status active">
+                                    <i class="fas fa-check-circle"></i> Active
+                                </div>
+                            </div>
+                            <h3>EU Official Sources</h3>
+                            <p>Official EU regulations including GDPR, AI Act, and Digital Services Act</p>
+                            <div class="source-meta">
+                                <span><i class="fas fa-clock"></i> Updated daily</span>
+                                <span><i class="fas fa-file-alt"></i> 15 regulations</span>
+                            </div>
+                            <div class="source-actions">
+                                <button class="btn btn-small btn-secondary" onclick="configureSource('eu-official')">
+                                    <i class="fas fa-cog"></i> Configure
+                                </button>
+                                <button class="btn btn-small btn-primary" onclick="syncSource('eu-official')">
+                                    <i class="fas fa-sync"></i> Sync Now
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="source-card" data-source-id="us-federal">
+                            <div class="source-header">
+                                <div class="source-icon">
+                                    <i class="fas fa-flag-usa"></i>
+                                </div>
+                                <div class="source-status inactive">
+                                    <i class="fas fa-pause-circle"></i> Inactive
+                                </div>
+                            </div>
+                            <h3>US Federal Regulations</h3>
+                            <p>US federal compliance requirements including HIPAA, SOX, and CCPA</p>
+                            <div class="source-meta">
+                                <span><i class="fas fa-clock"></i> Weekly updates</span>
+                                <span><i class="fas fa-file-alt"></i> 12 regulations</span>
+                            </div>
+                            <div class="source-actions">
+                                <button class="btn btn-small btn-secondary" onclick="configureSource('us-federal')">
+                                    <i class="fas fa-cog"></i> Configure
+                                </button>
+                                <button class="btn btn-small btn-success" onclick="activateSource('us-federal')">
+                                    <i class="fas fa-play"></i> Activate
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="source-card" data-source-id="iso-standards">
+                            <div class="source-header">
+                                <div class="source-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="source-status active">
+                                    <i class="fas fa-check-circle"></i> Active
+                                </div>
+                            </div>
+                            <h3>ISO Standards</h3>
+                            <p>International standards including ISO 27001, ISO 27701, and ISO 9001</p>
+                            <div class="source-meta">
+                                <span><i class="fas fa-clock"></i> Monthly updates</span>
+                                <span><i class="fas fa-file-alt"></i> 8 standards</span>
+                            </div>
+                            <div class="source-actions">
+                                <button class="btn btn-small btn-secondary" onclick="configureSource('iso-standards')">
+                                    <i class="fas fa-cog"></i> Configure
+                                </button>
+                                <button class="btn btn-small btn-primary" onclick="syncSource('iso-standards')">
+                                    <i class="fas fa-sync"></i> Sync Now
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="source-card add-source">
+                            <button class="add-source-btn" onclick="showAddSourceModal()">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Add Custom Source</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Library Tab -->
+                <div id="library-tab" class="tab-content">
+                    <div class="library-controls">
+                        <input type="search" class="search-input" placeholder="Search regulations..." id="reg-search">
+                        <select class="filter-select" id="reg-filter">
+                            <option value="">All Sources</option>
+                            <option value="eu-official">EU Official</option>
+                            <option value="us-federal">US Federal</option>
+                            <option value="iso-standards">ISO Standards</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    <div class="regulations-grid" id="regulations-grid">
+                        <!-- Regulations will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Updates Tab -->
+                <div id="updates-tab" class="tab-content">
+                    <div class="updates-timeline">
+                        <div class="update-item">
+                            <div class="update-icon success">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="update-content">
+                                <h4>GDPR Updated</h4>
+                                <p>Successfully synchronized latest GDPR requirements from EU Official Sources</p>
+                                <span class="update-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="update-item">
+                            <div class="update-icon info">
+                                <i class="fas fa-info"></i>
+                            </div>
+                            <div class="update-content">
+                                <h4>New AI Act Guidelines</h4>
+                                <p>5 new requirements added to AI Act compliance framework</p>
+                                <span class="update-time">1 day ago</span>
+                            </div>
+                        </div>
+                        <div class="update-item">
+                            <div class="update-icon warning">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="update-content">
+                                <h4>ISO 27001 Update Available</h4>
+                                <p>New version available. Review changes before updating.</p>
+                                <span class="update-time">3 days ago</span>
+                                <button class="btn btn-small btn-primary">Review Update</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
