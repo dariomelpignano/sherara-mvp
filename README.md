@@ -1,7 +1,7 @@
 # Sherara MVP - Installation and Usage Guide
 
 ## Overview
-Sherara is an AI-powered regulatory compliance platform that helps organizations monitor, analyze, and ensure compliance with various regulations. The platform dynamically loads all regulations from the `/regulations` folder, allowing you to easily add custom compliance frameworks beyond the included GDPR, EU AI Act, AML, Data Security, and Financial Compliance requirements.
+Sherara is an AI-powered regulatory compliance platform designed for financial services organizations. It helps banks, investment firms, and financial institutions monitor, analyze, and ensure compliance with critical financial regulations. The platform dynamically loads all regulations from the `/regulations` folder and includes comprehensive coverage of financial services regulations including Basel III, MiFID II, PSD2, AMLD6, IFRS 9, Solvency II, EMIR, and CRD V, alongside general regulations like GDPR and EU AI Act.
 
 ## Prerequisites
 - Node.js (v14 or higher)
@@ -55,7 +55,10 @@ http://localhost:3000
 - Support for multiple document types (policies, procedures, etc.)
 
 ### 2. Regulations Management
-- Manage multiple regulation data sources (EU, US Federal, ISO Standards)
+- Manage multiple regulation data sources:
+  - **EU Official**: GDPR, AI Act, Digital Services Act
+  - **Financial Services**: Basel III, MiFID II, PSD2, AMLD6, IFRS 9, Solvency II, EMIR, CRD V
+  - **ISO Standards**: ISO 27001, ISO 27701, ISO 9001
 - Activate/deactivate sources as needed
 - Sync regulations from external sources
 - Add custom regulation sources
@@ -89,7 +92,8 @@ http://localhost:3000
 2. **Manage Regulations**
    - Navigate to the "Regulations" section
    - View available data sources
-   - Activate sources you need (EU, US, ISO)
+   - Activate Financial Services source for banking regulations
+   - Activate EU Official for GDPR and AI Act
    - Click "Sync Now" to download latest regulations
    - Check the Updates tab for sync history
 
