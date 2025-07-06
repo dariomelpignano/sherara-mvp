@@ -23,14 +23,16 @@ Document Type: ${documentType}
 Document Content (excerpt):
 ${documentContent.substring(0, 3000)}...
 
-Please analyze and respond with a JSON object containing:
+IMPORTANT: You must respond with ONLY a valid JSON object. Do not include any other text, explanations, or formatting. The JSON must have exactly this structure:
+
 {
-  "status": "compliant" | "partially-compliant" | "non-compliant",
-  "evidence": "specific text from document that addresses or fails to address the requirement",
-  "gaps": "what is missing or needs improvement",
+  "status": "compliant",
+  "evidence": "specific text from document that addresses the requirement",
+  "gaps": "what is missing or needs improvement (or 'None' if compliant)",
   "recommendation": "specific action to achieve compliance"
 }
 
+The status must be exactly one of: "compliant", "partially-compliant", or "non-compliant"
 Focus on being accurate and specific. If the document doesn't address the requirement at all, mark it as non-compliant.
 `;
 
@@ -39,7 +41,7 @@ Focus on being accurate and specific. If the document doesn't address the requir
         messages: [
           {
             role: 'system',
-            content: 'You are a regulatory compliance expert specializing in EU regulations including GDPR, AI Act, and financial compliance. Provide accurate, specific analysis.'
+            content: 'You are a regulatory compliance expert specializing in EU regulations including GDPR, AI Act, and financial compliance. You must ALWAYS respond with valid JSON only - no additional text, explanations, or formatting. Provide accurate, specific analysis in the requested JSON format.'
           },
           {
             role: 'user',
@@ -50,15 +52,15 @@ Focus on being accurate and specific. If the document doesn't address the requir
         max_tokens: 500
       });
 
-      const content = response.choices[0].message.content;
-      console.log('Raw AI response:', content);
+      const content = response.choices[0].message.content.trim();
       
       // Try to parse as JSON, fallback to structured response if needed
       try {
         // First try direct JSON parsing
         return JSON.parse(content);
       } catch (parseError) {
-        console.log('Direct JSON parsing failed, trying to extract JSON from text');
+        // Only log if we're having persistent issues
+        console.warn('AI response parsing issue - attempting recovery methods');
         
         // Try to extract JSON from markdown code blocks or other formatting
         const jsonMatch = content.match(/```(?:json)?\s*(\{[\s\S]*?\})\s*```/);
@@ -66,7 +68,7 @@ Focus on being accurate and specific. If the document doesn't address the requir
           try {
             return JSON.parse(jsonMatch[1]);
           } catch (innerParseError) {
-            console.log('JSON extraction from code block failed');
+            // Continue to next method
           }
         }
         
@@ -76,12 +78,12 @@ Focus on being accurate and specific. If the document doesn't address the requir
           try {
             return JSON.parse(jsonLikeMatch[0]);
           } catch (innerParseError) {
-            console.log('JSON-like structure parsing failed');
+            // Continue to next method
           }
         }
         
         // If all JSON parsing fails, use text parsing
-        console.log('All JSON parsing methods failed, using text parsing');
+        console.warn('JSON parsing failed, using text analysis fallback');
         return this.parseTextResponse(content);
       }
 
@@ -178,8 +180,6 @@ Provide a helpful, accurate, and actionable response. If the question relates to
   }
 
   parseTextResponse(text) {
-    console.log('Parsing AI text response:', text);
-    
     // Basic parsing of text response to create structured data
     const response = {
       status: 'non-compliant',
