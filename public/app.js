@@ -1971,9 +1971,34 @@ async function loadTaxonomyOverview() {
             const stats = result.data;
             updateTaxonomyStats(stats);
             updateTaxonomyCharts(stats);
+        } else {
+            // Use default stats if API fails
+            const defaultStats = {
+                totalDocuments: 0,
+                taggedDocuments: 0,
+                untaggedDocuments: 0,
+                taggedPercentage: 0,
+                topCategories: [],
+                riskDistribution: { critical: 0, high: 0, medium: 0, low: 0 },
+                regulatoryCoverage: []
+            };
+            updateTaxonomyStats(defaultStats);
+            updateTaxonomyCharts(defaultStats);
         }
     } catch (error) {
         console.error('Error loading taxonomy overview:', error);
+        // Use default stats on error
+        const defaultStats = {
+            totalDocuments: 0,
+            taggedDocuments: 0,
+            untaggedDocuments: 0,
+            taggedPercentage: 0,
+            topCategories: [],
+            riskDistribution: { critical: 0, high: 0, medium: 0, low: 0 },
+            regulatoryCoverage: []
+        };
+        updateTaxonomyStats(defaultStats);
+        updateTaxonomyCharts(defaultStats);
     }
 }
 
@@ -1987,15 +2012,23 @@ function updateTaxonomyStats(stats) {
 
 // Update taxonomy charts
 function updateTaxonomyCharts(stats) {
+    // Destroy existing charts first
+    if (window.taxonomyCharts) {
+        Object.values(window.taxonomyCharts).forEach(chart => {
+            if (chart) chart.destroy();
+        });
+    }
+    window.taxonomyCharts = {};
+    
     // Category Distribution Chart
     const categoryCtx = document.getElementById('categoryChart');
     if (categoryCtx) {
-        new Chart(categoryCtx, {
+        window.taxonomyCharts.category = new Chart(categoryCtx, {
             type: 'doughnut',
             data: {
-                labels: stats.topCategories.map(c => c.category),
+                labels: stats.topCategories ? stats.topCategories.map(c => c.category) : ['No Data'],
                 datasets: [{
-                    data: stats.topCategories.map(c => c.count),
+                    data: stats.topCategories ? stats.topCategories.map(c => c.count) : [1],
                     backgroundColor: [
                         '#dc2626', '#2563eb', '#059669', '#7c3aed', '#ea580c'
                     ]
@@ -2016,13 +2049,13 @@ function updateTaxonomyCharts(stats) {
     // Risk Level Distribution Chart
     const riskCtx = document.getElementById('riskLevelChart');
     if (riskCtx) {
-        new Chart(riskCtx, {
+        window.taxonomyCharts.risk = new Chart(riskCtx, {
             type: 'bar',
             data: {
-                labels: Object.keys(stats.riskDistribution),
+                labels: stats.riskDistribution ? Object.keys(stats.riskDistribution) : ['No Data'],
                 datasets: [{
                     label: 'Documents',
-                    data: Object.values(stats.riskDistribution),
+                    data: stats.riskDistribution ? Object.values(stats.riskDistribution) : [0],
                     backgroundColor: [
                         '#991b1b', '#dc2626', '#ea580c', '#059669'
                     ]
@@ -2040,20 +2073,21 @@ function updateTaxonomyCharts(stats) {
         });
     }
     
-    // Regulatory Coverage Chart
+    // Regulatory Coverage Chart (fix: use 'bar' with indexAxis: 'y' instead of 'horizontalBar')
     const regulatoryCtx = document.getElementById('regulatoryChart');
     if (regulatoryCtx) {
-        new Chart(regulatoryCtx, {
-            type: 'horizontalBar',
+        window.taxonomyCharts.regulatory = new Chart(regulatoryCtx, {
+            type: 'bar',
             data: {
-                labels: stats.regulatoryCoverage.map(r => r.regulation),
+                labels: stats.regulatoryCoverage ? stats.regulatoryCoverage.map(r => r.regulation) : ['No Data'],
                 datasets: [{
                     label: 'Documents',
-                    data: stats.regulatoryCoverage.map(r => r.count),
+                    data: stats.regulatoryCoverage ? stats.regulatoryCoverage.map(r => r.count) : [0],
                     backgroundColor: '#2563eb'
                 }]
             },
             options: {
+                indexAxis: 'y',
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
