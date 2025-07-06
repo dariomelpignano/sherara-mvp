@@ -116,6 +116,9 @@ async function loadSectionData(section) {
         case 'documents':
             loadDocuments();
             break;
+        case 'taxonomy':
+            await loadTaxonomySection();
+            break;
         case 'analysis':
             await initializeAnalysisWizard();
             break;
@@ -1838,3 +1841,742 @@ async function loadRegulationSources() {
         `;
     }
 }
+
+// Taxonomy Management System
+let taxonomyData = null;
+let currentTaxonomyTab = 'overview';
+
+// Initialize taxonomy functionality
+function setupTaxonomy() {
+    // Load taxonomy data
+    loadTaxonomyData();
+    
+    // Set up event listeners for taxonomy section
+    document.addEventListener('click', (e) => {
+        if (e.target.matches('[data-section="taxonomy"]')) {
+            loadTaxonomySection();
+        }
+    });
+}
+
+// Load taxonomy data from server
+async function loadTaxonomyData() {
+    try {
+        const response = await fetch('/api/taxonomy/tags');
+        const result = await response.json();
+        
+        if (result.success) {
+            taxonomyData = result.data;
+        } else {
+            console.error('Failed to load taxonomy data:', result.error);
+        }
+    } catch (error) {
+        console.error('Error loading taxonomy data:', error);
+    }
+}
+
+// Load taxonomy section
+async function loadTaxonomySection() {
+    await loadTaxonomyStats();
+    await loadTaxonomyOverview();
+}
+
+// Switch taxonomy tabs
+function switchTaxonomyTab(tabName) {
+    // Update tab buttons
+    document.querySelectorAll('.taxonomy-tabs .tab-button').forEach(btn => {
+        btn.classList.toggle('active', btn.onclick.toString().includes(tabName));
+    });
+    
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.toggle('active', content.id === `${tabName}-tab`);
+    });
+    
+    currentTaxonomyTab = tabName;
+    
+    // Load tab-specific content
+    switch (tabName) {
+        case 'overview':
+            loadTaxonomyOverview();
+            break;
+        case 'documents':
+            loadDocumentTagging();
+            break;
+        case 'search':
+            loadTaxonomySearch();
+            break;
+        case 'manage':
+            loadTagManagement();
+            break;
+    }
+}
+
+// Load taxonomy overview with statistics and charts
+async function loadTaxonomyOverview() {
+    try {
+        const response = await fetch('/api/taxonomy/stats');
+        const result = await response.json();
+        
+        if (result.success) {
+            const stats = result.data;
+            updateTaxonomyStats(stats);
+            updateTaxonomyCharts(stats);
+        }
+    } catch (error) {
+        console.error('Error loading taxonomy overview:', error);
+    }
+}
+
+// Update taxonomy statistics display
+function updateTaxonomyStats(stats) {
+    document.getElementById('total-docs').textContent = stats.totalDocuments;
+    document.getElementById('tagged-docs').textContent = stats.taggedDocuments;
+    document.getElementById('untagged-docs').textContent = stats.untaggedDocuments;
+    document.getElementById('tagged-percentage').textContent = `${stats.taggedPercentage}%`;
+}
+
+// Update taxonomy charts
+function updateTaxonomyCharts(stats) {
+    // Category Distribution Chart
+    const categoryCtx = document.getElementById('categoryChart');
+    if (categoryCtx) {
+        new Chart(categoryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: stats.topCategories.map(c => c.category),
+                datasets: [{
+                    data: stats.topCategories.map(c => c.count),
+                    backgroundColor: [
+                        '#dc2626', '#2563eb', '#059669', '#7c3aed', '#ea580c'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    }
+    
+    // Risk Level Distribution Chart
+    const riskCtx = document.getElementById('riskLevelChart');
+    if (riskCtx) {
+        new Chart(riskCtx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(stats.riskDistribution),
+                datasets: [{
+                    label: 'Documents',
+                    data: Object.values(stats.riskDistribution),
+                    backgroundColor: [
+                        '#991b1b', '#dc2626', '#ea580c', '#059669'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+    
+    // Regulatory Coverage Chart
+    const regulatoryCtx = document.getElementById('regulatoryChart');
+    if (regulatoryCtx) {
+        new Chart(regulatoryCtx, {
+            type: 'horizontalBar',
+            data: {
+                labels: stats.regulatoryCoverage.map(r => r.regulation),
+                datasets: [{
+                    label: 'Documents',
+                    data: stats.regulatoryCoverage.map(r => r.count),
+                    backgroundColor: '#2563eb'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+}
+
+// Load document tagging interface
+async function loadDocumentTagging() {
+    try {
+        const response = await fetch('/api/upload/list');
+        const result = await response.json();
+        
+        if (result.documents) {
+            renderDocumentTaggingGrid(result.documents);
+        }
+    } catch (error) {
+        console.error('Error loading documents for tagging:', error);
+    }
+}
+
+// Render document tagging grid
+function renderDocumentTaggingGrid(documents) {
+    const grid = document.getElementById('documents-tagging-grid');
+    
+    if (!documents || documents.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-tags"></i>
+                <h3>No documents to tag</h3>
+                <p>Upload documents to start tagging them</p>
+                <button class="btn btn-primary" onclick="showUploadModal()">
+                    <i class="fas fa-upload"></i> Upload Document
+                </button>
+            </div>
+        `;
+        return;
+    }
+    
+    grid.innerHTML = documents.map(doc => `
+        <div class="document-tagging-card" data-doc-id="${doc.id}">
+            <div class="document-tagging-header">
+                <div>
+                    <h4 class="document-tagging-title">${doc.name}</h4>
+                    <div class="document-tagging-meta">
+                        <span><i class="fas fa-calendar"></i> ${formatDate(doc.uploadedAt)}</span>
+                        <span><i class="fas fa-font"></i> ${doc.wordCount} words</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="auto-classification" id="auto-classification-${doc.id}">
+                <h5>Auto-Classification</h5>
+                <div class="loading-placeholder">Loading classification...</div>
+            </div>
+            
+            <div class="tag-editor" id="tag-editor-${doc.id}">
+                <div class="tag-section">
+                    <h6>Categories</h6>
+                    <div class="tag-checkboxes" id="categories-${doc.id}">
+                        <!-- Categories will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="tag-section">
+                    <h6>Regulatory Tags</h6>
+                    <div class="tag-checkboxes" id="regulatory-${doc.id}">
+                        <!-- Regulatory tags will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="tag-section">
+                    <h6>Risk Level</h6>
+                    <div class="tag-checkboxes" id="risk-${doc.id}">
+                        <!-- Risk levels will be loaded here -->
+                    </div>
+                </div>
+                
+                <button class="apply-tags-btn" onclick="applyDocumentTags('${doc.id}')">
+                    <i class="fas fa-save"></i> Apply Tags
+                </button>
+            </div>
+        </div>
+    `).join('');
+    
+    // Load auto-classification and tag options for each document
+    documents.forEach(doc => {
+        loadDocumentClassification(doc.id);
+        loadTagOptions(doc.id);
+    });
+}
+
+// Load auto-classification for a document
+async function loadDocumentClassification(documentId) {
+    try {
+        const response = await fetch(`/api/taxonomy/documents/${documentId}/tags`);
+        const result = await response.json();
+        
+        if (result.success) {
+            const { autoClassification } = result.data;
+            renderAutoClassification(documentId, autoClassification);
+        }
+    } catch (error) {
+        console.error('Error loading document classification:', error);
+    }
+}
+
+// Render auto-classification display
+function renderAutoClassification(documentId, classification) {
+    const container = document.getElementById(`auto-classification-${documentId}`);
+    
+    if (!classification || Object.keys(classification).length === 0) {
+        container.innerHTML = `
+            <h5>Auto-Classification</h5>
+            <p>No auto-classification available</p>
+            <button class="btn btn-small btn-primary" onclick="classifyDocument('${documentId}')">
+                <i class="fas fa-magic"></i> Classify Now
+            </button>
+        `;
+        return;
+    }
+    
+    container.innerHTML = `
+        <h5>Auto-Classification <span class="confidence-score">${Math.round(classification.confidence * 100)}% confidence</span></h5>
+        <div class="suggested-tags">
+            ${classification.categories ? classification.categories.map(cat => `<span class="tag-chip">${cat}</span>`).join('') : ''}
+            ${classification.regulatoryTags ? classification.regulatoryTags.map(reg => `<span class="tag-chip regulatory">${reg}</span>`).join('') : ''}
+            ${classification.functionalTags ? classification.functionalTags.map(func => `<span class="tag-chip functional">${func}</span>`).join('') : ''}
+            ${classification.riskLevel ? `<span class="tag-chip risk-${classification.riskLevel}">${classification.riskLevel}</span>` : ''}
+        </div>
+        <button class="btn btn-small btn-secondary" onclick="acceptAutoClassification('${documentId}')">
+            <i class="fas fa-check"></i> Accept All
+        </button>
+    `;
+}
+
+// Load tag options for document editor
+async function loadTagOptions(documentId) {
+    if (!taxonomyData) {
+        await loadTaxonomyData();
+    }
+    
+    // Load categories
+    const categoriesContainer = document.getElementById(`categories-${documentId}`);
+    if (categoriesContainer && taxonomyData.categories) {
+        categoriesContainer.innerHTML = Object.entries(taxonomyData.categories).map(([id, cat]) => `
+            <label class="tag-checkbox">
+                <input type="checkbox" name="categories" value="${id}">
+                <span>${cat.name}</span>
+            </label>
+        `).join('');
+    }
+    
+    // Load regulatory tags
+    const regulatoryContainer = document.getElementById(`regulatory-${documentId}`);
+    if (regulatoryContainer && taxonomyData.regulatoryTags) {
+        regulatoryContainer.innerHTML = Object.entries(taxonomyData.regulatoryTags).map(([id, reg]) => `
+            <label class="tag-checkbox">
+                <input type="checkbox" name="regulatory" value="${id}">
+                <span>${reg.name}</span>
+            </label>
+        `).join('');
+    }
+    
+    // Load risk levels
+    const riskContainer = document.getElementById(`risk-${documentId}`);
+    if (riskContainer && taxonomyData.riskLevels) {
+        riskContainer.innerHTML = Object.entries(taxonomyData.riskLevels).map(([id, risk]) => `
+            <label class="tag-checkbox">
+                <input type="radio" name="risk-${documentId}" value="${id}">
+                <span>${risk.name}</span>
+            </label>
+        `).join('');
+    }
+}
+
+// Classify document using AI
+async function classifyDocument(documentId) {
+    try {
+        showLoading('Classifying document...', 'AI is analyzing document content');
+        
+        const response = await fetch('/api/taxonomy/classify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ documentId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            renderAutoClassification(documentId, result.data);
+            showNotification('Success', 'Document classified successfully', 'success');
+        } else {
+            showNotification('Error', result.error || 'Classification failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error classifying document:', error);
+        showNotification('Error', 'Failed to classify document', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// Accept auto-classification
+async function acceptAutoClassification(documentId) {
+    try {
+        const response = await fetch(`/api/taxonomy/documents/${documentId}/tags`);
+        const result = await response.json();
+        
+        if (result.success && result.data.autoClassification) {
+            await applyTags(documentId, result.data.autoClassification);
+            showNotification('Success', 'Auto-classification applied successfully', 'success');
+        }
+    } catch (error) {
+        console.error('Error accepting auto-classification:', error);
+        showNotification('Error', 'Failed to apply auto-classification', 'error');
+    }
+}
+
+// Apply tags to document
+async function applyDocumentTags(documentId) {
+    const card = document.querySelector(`[data-doc-id="${documentId}"]`);
+    
+    // Collect selected tags
+    const tags = {
+        categories: Array.from(card.querySelectorAll('input[name="categories"]:checked')).map(cb => cb.value),
+        regulatoryTags: Array.from(card.querySelectorAll('input[name="regulatory"]:checked')).map(cb => cb.value),
+        riskLevel: card.querySelector(`input[name="risk-${documentId}"]:checked`)?.value
+    };
+    
+    await applyTags(documentId, tags);
+}
+
+// Apply tags via API
+async function applyTags(documentId, tags) {
+    try {
+        const response = await fetch(`/api/taxonomy/documents/${documentId}/tags`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tags })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Success', 'Tags applied successfully', 'success');
+            // Refresh the document display
+            loadDocumentTagging();
+        } else {
+            showNotification('Error', result.error || 'Failed to apply tags', 'error');
+        }
+    } catch (error) {
+        console.error('Error applying tags:', error);
+        showNotification('Error', 'Failed to apply tags', 'error');
+    }
+}
+
+// Load taxonomy search interface
+async function loadTaxonomySearch() {
+    if (!taxonomyData) {
+        await loadTaxonomyData();
+    }
+    
+    // Render filter options
+    renderSearchFilters();
+    
+    // Set up search event listeners
+    setupSearchEventListeners();
+}
+
+// Render search filters
+function renderSearchFilters() {
+    if (!taxonomyData) return;
+    
+    // Categories filter
+    const categoryFilters = document.getElementById('category-filters');
+    if (categoryFilters) {
+        categoryFilters.innerHTML = Object.entries(taxonomyData.categories).map(([id, cat]) => `
+            <div class="filter-option">
+                <input type="checkbox" id="cat-${id}" value="${id}">
+                <label for="cat-${id}">${cat.name}</label>
+                <span class="filter-count">0</span>
+            </div>
+        `).join('');
+    }
+    
+    // Regulatory filters
+    const regulatoryFilters = document.getElementById('regulatory-filters');
+    if (regulatoryFilters) {
+        regulatoryFilters.innerHTML = Object.entries(taxonomyData.regulatoryTags).map(([id, reg]) => `
+            <div class="filter-option">
+                <input type="checkbox" id="reg-${id}" value="${id}">
+                <label for="reg-${id}">${reg.name}</label>
+                <span class="filter-count">0</span>
+            </div>
+        `).join('');
+    }
+    
+    // Risk level filters
+    const riskFilters = document.getElementById('risk-filters');
+    if (riskFilters) {
+        riskFilters.innerHTML = Object.entries(taxonomyData.riskLevels).map(([id, risk]) => `
+            <div class="filter-option">
+                <input type="checkbox" id="risk-${id}" value="${id}">
+                <label for="risk-${id}">${risk.name}</label>
+                <span class="filter-count">0</span>
+            </div>
+        `).join('');
+    }
+}
+
+// Set up search event listeners
+function setupSearchEventListeners() {
+    const searchFilters = document.querySelectorAll('.search-filters input[type="checkbox"]');
+    searchFilters.forEach(filter => {
+        filter.addEventListener('change', performTaxonomySearch);
+    });
+}
+
+// Perform taxonomy search
+async function performTaxonomySearch() {
+    const searchCriteria = {
+        categories: Array.from(document.querySelectorAll('#category-filters input:checked')).map(cb => cb.value),
+        regulatoryTags: Array.from(document.querySelectorAll('#regulatory-filters input:checked')).map(cb => cb.value),
+        riskLevel: document.querySelector('#risk-filters input:checked')?.value
+    };
+    
+    try {
+        const response = await fetch('/api/taxonomy/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ searchCriteria })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            renderSearchResults(result.data);
+        }
+    } catch (error) {
+        console.error('Error performing taxonomy search:', error);
+    }
+}
+
+// Render search results
+function renderSearchResults(documents) {
+    const resultsContainer = document.getElementById('search-results');
+    
+    resultsContainer.innerHTML = `
+        <div class="search-results-header">
+            <h4>Search Results</h4>
+            <span class="search-results-count">${documents.length} documents found</span>
+        </div>
+        <div class="search-results-list">
+            ${documents.map(doc => `
+                <div class="search-result-item">
+                    <div class="search-result-icon">
+                        <i class="fas ${getDocumentIcon(doc.type)}"></i>
+                    </div>
+                    <div class="search-result-content">
+                        <h5 class="search-result-title">${doc.name}</h5>
+                        <div class="search-result-meta">
+                            ${formatDate(doc.uploadedAt)} • ${doc.wordCount} words
+                        </div>
+                        <div class="search-result-tags">
+                            ${doc.tags ? renderDocumentTags(doc.tags) : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+// Render document tags
+function renderDocumentTags(tags) {
+    let tagHtml = '';
+    
+    if (tags.categories) {
+        tagHtml += tags.categories.map(cat => `<span class="tag-chip">${cat}</span>`).join('');
+    }
+    if (tags.regulatoryTags) {
+        tagHtml += tags.regulatoryTags.map(reg => `<span class="tag-chip regulatory">${reg}</span>`).join('');
+    }
+    if (tags.riskLevel) {
+        tagHtml += `<span class="tag-chip risk-${tags.riskLevel}">${tags.riskLevel}</span>`;
+    }
+    
+    return tagHtml;
+}
+
+// Load tag management interface
+async function loadTagManagement() {
+    if (!taxonomyData) {
+        await loadTaxonomyData();
+    }
+    
+    renderTagManagement();
+}
+
+// Render tag management interface
+function renderTagManagement() {
+    // Primary Categories
+    const primaryCategories = document.getElementById('primary-categories');
+    if (primaryCategories && taxonomyData.categories) {
+        primaryCategories.innerHTML = Object.entries(taxonomyData.categories).map(([id, cat]) => `
+            <div class="tag-item">
+                <div class="tag-item-info">
+                    <h5 class="tag-item-name">${cat.name}</h5>
+                    <p class="tag-item-description">${cat.description}</p>
+                </div>
+                <div class="tag-item-actions">
+                    <span class="tag-item-count">0</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Regulatory Tags
+    const regulatoryTags = document.getElementById('regulatory-tags');
+    if (regulatoryTags && taxonomyData.regulatoryTags) {
+        regulatoryTags.innerHTML = Object.entries(taxonomyData.regulatoryTags).map(([id, reg]) => `
+            <div class="tag-item">
+                <div class="tag-item-info">
+                    <h5 class="tag-item-name">${reg.name}</h5>
+                    <p class="tag-item-description">${reg.fullName}</p>
+                </div>
+                <div class="tag-item-actions">
+                    <span class="tag-item-count">0</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Functional Tags
+    const functionalTags = document.getElementById('functional-tags');
+    if (functionalTags && taxonomyData.functionalTags) {
+        functionalTags.innerHTML = Object.entries(taxonomyData.functionalTags).map(([id, func]) => `
+            <div class="tag-item">
+                <div class="tag-item-info">
+                    <h5 class="tag-item-name">${func.name}</h5>
+                    <p class="tag-item-description">${func.description}</p>
+                </div>
+                <div class="tag-item-actions">
+                    <span class="tag-item-count">0</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Risk Levels
+    const riskLevels = document.getElementById('risk-levels');
+    if (riskLevels && taxonomyData.riskLevels) {
+        riskLevels.innerHTML = Object.entries(taxonomyData.riskLevels).map(([id, risk]) => `
+            <div class="tag-item">
+                <div class="tag-item-info">
+                    <h5 class="tag-item-name">${risk.name}</h5>
+                    <p class="tag-item-description">${risk.description}</p>
+                </div>
+                <div class="tag-item-actions">
+                    <span class="tag-item-count">0</span>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Auto-tag all documents
+async function autoTagAllDocuments() {
+    const confirmed = await showConfirmDialog(
+        'Auto-Tag All Documents',
+        'This will automatically classify and tag all documents. Existing tags will be preserved. Continue?'
+    );
+    
+    if (!confirmed) return;
+    
+    showLoading('Auto-tagging documents...', 'AI is analyzing all documents');
+    
+    try {
+        const response = await fetch('/api/taxonomy/auto-tag-all', {
+            method: 'POST'
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            showNotification('Success', result.data.message, 'success');
+            // Refresh current view
+            if (currentTaxonomyTab === 'overview') {
+                loadTaxonomyOverview();
+            } else if (currentTaxonomyTab === 'documents') {
+                loadDocumentTagging();
+            }
+        } else {
+            showNotification('Error', result.error || 'Auto-tagging failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error auto-tagging documents:', error);
+        showNotification('Error', 'Failed to auto-tag documents', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// Generate taxonomy report
+async function generateTaxonomyReport() {
+    showLoading('Generating taxonomy report...', 'Analyzing document classification data');
+    
+    try {
+        const response = await fetch('/api/taxonomy/report');
+        const result = await response.json();
+        
+        if (result.success) {
+            downloadTaxonomyReport(result.data);
+            showNotification('Success', 'Taxonomy report generated successfully', 'success');
+        } else {
+            showNotification('Error', result.error || 'Report generation failed', 'error');
+        }
+    } catch (error) {
+        console.error('Error generating taxonomy report:', error);
+        showNotification('Error', 'Failed to generate taxonomy report', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+// Download taxonomy report
+function downloadTaxonomyReport(reportData) {
+    const report = {
+        generatedAt: new Date().toISOString(),
+        summary: reportData,
+        details: {
+            totalDocuments: reportData.totalDocuments,
+            taggedDocuments: reportData.taggedDocuments,
+            untaggedDocuments: reportData.untaggedDocuments,
+            categoryDistribution: reportData.categoryDistribution,
+            riskDistribution: reportData.riskDistribution,
+            regulatoryCoverage: reportData.regulatoryCoverage
+        }
+    };
+    
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `taxonomy-report-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Load taxonomy statistics
+async function loadTaxonomyStats() {
+    try {
+        const response = await fetch('/api/taxonomy/stats');
+        const result = await response.json();
+        
+        if (result.success) {
+            updateTaxonomyStats(result.data);
+        }
+    } catch (error) {
+        console.error('Error loading taxonomy stats:', error);
+    }
+}
+
+// Initialize taxonomy system when app loads
+document.addEventListener('DOMContentLoaded', function() {
+    setupTaxonomy();
+});

@@ -55,6 +55,10 @@
                     <span>Documents</span>
                     <span class="nav-badge" id="docs-badge">0</span>
                 </button>
+                <button class="nav-item" data-section="taxonomy">
+                    <i class="fas fa-tags"></i>
+                    <span>Taxonomy</span>
+                </button>
                 <button class="nav-item" data-section="regulations">
                     <i class="fas fa-book"></i>
                     <span>Regulations</span>
@@ -221,6 +225,175 @@
                         <button class="btn btn-primary" onclick="showUploadModal()">
                             <i class="fas fa-upload"></i> Upload First Document
                         </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Taxonomy Management Section -->
+            <section id="taxonomy" class="content-section">
+                <div class="section-header">
+                    <h2>Document Taxonomy</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-secondary" onclick="autoTagAllDocuments()">
+                            <i class="fas fa-magic"></i> Auto-Tag All
+                        </button>
+                        <button class="btn btn-primary" onclick="generateTaxonomyReport()">
+                            <i class="fas fa-chart-bar"></i> Generate Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Taxonomy Tabs -->
+                <div class="taxonomy-tabs">
+                    <button class="tab-button active" onclick="switchTaxonomyTab('overview')">
+                        <i class="fas fa-tachometer-alt"></i> Overview
+                    </button>
+                    <button class="tab-button" onclick="switchTaxonomyTab('documents')">
+                        <i class="fas fa-file-alt"></i> Document Tags
+                    </button>
+                    <button class="tab-button" onclick="switchTaxonomyTab('search')">
+                        <i class="fas fa-search"></i> Search & Filter
+                    </button>
+                    <button class="tab-button" onclick="switchTaxonomyTab('manage')">
+                        <i class="fas fa-cog"></i> Manage Tags
+                    </button>
+                </div>
+
+                <!-- Overview Tab -->
+                <div id="overview-tab" class="tab-content active">
+                    <div class="taxonomy-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Documents</h3>
+                                <div class="stat-value" id="total-docs">0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Tagged Documents</h3>
+                                <div class="stat-value" id="tagged-docs">0</div>
+                                <div class="stat-percentage" id="tagged-percentage">0%</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Untagged Documents</h3>
+                                <div class="stat-value" id="untagged-docs">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="taxonomy-charts">
+                        <div class="chart-card">
+                            <h3>Category Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Risk Level Distribution</h3>
+                            <div class="chart-container">
+                                <canvas id="riskLevelChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-card">
+                            <h3>Regulatory Coverage</h3>
+                            <div class="chart-container">
+                                <canvas id="regulatoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Document Tags Tab -->
+                <div id="documents-tab" class="tab-content">
+                    <div class="documents-tagging">
+                        <div class="tagging-controls">
+                            <input type="search" class="search-input" placeholder="Search documents..." id="doc-tag-search">
+                            <select class="filter-select" id="doc-tag-filter">
+                                <option value="">All Documents</option>
+                                <option value="tagged">Tagged</option>
+                                <option value="untagged">Untagged</option>
+                                <option value="auto-tagged">Auto-Tagged</option>
+                            </select>
+                        </div>
+                        <div class="documents-tagging-grid" id="documents-tagging-grid">
+                            <!-- Documents with tagging interface will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search & Filter Tab -->
+                <div id="search-tab" class="tab-content">
+                    <div class="search-filters">
+                        <div class="filter-section">
+                            <h4>Categories</h4>
+                            <div class="filter-group" id="category-filters">
+                                <!-- Category filters will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <h4>Regulatory Tags</h4>
+                            <div class="filter-group" id="regulatory-filters">
+                                <!-- Regulatory filters will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <h4>Risk Level</h4>
+                            <div class="filter-group" id="risk-filters">
+                                <!-- Risk level filters will be loaded here -->
+                            </div>
+                        </div>
+                        <div class="filter-section">
+                            <h4>Content Type</h4>
+                            <div class="filter-group" id="content-filters">
+                                <!-- Content type filters will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-results" id="search-results">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Manage Tags Tab -->
+                <div id="manage-tab" class="tab-content">
+                    <div class="tag-management">
+                        <div class="tag-categories">
+                            <div class="tag-category">
+                                <h4>Primary Categories</h4>
+                                <div class="tag-list" id="primary-categories">
+                                    <!-- Primary categories will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="tag-category">
+                                <h4>Regulatory Tags</h4>
+                                <div class="tag-list" id="regulatory-tags">
+                                    <!-- Regulatory tags will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="tag-category">
+                                <h4>Functional Tags</h4>
+                                <div class="tag-list" id="functional-tags">
+                                    <!-- Functional tags will be loaded here -->
+                                </div>
+                            </div>
+                            <div class="tag-category">
+                                <h4>Risk Levels</h4>
+                                <div class="tag-list" id="risk-levels">
+                                    <!-- Risk levels will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

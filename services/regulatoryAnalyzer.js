@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const taxonomyService = require('./taxonomyService');
 
 class RegulatoryAnalyzer {
   constructor() {
@@ -126,7 +127,24 @@ class RegulatoryAnalyzer {
       const filePath = path.join(this.regulationPath, filename);
       const content = await fs.readFile(filePath, 'utf-8');
       
-      return this.parseRegulationContent(content, regulationType);
+      // Auto-classify the regulation using taxonomy service
+      let classification = {};
+      try {
+        classification = await taxonomyService.classifyDocument(content, filename, 'regulatory');
+        console.log(`Classified regulation ${regulationType} with ${Math.round(classification.confidence * 100)}% confidence`);
+      } catch (error) {
+        console.error(`Error classifying regulation ${regulationType}:`, error);
+      }
+      
+      const requirements = this.parseRegulationContent(content, regulationType);
+      
+      // Add classification metadata to each requirement
+      requirements.forEach(req => {
+        req.classification = classification;
+        req.autoTags = classification.confidence > 0.3 ? classification : {};
+      });
+      
+      return requirements;
     } catch (error) {
       console.error(`Failed to load regulation ${regulationType}:`, error);
       return [];

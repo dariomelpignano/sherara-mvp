@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
 const documentParser = require('../services/documentParser');
+const taxonomyService = require('../services/taxonomyService');
 
 const router = express.Router();
 
@@ -37,17 +38,27 @@ router.post('/', upload.single('document'), async (req, res) => {
     // Parse the document content
     const parsedContent = await documentParser.parseDocument(buffer, mimetype);
 
+    // Auto-classify the document
+    const classification = await taxonomyService.classifyDocument(
+      parsedContent,
+      originalname,
+      req.body.documentType || 'internal_policy'
+    );
+
     // Store in session
     req.session.documents[documentId] = {
       id: documentId,
       name: originalname,
+      filename: originalname,
       type: mimetype,
       content: parsedContent,
       uploadedAt: new Date(),
       metadata: {
         wordCount: parsedContent.split(/\s+/).length,
         documentType: req.body.documentType || 'internal_policy'
-      }
+      },
+      autoClassification: classification,
+      tags: classification.confidence > 0.3 ? classification : {} // Auto-apply tags if confidence is high
     };
 
     res.json({
@@ -55,7 +66,8 @@ router.post('/', upload.single('document'), async (req, res) => {
       documentId: documentId,
       filename: originalname,
       wordCount: req.session.documents[documentId].metadata.wordCount,
-      message: 'Document uploaded and parsed successfully'
+      classification: classification,
+      message: 'Document uploaded, parsed, and classified successfully'
     });
 
   } catch (error) {
