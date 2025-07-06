@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Test</title>
+    <style>
+        .nav-item { padding: 10px; margin: 5px; background: #f0f0f0; cursor: pointer; }
+        .nav-item.active { background: #007bff; color: white; }
+        .content-section { display: none; padding: 20px; }
+        .content-section.active { display: block; }
+    </style>
+</head>
+<body>
+    <h1>Navigation Test</h1>
+    
+    <div class="nav">
+        <div class="nav-item active" data-section="dashboard">Dashboard</div>
+        <div class="nav-item" data-section="documents">Documents</div>
+        <div class="nav-item" data-section="taxonomy">Taxonomy</div>
+        <div class="nav-item" data-section="analysis">Analysis</div>
+    </div>
+    
+    <div class="content">
+        <div id="dashboard" class="content-section active">
+            <h2>Dashboard Section</h2>
+            <p>This is the dashboard content.</p>
+        </div>
+        <div id="documents" class="content-section">
+            <h2>Documents Section</h2>
+            <p>This is the documents content.</p>
+        </div>
+        <div id="taxonomy" class="content-section">
+            <h2>Taxonomy Section</h2>
+            <p>This is the taxonomy content.</p>
+        </div>
+        <div id="analysis" class="content-section">
+            <h2>Analysis Section</h2>
+            <p>This is the analysis content.</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('Navigation test script loaded');
+        
+        // Simple navigation test
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded');
+            
+            const navItems = document.querySelectorAll('.nav-item');
+            console.log('Found nav items:', navItems.length);
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const section = item.getAttribute('data-section');
+                    console.log('Clicked section:', section);
+                    
+                    // Update navigation
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.toggle('active', nav.getAttribute('data-section') === section);
+                    });
+                    
+                    // Update content sections
+                    document.querySelectorAll('.content-section').forEach(sec => {
+                        sec.classList.toggle('active', sec.id === section);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
