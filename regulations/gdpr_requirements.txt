@@ -1,4 +1,9 @@
 GDPR - Key Requirements for Compliance
+[LAST UPDATED: 2025-07-06]
+[VERSION: 2016/679]
+[STATUS: in-force]
+[OFFICIAL SOURCE: https://eur-lex.europa.eu/eli/reg/2016/679/oj]
+
 
 Article 5 - Principles relating to processing of personal data
 Personal data shall be processed lawfully, fairly and in a transparent manner. Organizations must ensure data is collected for specified, explicit and legitimate purposes and not further processed in a manner incompatible with those purposes. Data minimization is mandatory - only data that is adequate, relevant and limited to what is necessary should be processed.

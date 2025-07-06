@@ -1,4 +1,9 @@
 Financial Services Compliance Requirements
+[LAST UPDATED: 2025-07-06]
+[VERSION: Multiple Standards]
+[STATUS: active]
+[OFFICIAL SOURCE: Various regulatory bodies]
+
 
 Know Your Customer (KYC) Requirements
 Financial institutions must implement robust customer identification procedures including: verification of customer identity using reliable documents, understanding the nature of customer's business, assessing money laundering risks, and ongoing monitoring of business relationships. Enhanced due diligence required for high-risk customers.

@@ -1,4 +1,9 @@
 AML - Anti-Money Laundering Requirements
+[LAST UPDATED: 2025-07-06]
+[VERSION: 2018/1673]
+[STATUS: in-force]
+[OFFICIAL SOURCE: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32018L1673]
+
 
 Customer Due Diligence (CDD) Obligations
 Financial institutions must conduct thorough customer due diligence when establishing business relationships. This includes identifying and verifying customer identity using reliable, independent source documents. The institution must understand the ownership and control structure of the customer, particularly for corporate entities. Ongoing monitoring of transactions and periodic reviews of customer information are mandatory.

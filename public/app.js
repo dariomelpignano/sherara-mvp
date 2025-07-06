@@ -1494,6 +1494,252 @@ function addRegulationUpdate(type, title, description) {
     timeline.insertBefore(updateItem, timeline.firstChild);
 }
 
+// Regulations Sources Management
+async function initRegulationsSources() {
+    const sourcesContainer = document.getElementById('regulation-sources');
+    if (!sourcesContainer) return;
+
+    sourcesContainer.innerHTML = `
+        <div class="sources-header">
+            <h2>Regulation Sources Management</h2>
+            <div class="sources-actions">
+                <button class="btn btn-secondary" onclick="runSanityCheck()">
+                    <i class="fas fa-check-circle"></i> Run Sanity Check
+                </button>
+                <button class="btn btn-primary" onclick="addCustomSource()">
+                    <i class="fas fa-plus"></i> Add Custom Source
+                </button>
+            </div>
+        </div>
+        
+        <div id="sanity-check-results" style="display: none;" class="sanity-check-results">
+            <div class="sanity-header">
+                <h3><i class="fas fa-clipboard-check"></i> Sanity Check Results</h3>
+                <button class="btn btn-sm" onclick="closeSanityCheck()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="sanity-content"></div>
+        </div>
+        
+        <div class="sources-tabs">
+            <button class="tab-btn active" onclick="switchSourceTab('data-sources')">
+                <i class="fas fa-database"></i> Data Sources
+            </button>
+            <button class="tab-btn" onclick="switchSourceTab('library')">
+                <i class="fas fa-book"></i> Library
+            </button>
+            <button class="tab-btn" onclick="switchSourceTab('updates')">
+                <i class="fas fa-sync"></i> Updates
+            </button>
+        </div>
+        
+        <div id="sources-content">
+            <div id="data-sources" class="tab-content active">
+                <div class="sources-grid" id="sources-list">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading sources...
+                    </div>
+                </div>
+            </div>
+            
+            <div id="library" class="tab-content">
+                <div class="library-grid" id="library-content">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading library...
+                    </div>
+                </div>
+            </div>
+            
+            <div id="updates" class="tab-content">
+                <div class="updates-list" id="updates-content">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading updates...
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    await loadRegulationSources();
+}
+
+// Run sanity check
+window.runSanityCheck = async function() {
+    const resultsDiv = document.getElementById('sanity-check-results');
+    const contentDiv = document.getElementById('sanity-content');
+    
+    resultsDiv.style.display = 'block';
+    contentDiv.innerHTML = `
+        <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Running comprehensive sanity check...
+        </div>
+    `;
+    
+    try {
+        const response = await fetch('/api/sanity-check/run');
+        const data = await response.json();
+        
+        if (data.success) {
+            displaySanityCheckResults(data.report);
+        } else {
+            contentDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i> Error: ${data.message}
+                </div>
+            `;
+        }
+    } catch (error) {
+        contentDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> Failed to run sanity check: ${error.message}
+            </div>
+        `;
+    }
+};
+
+// Display sanity check results
+function displaySanityCheckResults(report) {
+    const contentDiv = document.getElementById('sanity-content');
+    
+    const summary = report.officialSources.summary;
+    const recommendations = report.recommendations || [];
+    
+    let html = `
+        <div class="sanity-summary">
+            <h4>Summary</h4>
+            <div class="summary-stats">
+                <div class="stat">
+                    <span class="stat-value">${summary.total}</span>
+                    <span class="stat-label">Total Sources</span>
+                </div>
+                <div class="stat success">
+                    <span class="stat-value">${summary.accessible}</span>
+                    <span class="stat-label">Accessible</span>
+                </div>
+                <div class="stat warning">
+                    <span class="stat-value">${summary.warnings}</span>
+                    <span class="stat-label">Warnings</span>
+                </div>
+                <div class="stat danger">
+                    <span class="stat-value">${summary.errors}</span>
+                    <span class="stat-label">Errors</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sanity-details">
+            <h4>Official Sources Check</h4>
+            <div class="sources-check">
+    `;
+    
+    // Display source check results
+    for (const [sourceId, sourceData] of Object.entries(report.officialSources.sources)) {
+        html += `
+            <div class="source-check-group">
+                <h5>${sourceData.name}</h5>
+                <div class="regulations-check">
+        `;
+        
+        for (const [regId, regCheck] of Object.entries(sourceData.regulations)) {
+            const statusClass = regCheck.status === 'accessible' ? 'success' : 
+                              regCheck.status === 'warning' ? 'warning' : 'danger';
+            const icon = regCheck.status === 'accessible' ? 'check-circle' : 
+                       regCheck.status === 'warning' ? 'exclamation-triangle' : 'times-circle';
+            
+            html += `
+                <div class="regulation-check ${statusClass}">
+                    <i class="fas fa-${icon}"></i>
+                    <span class="reg-name">${regCheck.name}</span>
+                    <span class="reg-status">${regCheck.message}</span>
+                    <a href="${regCheck.url}" target="_blank" class="reg-link">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            `;
+        }
+        
+        html += `
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+            </div>
+        </div>
+        
+        <div class="sanity-local">
+            <h4>Local Regulations Check</h4>
+            <p>Found ${report.localRegulations.totalFiles} regulation files</p>
+            ${report.localRegulations.issues.length > 0 ? `
+                <div class="issues-list">
+                    <h5>Issues Found:</h5>
+                    <ul>
+                        ${report.localRegulations.issues.map(issue => 
+                            `<li><i class="fas fa-exclamation-triangle"></i> ${issue}</li>`
+                        ).join('')}
+                    </ul>
+                </div>
+            ` : '<p class="success"><i class="fas fa-check-circle"></i> No issues found</p>'}
+        </div>
+    `;
+    
+    // Display recommendations
+    if (recommendations.length > 0) {
+        html += `
+            <div class="sanity-recommendations">
+                <h4>Recommendations</h4>
+                <div class="recommendations-list">
+        `;
+        
+        for (const rec of recommendations) {
+            const priorityClass = rec.priority === 'high' ? 'danger' : 
+                                rec.priority === 'medium' ? 'warning' : 'info';
+            
+            html += `
+                <div class="recommendation ${priorityClass}">
+                    <div class="rec-header">
+                        <span class="rec-priority">${rec.priority.toUpperCase()}</span>
+                        <span class="rec-issue">${rec.issue}</span>
+                    </div>
+                    <div class="rec-action">${rec.action}</div>
+                    ${rec.details ? `
+                        <div class="rec-details">
+                            <ul>
+                                ${rec.details.map(detail => `<li>${detail}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    ${rec.files ? `
+                        <div class="rec-files">
+                            Files: ${rec.files.join(', ')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+        
+        html += `
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="sanity-timestamp">
+            <i class="fas fa-clock"></i> Check performed at: ${new Date(report.timestamp).toLocaleString()}
+        </div>
+    `;
+    
+    contentDiv.innerHTML = html;
+}
+
+// Close sanity check results
+window.closeSanityCheck = function() {
+    document.getElementById('sanity-check-results').style.display = 'none';
+};
+
 // Export functions for external use
 window.sherara = {
     showUploadModal,
@@ -1521,3 +1767,22 @@ window.sherara = {
     showAddSourceModal,
     refreshRegulations
 };
+
+// Load regulation sources
+async function loadRegulationSources() {
+    try {
+        const response = await fetch('/api/regulations/sources');
+        const data = await response.json();
+        
+        if (data.success) {
+            displayRegulationSources(data.sources);
+        }
+    } catch (error) {
+        console.error('Error loading regulation sources:', error);
+        document.getElementById('sources-list').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i> Failed to load regulation sources
+            </div>
+        `;
+    }
+}

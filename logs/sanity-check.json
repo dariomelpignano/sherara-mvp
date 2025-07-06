@@ -1,0 +1,134 @@
+{
+  "timestamp": "2025-07-06T17:59:41.765Z",
+  "sources": {
+    "eu-official": {
+      "name": "European Union Official Sources",
+      "regulations": {
+        "gdpr": {
+          "name": "General Data Protection Regulation (GDPR)",
+          "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:41.765Z",
+          "metadata": {
+            "adoptedDate": "2016-04-27",
+            "effectiveDate": "2018-05-25",
+            "lastAmended": "2016-05-04"
+          }
+        },
+        "ai_act": {
+          "name": "Artificial Intelligence Act",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:43.254Z",
+          "metadata": {
+            "proposedDate": "2021-04-21",
+            "expectedAdoption": "2024",
+            "lastAmended": "2023-06-14"
+          }
+        },
+        "dsa": {
+          "name": "Digital Services Act",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022R2065",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:43.937Z",
+          "metadata": {
+            "adoptedDate": "2022-10-19",
+            "effectiveDate": "2022-11-16",
+            "fullApplicationDate": "2024-02-17"
+          }
+        }
+      }
+    },
+    "financial-services": {
+      "name": "Financial Services Regulatory Sources",
+      "regulations": {
+        "basel3": {
+          "name": "Basel III Framework",
+          "url": "https://www.bis.org/basel_framework/",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:45.217Z",
+          "metadata": {
+            "issuingBody": "Basel Committee on Banking Supervision",
+            "lastRevised": "2023-01",
+            "implementationDeadline": "2023-01-01"
+          }
+        },
+        "mifid2": {
+          "name": "Markets in Financial Instruments Directive II",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014L0065",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:45.907Z",
+          "metadata": {
+            "adoptedDate": "2014-05-15",
+            "effectiveDate": "2018-01-03",
+            "lastAmended": "2023-03-10"
+          }
+        },
+        "psd2": {
+          "name": "Payment Services Directive 2",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32015L2366",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:47.263Z",
+          "metadata": {
+            "adoptedDate": "2015-11-25",
+            "effectiveDate": "2018-01-13",
+            "scaDeadline": "2021-12-31"
+          }
+        },
+        "amld6": {
+          "name": "6th Anti-Money Laundering Directive",
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32018L1673",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:48.527Z",
+          "metadata": {
+            "adoptedDate": "2018-10-23",
+            "transpositionDeadline": "2020-12-03",
+            "effectiveDate": "2020-12-03"
+          }
+        }
+      }
+    },
+    "iso-standards": {
+      "name": "ISO International Standards",
+      "regulations": {
+        "iso27001": {
+          "name": "ISO/IEC 27001:2022",
+          "url": "https://www.iso.org/standard/82875.html",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:49.673Z",
+          "metadata": {
+            "publishedDate": "2022-10",
+            "replaces": "ISO/IEC 27001:2013",
+            "scope": "Information security management systems"
+          }
+        },
+        "iso27701": {
+          "name": "ISO/IEC 27701:2019",
+          "url": "https://www.iso.org/standard/71670.html",
+          "status": "accessible",
+          "message": "Source is accessible",
+          "lastChecked": "2025-07-06T17:59:49.774Z",
+          "metadata": {
+            "publishedDate": "2019-08",
+            "scope": "Privacy information management",
+            "extendsStandard": "ISO/IEC 27001 and ISO/IEC 27002"
+          }
+        }
+      }
+    }
+  },
+  "summary": {
+    "total": 9,
+    "accessible": 9,
+    "errors": 0,
+    "warnings": 0
+  }
+}

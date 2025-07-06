@@ -2172,3 +2172,261 @@ a:hover {
 .update-content .btn {
     margin-top: 0.5rem;
 }
+
+/* Sanity Check Styles */
+.sanity-check-results {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.sanity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sanity-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.sanity-summary {
+    margin-bottom: 30px;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.summary-stats .stat {
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.stat.success .stat-value {
+    color: var(--success-color);
+}
+
+.stat.warning .stat-value {
+    color: var(--warning-color);
+}
+
+.stat.danger .stat-value {
+    color: var(--danger-color);
+}
+
+.source-check-group {
+    margin-bottom: 25px;
+    background: var(--bg-color);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.source-check-group h5 {
+    margin: 0 0 15px 0;
+    color: var(--secondary-color);
+}
+
+.regulations-check {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.regulation-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    background: var(--card-bg);
+}
+
+.regulation-check.success {
+    border-left: 3px solid var(--success-color);
+}
+
+.regulation-check.warning {
+    border-left: 3px solid var(--warning-color);
+}
+
+.regulation-check.danger {
+    border-left: 3px solid var(--danger-color);
+}
+
+.regulation-check i {
+    font-size: 16px;
+}
+
+.regulation-check.success i {
+    color: var(--success-color);
+}
+
+.regulation-check.warning i {
+    color: var(--warning-color);
+}
+
+.regulation-check.danger i {
+    color: var(--danger-color);
+}
+
+.reg-name {
+    font-weight: 500;
+    min-width: 200px;
+}
+
+.reg-status {
+    flex: 1;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.reg-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 5px;
+}
+
+.reg-link:hover {
+    color: var(--primary-hover);
+}
+
+.sanity-local {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--bg-color);
+    border-radius: 8px;
+}
+
+.issues-list {
+    margin-top: 15px;
+}
+
+.issues-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.issues-list li {
+    padding: 8px 0;
+    color: var(--warning-color);
+}
+
+.issues-list li i {
+    margin-right: 8px;
+}
+
+.sanity-recommendations {
+    margin-top: 30px;
+}
+
+.recommendations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.recommendation {
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.recommendation.danger {
+    background: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger-color);
+}
+
+.recommendation.warning {
+    background: rgba(255, 193, 7, 0.1);
+    border-left-color: var(--warning-color);
+}
+
+.recommendation.info {
+    background: rgba(0, 123, 255, 0.1);
+    border-left-color: var(--primary-color);
+}
+
+.rec-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.rec-priority {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.rec-issue {
+    font-weight: 500;
+}
+
+.rec-action {
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.rec-details ul {
+    margin: 10px 0 0 20px;
+    font-size: 14px;
+}
+
+.rec-files {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 10px;
+}
+
+.sanity-timestamp {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.sources-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.sources-actions {
+    display: flex;
+    gap: 10px;
+}

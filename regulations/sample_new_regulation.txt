@@ -1,4 +1,8 @@
 SAMPLE REGULATION - CYBERSECURITY FRAMEWORK
+[LAST UPDATED: 2025-07-06]
+[VERSION: Current]
+[STATUS: active]
+
 This is a sample regulation file to demonstrate how to add new regulations to Sherara
 
 1. INCIDENT RESPONSE REQUIREMENTS

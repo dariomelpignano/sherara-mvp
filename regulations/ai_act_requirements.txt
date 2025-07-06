@@ -1,4 +1,9 @@
 EU AI Act - Key Requirements for AI Systems
+[LAST UPDATED: 2025-07-06]
+[VERSION: 2021/0106(COD)]
+[STATUS: proposal]
+[OFFICIAL SOURCE: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206]
+
 
 Risk-Based Approach
 The AI Act establishes a risk-based regulatory framework with four categories: unacceptable risk (prohibited), high risk (strict requirements), limited risk (transparency obligations), and minimal risk (voluntary codes). Organizations must assess and categorize their AI systems accordingly.

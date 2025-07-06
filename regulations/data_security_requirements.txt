@@ -1,4 +1,9 @@
 Data Security and Cybersecurity Requirements
+[LAST UPDATED: 2025-07-06]
+[VERSION: ISO/IEC 27001:2022]
+[STATUS: current]
+[OFFICIAL SOURCE: https://www.iso.org/standard/82875.html]
+
 
 Information Security Management System (ISMS)
 Organizations must establish and maintain a comprehensive ISMS aligned with recognized standards such as ISO 27001. The ISMS must include documented policies and procedures, defined roles and responsibilities, regular risk assessments, and continuous improvement processes. Management commitment and adequate resource allocation are essential for effective implementation.
