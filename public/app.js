@@ -439,6 +439,7 @@ function renderAnalysisStep2(docId) {
         const iconMap = {
             'gdpr': 'fa-shield-alt',
             'ai_act': 'fa-robot',
+            'dora': 'fa-network-wired',
             'financial_compliance': 'fa-coins',
             'aml': 'fa-money-check-alt',
             'data_security': 'fa-lock',
@@ -1205,6 +1206,7 @@ async function loadRegulations() {
             AppState.regulations = [
                 { id: 'gdpr', displayName: 'GDPR', description: 'General Data Protection Regulation' },
                 { id: 'ai_act', displayName: 'EU AI Act', description: 'Artificial Intelligence Regulation' },
+                { id: 'dora', displayName: 'DORA', description: 'Digital Operational Resilience Act' },
                 { id: 'financial_compliance', displayName: 'Financial Compliance', description: 'AML/KYC Requirements' },
                 { id: 'data_security', displayName: 'Data Security', description: 'Security Standards' }
             ];
@@ -1215,6 +1217,7 @@ async function loadRegulations() {
         AppState.regulations = [
             { id: 'gdpr', displayName: 'GDPR', description: 'General Data Protection Regulation' },
             { id: 'ai_act', displayName: 'EU AI Act', description: 'Artificial Intelligence Regulation' },
+            { id: 'dora', displayName: 'DORA', description: 'Digital Operational Resilience Act' },
             { id: 'financial_compliance', displayName: 'Financial Compliance', description: 'AML/KYC Requirements' },
             { id: 'data_security', displayName: 'Data Security', description: 'Security Standards' }
         ];
@@ -2805,6 +2808,50 @@ function getRegulationDetailsContent(regulation) {
             ],
             penalties: 'Up to €35 million or 7% of annual global turnover for prohibited AI practices',
             applicability: 'AI providers, deployers, and importers in the EU market'
+        },
+        'dora': {
+            fullName: 'Digital Operational Resilience Act',
+            jurisdiction: 'European Union',
+            effectiveDate: 'January 17, 2025',
+            lastUpdated: 'December 2024',
+            summary: 'DORA establishes a comprehensive framework for digital operational resilience in the financial services sector, ensuring financial entities can withstand, respond to and recover from ICT-related disruptions.',
+            keyPrinciples: [
+                'Digital operational resilience',
+                'ICT risk management',
+                'Incident reporting and response',
+                'Digital operational resilience testing',
+                'Third-party risk management',
+                'Information sharing'
+            ],
+            keyRequirements: [
+                {
+                    title: 'ICT Risk Management Framework',
+                    description: 'Establish comprehensive ICT risk management policies, procedures and tools',
+                    articles: ['Articles 5-15']
+                },
+                {
+                    title: 'ICT-Related Incident Management',
+                    description: 'Implement incident detection, response, recovery and reporting mechanisms',
+                    articles: ['Articles 16-23']
+                },
+                {
+                    title: 'Digital Operational Resilience Testing',
+                    description: 'Conduct regular testing including advanced threat-led penetration testing',
+                    articles: ['Articles 24-27']
+                },
+                {
+                    title: 'Third-Party ICT Risk Management',
+                    description: 'Manage risks from ICT third-party service providers including critical providers',
+                    articles: ['Articles 28-44']
+                },
+                {
+                    title: 'Information Sharing',
+                    description: 'Participate in information sharing arrangements for cyber threat intelligence',
+                    articles: ['Articles 45-49']
+                }
+            ],
+            penalties: 'Up to €10 million or 2% of annual global turnover, plus potential business restrictions',
+            applicability: 'Credit institutions, payment institutions, e-money institutions, investment firms, crypto-asset service providers, central securities depositories, central counterparties, trading venues, trade repositories, managers of alternative investment funds, management companies, insurance and reinsurance undertakings, insurance intermediaries, institutions for occupational retirement provision, credit rating agencies, administrators of critical benchmarks, crowdfunding service providers, and critical ICT third-party service providers'
         },
         'financial_compliance': {
             fullName: 'Financial Services Compliance Framework',
