@@ -14,6 +14,9 @@ const AppState = {
     regulations: []
 };
 
+// Global variable for chat file attachment
+let chatAttachedFile = null;
+
 // API configuration
 const API = {
     BASE: '/api',
@@ -668,15 +671,16 @@ function initializeChat() {
     const form = document.getElementById('chat-form');
     const input = document.getElementById('chat-input');
     
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const message = input.value.trim();
-        
-        if (message || chatAttachedFile) {
-            await sendChatMessage(message);
-            input.value = '';
-        }
-    });
+    if (!form || !input) {
+        console.error('Chat form elements not found');
+        return;
+    }
+    
+    // Remove any existing event listeners
+    form.removeEventListener('submit', handleChatSubmit);
+    
+    // Add submit event listener
+    form.addEventListener('submit', handleChatSubmit);
     
     // Auto-resize input
     input.addEventListener('input', () => {
@@ -684,11 +688,35 @@ function initializeChat() {
         input.style.height = Math.min(input.scrollHeight, 120) + 'px';
     });
     
+    // Handle Enter key
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            form.dispatchEvent(new Event('submit'));
+        }
+    });
+    
     // Load initial suggestions
     loadChatSuggestions();
 }
 
+// Separate function to handle form submission
+async function handleChatSubmit(e) {
+    e.preventDefault();
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    
+    console.log('Chat form submitted with message:', message);
+    
+    if (message || chatAttachedFile) {
+        await sendChatMessage(message);
+        input.value = '';
+    }
+}
+
 async function sendChatMessage(message) {
+    console.log('sendChatMessage called with:', message);
+    
     // Show user message
     if (message) {
         addChatMessage('user', message);
@@ -742,7 +770,12 @@ async function sendChatMessage(message) {
         }
     }
     
-    if (!finalMessage) return;
+    if (!finalMessage) {
+        console.log('No message to send');
+        return;
+    }
+    
+    console.log('Sending message to API:', finalMessage);
     
     // Show typing indicator
     const typingIndicator = addChatMessage('assistant', '...', true);
@@ -754,7 +787,14 @@ async function sendChatMessage(message) {
             body: JSON.stringify({ message: finalMessage })
         });
         
+        console.log('Chat API response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const result = await response.json();
+        console.log('Chat API result:', result);
         
         // Remove typing indicator
         typingIndicator.remove();
@@ -763,11 +803,12 @@ async function sendChatMessage(message) {
             addChatMessage('assistant', result.response);
             AppState.chatHistory.push({ user: finalMessage, assistant: result.response });
         } else {
-            addChatMessage('assistant', 'I apologize, but I encountered an error. Please try again.');
+            addChatMessage('assistant', `I apologize, but I encountered an error: ${result.error || 'Unknown error'}`);
+            console.error('Chat API error:', result.error);
         }
     } catch (error) {
         typingIndicator.remove();
-        addChatMessage('assistant', 'I apologize, but I encountered an error. Please try again.');
+        addChatMessage('assistant', 'I apologize, but I encountered a connection error. Please check your connection and try again.');
         console.error('Chat error:', error);
     }
     
@@ -814,8 +855,18 @@ async function loadChatSuggestions() {
 }
 
 function sendSuggestion(suggestion) {
-    document.getElementById('chat-input').value = suggestion;
-    sendChatMessage(suggestion);
+    const input = document.getElementById('chat-input');
+    if (input) {
+        input.value = suggestion;
+        // Trigger the form submission
+        const form = document.getElementById('chat-form');
+        if (form) {
+            form.dispatchEvent(new Event('submit'));
+        } else {
+            // Fallback: call sendChatMessage directly
+            sendChatMessage(suggestion);
+        }
+    }
 }
 
 // Quick Actions
