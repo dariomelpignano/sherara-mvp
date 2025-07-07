@@ -1,8 +1,32 @@
 const express = require('express');
 const regulatoryAnalyzer = require('../services/regulatoryAnalyzer');
 const gapAnalysis = require('../services/gapAnalysis');
+const industryConfig = require('../services/industryConfig');
 
 const router = express.Router();
+
+// Get current industry configuration
+router.get('/industry-status', async (req, res) => {
+  try {
+    const currentIndustry = industryConfig.getCurrentIndustry();
+    const availableRegulations = await industryConfig.getAvailableRegulations();
+    const supportedIndustries = industryConfig.getSupportedIndustries();
+    
+    res.json({
+      success: true,
+      currentIndustry,
+      availableRegulations,
+      supportedIndustries,
+      regulationsPath: industryConfig.getIndustryRegulationsPath()
+    });
+  } catch (error) {
+    console.error('Error fetching industry status:', error);
+    res.status(500).json({ 
+      error: 'Failed to fetch industry status',
+      message: error.message 
+    });
+  }
+});
 
 // Get available regulations
 router.get('/regulations', async (req, res) => {
