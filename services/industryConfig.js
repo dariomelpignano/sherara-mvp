@@ -6,8 +6,12 @@ class IndustryConfig {
     this.supportedIndustries = {
       'financial-services': {
         name: 'Financial Services',
-        description: 'Banking, investment, and financial institutions',
-        regulations: ['mifid2', 'basel3', 'dora', 'gdpr'],
+        description: 'Banking, investment, and financial institutions - EU & Italian regulatory framework',
+        regulations: [
+          'mifid2', 'basel3', 'dora', 'gdpr', 'crd-iv', 'crr', 'emir', 'sftr', 'csdr', 
+          'mifir', 'tuf-art21', 'consob-intermediari', 'banca-italia-guidelines',
+          'esma-qna', 'rts-order-execution', 'srep-guidelines'
+        ],
         icon: 'fa-university',
         color: '#2563eb'
       },
@@ -106,6 +110,18 @@ class IndustryConfig {
       'basel3': 'Basel III',
       'dora': 'DORA',
       'gdpr': 'GDPR',
+      'crd-iv': 'CRD IV',
+      'crr': 'CRR (Capital Requirements Regulation)',
+      'emir': 'EMIR',
+      'sftr': 'SFTR (Securities Financing Transactions)',
+      'csdr': 'CSDR (Central Securities Depositories)',
+      'mifir': 'MiFIR (Markets in Financial Instruments)',
+      'tuf-art21': 'TUF Art. 21 (Italian Financial Services Act)',
+      'consob-intermediari': 'CONSOB Intermediari Regulation',
+      'banca-italia-guidelines': 'Banca d\'Italia Risk Governance Guidelines',
+      'esma-qna': 'ESMA Q&A on Best Execution',
+      'rts-order-execution': 'RTS Order Execution Policies (2025)',
+      'srep-guidelines': 'SREP Guidelines',
       'eu-gmp': 'EU GMP',
       'iso-7396': 'ISO 7396',
       'medicinal-gas-manufacturing': 'Medicinal Gas Manufacturing',
@@ -168,11 +184,13 @@ class IndustryConfig {
   getIndustrySpecializations() {
     const specializations = {
       'financial-services': [
-        'Capital adequacy requirements',
-        'Risk management frameworks',
-        'Client protection measures',
-        'Operational resilience',
-        'Transaction reporting'
+        'Best execution and order handling (MiFID II Art. 27)',
+        'Capital adequacy and Basel III requirements',
+        'Operational resilience (DORA implementation)',
+        'Market conduct and investor protection',
+        'Risk management frameworks and SREP',
+        'Transaction reporting and transparency',
+        'Italian regulatory compliance (TUF, CONSOB)'
       ],
       'medicinal-gases': [
         'Good manufacturing practice',

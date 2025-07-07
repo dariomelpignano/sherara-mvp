@@ -3406,32 +3406,92 @@ function renderDataSources(industryConfig) {
             {
                 id: 'eba-official',
                 name: 'European Banking Authority (EBA)',
-                description: 'Official EBA regulations including Basel III, CRR, CRD IV implementation',
+                description: 'Official EBA regulations including Basel III, CRR, CRD IV implementation and SREP guidelines',
                 icon: 'fa-university',
                 status: 'active',
                 url: 'https://www.eba.europa.eu',
-                regulations: ['Basel III', 'CRR', 'CRD IV', 'SREP Guidelines'],
+                regulations: ['Basel III', 'CRR', 'CRD IV', 'SREP Guidelines', 'Banking Supervision'],
                 updateFrequency: 'Weekly'
             },
             {
                 id: 'esma-official',
                 name: 'European Securities Markets Authority (ESMA)',
-                description: 'MiFID II, EMIR, and securities markets regulations',
+                description: 'MiFID II/MiFIR, EMIR, CSDR, SFTR and securities markets regulations with 2025 updates',
                 icon: 'fa-chart-line',
                 status: 'active',
                 url: 'https://www.esma.europa.eu',
-                regulations: ['MiFID II', 'EMIR', 'CSDR', 'SFTR'],
+                regulations: ['MiFID II Art. 27', 'MiFIR', 'EMIR', 'CSDR', 'SFTR', 'RTS Order Execution 2025'],
                 updateFrequency: 'Bi-weekly'
             },
             {
                 id: 'ecb-official',
                 name: 'European Central Bank (ECB)',
-                description: 'Banking supervision and monetary policy regulations',
+                description: 'Banking supervision, monetary policy regulations and SSM requirements',
                 icon: 'fa-euro-sign',
                 status: 'active',
                 url: 'https://www.ecb.europa.eu',
-                regulations: ['SSM Regulation', 'Banking Supervision'],
+                regulations: ['SSM Regulation', 'Banking Supervision', 'SREP Guidelines'],
                 updateFrequency: 'Monthly'
+            },
+            {
+                id: 'consob-official',
+                name: 'CONSOB (Italian Securities Regulator)',
+                description: 'Italian implementation of EU directives, intermediari regulation and TUF provisions',
+                icon: 'fa-landmark',
+                status: 'active',
+                url: 'https://www.consob.it',
+                regulations: ['TUF Art. 21', 'Regolamento Intermediari 20307/2018', 'CONSOB Guidelines'],
+                updateFrequency: 'Bi-weekly'
+            },
+            {
+                id: 'banca-italia',
+                name: 'Banca d\'Italia',
+                description: 'Italian central bank guidelines on risk governance, LSI orientamenti and operational requirements',
+                icon: 'fa-building-columns',
+                status: 'active',
+                url: 'https://www.bancaditalia.it',
+                regulations: ['Risk Governance Guidelines', 'LSI Orientamenti', 'Execution Risk Framework'],
+                updateFrequency: 'Monthly'
+            },
+            {
+                id: 'eu-commission',
+                name: 'European Commission (Financial Services)',
+                description: 'DORA implementation, delegated regulations and EU financial services policy',
+                icon: 'fa-flag',
+                status: 'active',
+                url: 'https://ec.europa.eu/info/business-economy-euro/banking-and-finance',
+                regulations: ['DORA', 'Delegated Regulations', 'EU Financial Policy'],
+                updateFrequency: 'Monthly'
+            },
+            {
+                id: 'esma-qna-2025',
+                name: 'ESMA Q&A and Technical Standards (2025)',
+                description: 'Latest Q&A on best execution, RTS 28 clarifications and new order execution policies',
+                icon: 'fa-question-circle',
+                status: 'active',
+                url: 'https://www.esma.europa.eu/convergence/questions-and-answers',
+                regulations: ['Best Execution Q&A', 'RTS Order Execution 2025', 'Public Statements'],
+                updateFrequency: 'Real-time'
+            },
+            {
+                id: 'cross-border-uk',
+                name: 'Cross-Border: UK FCA',
+                description: 'UK post-Brexit regulations for cross-border operations (PS 21/20 and Rule 5310 equivalents)',
+                icon: 'fa-globe-europe',
+                status: 'active',
+                url: 'https://www.fca.org.uk',
+                regulations: ['PS 21/20', 'Best Execution Rules', 'Cross-border Guidelines'],
+                updateFrequency: 'Quarterly'
+            },
+            {
+                id: 'cross-border-us',
+                name: 'Cross-Border: US FINRA',
+                description: 'US market access requirements including FINRA Rule 5310 for reasonable diligence',
+                icon: 'fa-flag-usa',
+                status: 'inactive',
+                url: 'https://www.finra.org',
+                regulations: ['Rule 5310', 'Reasonable Diligence', 'US Market Access'],
+                updateFrequency: 'Quarterly'
             }
         ],
         'medicinal-gases': [
@@ -3629,35 +3689,75 @@ function renderRegulationUpdates(industryConfig) {
         'financial-services': [
             {
                 type: 'success',
-                title: 'Basel III Capital Requirements Updated',
-                description: 'Successfully synchronized latest Basel III requirements from EBA Official Sources',
-                time: '2 hours ago',
-                source: 'EBA Official',
-                affectedRegulations: ['Basel III', 'CRR']
+                title: 'ESMA RTS Order Execution Policies (2025) - Draft Published',
+                description: 'New technical standards for order execution policies standardizing content, review frequency and KPIs. Target implementation 2026.',
+                time: '6 hours ago',
+                source: 'ESMA Official',
+                affectedRegulations: ['MiFID II Art. 27', 'RTS Order Execution 2025']
             },
             {
                 type: 'info',
-                title: 'MiFID II Technical Standards',
-                description: 'New regulatory technical standards added for investment services',
+                title: 'RTS 27/28 Reporting Officially Suspended',
+                description: 'ESMA confirms permanent suspension of quarterly venue reports (RTS 27) and annual intermediary reports (RTS 28) following MiFID Quick Fix.',
                 time: '1 day ago',
                 source: 'ESMA Official',
-                affectedRegulations: ['MiFID II']
+                affectedRegulations: ['MiFID II', 'RTS 27', 'RTS 28']
             },
             {
                 type: 'warning',
-                title: 'DORA Implementation Deadline',
-                description: 'Digital Operational Resilience Act implementation deadline approaching - January 2025',
-                time: '3 days ago',
-                source: 'EU Official',
+                title: 'DORA Implementation Deadline - January 2025',
+                description: 'Digital Operational Resilience Act full implementation deadline approaching. Critical systems must be DORA-compliant.',
+                time: '2 days ago',
+                source: 'EU Commission',
                 affectedRegulations: ['DORA']
             },
             {
+                type: 'success',
+                title: 'CONSOB Intermediari Regulation Updated',
+                description: 'Updated CONSOB Regulation 20307/2018 articles 68-74 to reflect end of RTS 27/28 requirements and enhanced best execution monitoring.',
+                time: '3 days ago',
+                source: 'CONSOB Official',
+                affectedRegulations: ['CONSOB Intermediari', 'TUF Art. 21']
+            },
+            {
                 type: 'info',
-                title: 'ECB Banking Supervision Update',
-                description: 'Updated guidance on supervisory review and evaluation process (SREP)',
+                title: 'Basel III Capital Requirements - Final Implementation',
+                description: 'Final phase of Basel III implementation with updated capital adequacy requirements and risk-weighted assets calculations.',
                 time: '1 week ago',
-                source: 'ECB Official',
-                affectedRegulations: ['Banking Supervision']
+                source: 'EBA Official',
+                affectedRegulations: ['Basel III', 'CRR', 'CRD IV']
+            },
+            {
+                type: 'info',
+                title: 'Banca d\'Italia LSI Guidelines Enhanced',
+                description: 'Enhanced guidelines for Less Significant Institutions (LSI) with improved execution risk monitoring and committee oversight requirements.',
+                time: '1 week ago',
+                source: 'Banca d\'Italia',
+                affectedRegulations: ['LSI Orientamenti', 'Risk Governance Guidelines']
+            },
+            {
+                type: 'warning',
+                title: 'ESMA Best Execution Q&A Updated (2025)',
+                description: 'Latest Q&A clarifications on best execution obligations post-RTS 28 suspension. Enhanced focus on internal monitoring.',
+                time: '2 weeks ago',
+                source: 'ESMA Q&A',
+                affectedRegulations: ['MiFID II Art. 27', 'Best Execution Q&A']
+            },
+            {
+                type: 'info',
+                title: 'CONSOB-Banca d\'Italia Protocol Enhanced',
+                description: 'Strengthened cooperation protocol between CONSOB and Banca d\'Italia for supervision of financial intermediaries and crypto-assets.',
+                time: '2 weeks ago',
+                source: 'CONSOB Official',
+                affectedRegulations: ['TUF Art. 21', 'CONSOB Guidelines']
+            },
+            {
+                type: 'success',
+                title: 'Cross-Border: UK FCA PS 21/20 Implementation',
+                description: 'UK FCA has successfully implemented post-Brexit best execution framework with enhanced audit requirements for execution data.',
+                time: '3 weeks ago',
+                source: 'UK FCA',
+                affectedRegulations: ['PS 21/20', 'Cross-border Guidelines']
             }
         ],
         'medicinal-gases': [
