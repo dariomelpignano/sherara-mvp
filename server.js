@@ -4,6 +4,9 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// Import services
+const industryConfig = require('./services/industryConfig');
+
 // Import routes
 const uploadRoutes = require('./routes/upload');
 const analysisRoutes = require('./routes/analysis');
@@ -14,6 +17,25 @@ const taxonomyRoutes = require('./routes/taxonomyRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Parse command line arguments for industry selection
+const args = process.argv.slice(2);
+const industryArg = args.find(arg => arg.startsWith('--industry='));
+
+if (industryArg) {
+  const industry = industryArg.split('=')[1];
+  try {
+    industryConfig.setIndustry(industry);
+    console.log(`🏭 Sherara MVP started for industry: ${industryConfig.getCurrentIndustry().name}`);
+  } catch (error) {
+    console.error(`❌ Error setting industry: ${error.message}`);
+    console.log(`📋 Available industries: ${industryConfig.getSupportedIndustries().map(i => i.key).join(', ')}`);
+    process.exit(1);
+  }
+} else {
+  console.log(`🏭 Sherara MVP started with default industry: ${industryConfig.getCurrentIndustry().name}`);
+  console.log(`💡 Use --industry=<industry-key> to specify industry. Available: ${industryConfig.getSupportedIndustries().map(i => i.key).join(', ')}`);
+}
 
 // Middleware
 app.use(cors());
@@ -50,6 +72,16 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/regulations', regulationsRoutes);
 app.use('/api/sanity-check', sanityCheckRoutes);
 app.use('/api/taxonomy', taxonomyRoutes);
+
+// Industry configuration endpoint
+app.get('/api/industry', (req, res) => {
+  res.json({
+    success: true,
+    current: industryConfig.getCurrentIndustry(),
+    available: industryConfig.getSupportedIndustries(),
+    context: industryConfig.getIndustryContext()
+  });
+});
 
 // Dashboard endpoint
 app.get('/api/dashboard', (req, res) => {

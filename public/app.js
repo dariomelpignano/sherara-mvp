@@ -899,17 +899,27 @@ function clearChat() {
 // Enhanced Dashboard with Charts
 async function loadDashboard() {
     try {
-        const response = await fetch(`${API.BASE}${API.endpoints.dashboard}`);
-        const data = await response.json();
+        // Load dashboard data
+        const dashboardResponse = await fetch(`${API.BASE}${API.endpoints.dashboard}`);
+        const dashboardData = await dashboardResponse.json();
+        
+        // Load industry information
+        const industryResponse = await fetch(`${API.BASE}/industry`);
+        const industryData = await industryResponse.json();
         
         // Update metrics
-        updateMetrics(data);
+        updateMetrics(dashboardData);
         
         // Update charts
-        updateCharts(data);
+        updateCharts(dashboardData);
         
         // Calculate and display compliance score
-        calculateComplianceScore(data);
+        calculateComplianceScore(dashboardData);
+        
+        // Display industry information
+        if (industryData.success) {
+            renderIndustryInfo(industryData);
+        }
         
     } catch (error) {
         console.error('Failed to load dashboard:', error);
@@ -923,6 +933,86 @@ function updateMetrics(data) {
     animateNumber('gap-count', data.totalGaps);
     animateNumber('high-risk-count', data.riskDistribution.high);
     animateNumber('new-gaps', Math.floor(data.totalGaps * 0.3)); // Simulated
+}
+
+function renderIndustryInfo(industryData) {
+    const industry = industryData.current;
+    const context = industryData.context;
+    
+    // Update header with industry info
+    const headerTitle = document.querySelector('.header-title h1');
+    if (headerTitle) {
+        headerTitle.innerHTML = `
+            <i class="fas ${industry.icon}" style="color: ${industry.color}"></i>
+            Sherara MVP - ${industry.name}
+        `;
+    }
+    
+    // Add industry info card to dashboard
+    const metricsGrid = document.querySelector('.metrics-grid');
+    if (metricsGrid) {
+        // Check if industry card already exists
+        let industryCard = document.getElementById('industry-info-card');
+        if (!industryCard) {
+            industryCard = document.createElement('div');
+            industryCard.id = 'industry-info-card';
+            industryCard.className = 'metric-card industry';
+            metricsGrid.appendChild(industryCard);
+        }
+        
+        industryCard.innerHTML = `
+            <div class="metric-icon" style="color: ${industry.color}">
+                <i class="fas ${industry.icon}"></i>
+            </div>
+            <div class="metric-content">
+                <h3>Industry Focus</h3>
+                <div class="metric-value">${industry.name}</div>
+                <div class="metric-description">${industry.description}</div>
+                <div class="metric-details">
+                    <small>${context.regulationCount} specialized regulations</small>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Update regulations section with industry context
+    const regulationsSection = document.getElementById('regulations');
+    if (regulationsSection) {
+        const industryContext = regulationsSection.querySelector('.industry-context');
+        if (!industryContext) {
+            const contextDiv = document.createElement('div');
+            contextDiv.className = 'industry-context';
+            contextDiv.innerHTML = `
+                <div class="industry-banner">
+                    <div class="industry-info">
+                        <i class="fas ${industry.icon}" style="color: ${industry.color}"></i>
+                        <div>
+                            <h4>${industry.name} Compliance Library</h4>
+                            <p>${industry.description}</p>
+                        </div>
+                    </div>
+                    <div class="industry-stats">
+                        <span><strong>${context.regulationCount}</strong> Regulations</span>
+                        <span><strong>${context.specializations.length}</strong> Specializations</span>
+                    </div>
+                </div>
+                <div class="specializations">
+                    <h5>Key Focus Areas:</h5>
+                    <div class="specialization-tags">
+                        ${context.specializations.map(spec => 
+                            `<span class="specialization-tag">${spec}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Insert at the beginning of regulations section
+            const sectionHeader = regulationsSection.querySelector('.section-header');
+            if (sectionHeader) {
+                sectionHeader.insertAdjacentElement('afterend', contextDiv);
+            }
+        }
+    }
 }
 
 function calculateComplianceScore(data) {

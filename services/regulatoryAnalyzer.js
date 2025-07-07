@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const taxonomyService = require('./taxonomyService');
+const industryConfig = require('./industryConfig');
 
 class RegulatoryAnalyzer {
   constructor() {
@@ -118,14 +119,23 @@ class RegulatoryAnalyzer {
 
   async loadRegulationFile(regulationType) {
     try {
-      const filename = await this.getRegulationFilename(regulationType);
-      if (!filename) {
-        console.error(`No regulation file found for ${regulationType}`);
-        return [];
+      // Try to load from industry-specific location first
+      let content;
+      try {
+        content = await industryConfig.loadRegulationFile(regulationType);
+      } catch (industryError) {
+        console.warn(`Could not load ${regulationType} from industry config, trying legacy method`);
+        
+        // Fallback to legacy method
+        const filename = await this.getRegulationFilename(regulationType);
+        if (!filename) {
+          console.error(`No regulation file found for ${regulationType}`);
+          return [];
+        }
+        
+        const filePath = path.join(this.regulationPath, filename);
+        content = await fs.readFile(filePath, 'utf-8');
       }
-      
-      const filePath = path.join(this.regulationPath, filename);
-      const content = await fs.readFile(filePath, 'utf-8');
       
       // Auto-classify the regulation using taxonomy service
       let classification = {};
@@ -306,7 +316,20 @@ class RegulatoryAnalyzer {
 
   // Get list of all available regulations for UI
   async getAvailableRegulations() {
-    return await this.discoverRegulations();
+    try {
+      // Use industry-specific regulations
+      const industryRegulations = await industryConfig.getAvailableRegulations();
+      
+      if (industryRegulations.length > 0) {
+        return industryRegulations;
+      }
+      
+      // Fallback to file discovery for backward compatibility
+      return await this.discoverRegulations();
+    } catch (error) {
+      console.error('Error getting industry regulations:', error);
+      return await this.discoverRegulations();
+    }
   }
 }
 

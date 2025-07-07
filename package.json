@@ -5,6 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "start:interactive": "node start-industry.js",
+    "start:financial": "node server.js --industry=financial-services",
+    "start:medical": "node server.js --industry=medicinal-gases",
+    "start:food": "node server.js --industry=food-beverages",
     "dev": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
