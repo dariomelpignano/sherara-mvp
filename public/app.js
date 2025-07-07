@@ -916,17 +916,92 @@ function addChatMessage(type, content, isTyping = false) {
         '<i class="fas fa-user"></i>' : 
         '<i class="fas fa-robot"></i>';
     
+    // Configure marked for better rendering
+    if (typeof marked !== 'undefined') {
+        marked.setOptions({
+            breaks: true,
+            gfm: true,
+            sanitize: false
+        });
+    }
+    
+    let messageContent;
+    if (isTyping) {
+        messageContent = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+    } else if (type === 'assistant' && typeof marked !== 'undefined') {
+        // Render markdown for assistant messages
+        messageContent = `<div class="markdown-content">${marked.parse(content)}</div>`;
+    } else {
+        // Plain text for user messages or fallback
+        messageContent = `<p>${content}</p>`;
+    }
+    
     messageDiv.innerHTML = `
         <div class="message-avatar">${avatar}</div>
         <div class="message-content">
-            ${isTyping ? '<div class="typing-indicator"><span></span><span></span><span></span></div>' : `<p>${content}</p>`}
+            ${messageContent}
+        </div>
+        <div class="message-actions">
+            ${type === 'assistant' && !isTyping ? `
+                <button class="message-action-btn" onclick="copyMessageContent(this)" title="Copy message">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button class="message-action-btn" onclick="regenerateResponse(this)" title="Regenerate response">
+                    <i class="fas fa-refresh"></i>
+                </button>
+            ` : ''}
         </div>
     `;
     
     container.appendChild(messageDiv);
     container.scrollTop = container.scrollHeight;
     
+    // Add syntax highlighting for code blocks if available
+    if (type === 'assistant' && typeof Prism !== 'undefined') {
+        Prism.highlightAllUnder(messageDiv);
+    }
+    
     return messageDiv;
+}
+
+// Helper function to copy message content
+function copyMessageContent(button) {
+    const messageContent = button.closest('.message').querySelector('.message-content');
+    const textContent = messageContent.textContent || messageContent.innerText;
+    
+    navigator.clipboard.writeText(textContent).then(() => {
+        // Show temporary feedback
+        const originalIcon = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        button.style.color = 'var(--success)';
+        
+        setTimeout(() => {
+            button.innerHTML = originalIcon;
+            button.style.color = '';
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy text:', err);
+        showNotification('Error', 'Failed to copy message', 'error');
+    });
+}
+
+// Helper function to regenerate AI response
+function regenerateResponse(button) {
+    const messageDiv = button.closest('.message');
+    const chatHistory = AppState.chatHistory;
+    
+    if (chatHistory.length > 0) {
+        const lastUserMessage = chatHistory[chatHistory.length - 1].user;
+        
+        // Remove the current assistant message
+        messageDiv.remove();
+        
+        // Remove last entry from chat history
+        chatHistory.pop();
+        
+        // Regenerate response
+        sendChatMessage(lastUserMessage);
+    }
 }
 
 async function loadChatSuggestions() {
@@ -2085,7 +2160,9 @@ window.sherara = {
     refreshAllUpdates,
     scheduleUpdateCheck,
     reviewUpdate,
-    dismissUpdate
+    dismissUpdate,
+    copyMessageContent,
+    regenerateResponse
 };
 
 // Load regulation sources

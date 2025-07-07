@@ -162,11 +162,11 @@ Focus on being accurate and specific. If the document doesn't address the requir
   // Get language-specific system prompt
   getLanguageSystemPrompt(language) {
     const prompts = {
-      'it': 'Sei Sherara, un assistente AI esperto in conformità normativa specializzato nelle normative UE. Fornisci risposte chiare e utili in italiano, essendo accurato e professionale.',
-      'es': 'Eres Sherara, un asistente de IA experto en cumplimiento normativo especializado en regulaciones de la UE. Proporciona respuestas claras y útiles en español, siendo preciso y profesional.',
-      'fr': 'Vous êtes Sherara, un assistant IA expert en conformité réglementaire spécialisé dans les réglementations de l\'UE. Fournissez des réponses claires et utiles en français, en étant précis et professionnel.',
-      'de': 'Sie sind Sherara, ein KI-Assistent für regulatorische Compliance, spezialisiert auf EU-Vorschriften. Geben Sie klare und hilfreiche Antworten auf Deutsch, seien Sie präzise und professionell.',
-      'en': 'You are Sherara, an expert AI compliance assistant specializing in EU regulations. Provide clear, actionable guidance while being accurate and helpful.'
+      'it': 'Sei Sherara, un assistente AI esperto in conformità normativa specializzato nelle normative UE. Fornisci risposte chiare e utili in italiano, essendo accurato e professionale. Usa la formattazione markdown per strutturare le tue risposte con titoli, elenchi puntati, grassetto per concetti importanti, e tabelle quando appropriato.',
+      'es': 'Eres Sherara, un asistente de IA experto en cumplimiento normativo especializado en regulaciones de la UE. Proporciona respuestas claras y útiles en español, siendo preciso y profesional. Usa formato markdown para estructurar tus respuestas con títulos, listas, negrita para conceptos importantes, y tablas cuando sea apropiado.',
+      'fr': 'Vous êtes Sherara, un assistant IA expert en conformité réglementaire spécialisé dans les réglementations de l\'UE. Fournissez des réponses claires et utiles en français, en étant précis et professionnel. Utilisez le formatage markdown pour structurer vos réponses avec des titres, des listes, du gras pour les concepts importants, et des tableaux quand approprié.',
+      'de': 'Sie sind Sherara, ein KI-Assistent für regulatorische Compliance, spezialisiert auf EU-Vorschriften. Geben Sie klare und hilfreiche Antworten auf Deutsch, seien Sie präzise und professionell. Verwenden Sie Markdown-Formatierung um Ihre Antworten mit Überschriften, Listen, Fettschrift für wichtige Konzepte und Tabellen zu strukturieren.',
+      'en': 'You are Sherara, an expert AI compliance assistant specializing in EU regulations. Provide clear, actionable guidance while being accurate and helpful. Use markdown formatting to structure your responses with headings, bullet points, bold text for important concepts, and tables when appropriate.'
     };
     
     return prompts[language] || prompts['en'];
@@ -175,11 +175,11 @@ Focus on being accurate and specific. If the document doesn't address the requir
   // Get language-specific prompt prefix
   getLanguagePromptPrefix(language) {
     const prefixes = {
-      'it': 'Rispondi in italiano. ',
-      'es': 'Responde en español. ',
-      'fr': 'Répondez en français. ',
-      'de': 'Antworten Sie auf Deutsch. ',
-      'en': ''
+      'it': 'Rispondi in italiano usando formattazione markdown. ',
+      'es': 'Responde en español usando formato markdown. ',
+      'fr': 'Répondez en français en utilisant le formatage markdown. ',
+      'de': 'Antworten Sie auf Deutsch mit Markdown-Formatierung. ',
+      'en': 'Respond using markdown formatting. '
     };
     
     return prefixes[language] || '';
@@ -358,185 +358,341 @@ Fornisci una risposta utile, accurata e pratica. Se la domanda riguarda document
   generateFallbackResponse(question, regulatoryContext, language = 'en') {
     const questionLower = question.toLowerCase();
 
-    // Define responses in multiple languages
+    // Define responses in multiple languages with markdown formatting
     const responses = {
       gdpr: {
-        'en': `GDPR (General Data Protection Regulation) establishes comprehensive data protection requirements for organizations processing personal data of EU residents. Key obligations include:
+        'en': `## GDPR (General Data Protection Regulation)
 
-1. Lawful basis for processing
-2. Data subject rights (access, erasure, portability)
-3. Privacy by design and default
-4. Data protection impact assessments
-5. Breach notification within 72 hours
+GDPR establishes comprehensive data protection requirements for organizations processing personal data of EU residents.
 
+### Key Obligations:
+
+1. **Lawful basis for processing**
+2. **Data subject rights** (access, erasure, portability)
+3. **Privacy by design and default**
+4. **Data protection impact assessments**
+5. **Breach notification within 72 hours**
+
+### Compliance Recommendation:
 To ensure GDPR compliance, I recommend reviewing your data processing activities and implementing appropriate technical and organizational measures.`,
-        'it': `Il GDPR (Regolamento Generale sulla Protezione dei Dati) stabilisce requisiti completi per la protezione dei dati per le organizzazioni che elaborano dati personali di residenti UE. Gli obblighi principali includono:
 
-1. Base giuridica per l'elaborazione
-2. Diritti dell'interessato (accesso, cancellazione, portabilità)
-3. Privacy by design e by default
-4. Valutazioni d'impatto sulla protezione dei dati
-5. Notifica delle violazioni entro 72 ore
+        'it': `## GDPR (Regolamento Generale sulla Protezione dei Dati)
 
+Il GDPR stabilisce requisiti completi per la protezione dei dati per le organizzazioni che elaborano dati personali di residenti UE.
+
+### Obblighi Principali:
+
+1. **Base giuridica per l'elaborazione**
+2. **Diritti dell'interessato** (accesso, cancellazione, portabilità)
+3. **Privacy by design e by default**
+4. **Valutazioni d'impatto sulla protezione dei dati**
+5. **Notifica delle violazioni entro 72 ore**
+
+### Raccomandazione per la Conformità:
 Per garantire la conformità GDPR, raccomando di rivedere le vostre attività di elaborazione dati e implementare misure tecniche e organizzative appropriate.`,
-        'es': `El RGPD (Reglamento General de Protección de Datos) establece requisitos completos de protección de datos para organizaciones que procesan datos personales de residentes de la UE. Las obligaciones clave incluyen:
 
-1. Base legal para el procesamiento
-2. Derechos del interesado (acceso, supresión, portabilidad)
-3. Privacidad por diseño y por defecto
-4. Evaluaciones de impacto en la protección de datos
-5. Notificación de brechas dentro de 72 horas
+        'es': `## RGPD (Reglamento General de Protección de Datos)
 
+El RGPD establece requisitos completos de protección de datos para organizaciones que procesan datos personales de residentes de la UE.
+
+### Obligaciones Clave:
+
+1. **Base legal para el procesamiento**
+2. **Derechos del interesado** (acceso, supresión, portabilidad)
+3. **Privacidad por diseño y por defecto**
+4. **Evaluaciones de impacto en la protección de datos**
+5. **Notificación de brechas dentro de 72 horas**
+
+### Recomendación de Cumplimiento:
 Para asegurar el cumplimiento del RGPD, recomiendo revisar sus actividades de procesamiento de datos e implementar medidas técnicas y organizativas apropiadas.`,
-        'fr': `Le RGPD (Règlement Général sur la Protection des Données) établit des exigences complètes de protection des données pour les organisations traitant des données personnelles de résidents de l'UE. Les obligations clés incluent:
 
-1. Base légale pour le traitement
-2. Droits de la personne concernée (accès, effacement, portabilité)
-3. Protection de la vie privée dès la conception et par défaut
-4. Analyses d'impact sur la protection des données
-5. Notification des violations dans les 72 heures
+        'fr': `## RGPD (Règlement Général sur la Protection des Données)
 
+Le RGPD établit des exigences complètes de protection des données pour les organisations traitant des données personnelles de résidents de l'UE.
+
+### Obligations Clés:
+
+1. **Base légale pour le traitement**
+2. **Droits de la personne concernée** (accès, effacement, portabilité)
+3. **Protection de la vie privée dès la conception et par défaut**
+4. **Analyses d'impact sur la protection des données**
+5. **Notification des violations dans les 72 heures**
+
+### Recommandation de Conformité:
 Pour assurer la conformité au RGPD, je recommande d'examiner vos activités de traitement des données et d'implémenter des mesures techniques et organisationnelles appropriées.`,
-        'de': `Die DSGVO (Datenschutz-Grundverordnung) legt umfassende Datenschutzanforderungen für Organisationen fest, die personenbezogene Daten von EU-Bürgern verarbeiten. Wesentliche Pflichten umfassen:
 
-1. Rechtsgrundlage für die Verarbeitung
-2. Betroffenenrechte (Zugang, Löschung, Übertragbarkeit)
-3. Datenschutz durch Technikgestaltung und durch datenschutzfreundliche Voreinstellungen
-4. Datenschutz-Folgenabschätzungen
-5. Meldung von Datenschutzverletzungen binnen 72 Stunden
+        'de': `## DSGVO (Datenschutz-Grundverordnung)
 
+Die DSGVO legt umfassende Datenschutzanforderungen für Organisationen fest, die personenbezogene Daten von EU-Bürgern verarbeiten.
+
+### Wesentliche Pflichten:
+
+1. **Rechtsgrundlage für die Verarbeitung**
+2. **Betroffenenrechte** (Zugang, Löschung, Übertragbarkeit)
+3. **Datenschutz durch Technikgestaltung und durch datenschutzfreundliche Voreinstellungen**
+4. **Datenschutz-Folgenabschätzungen**
+5. **Meldung von Datenschutzverletzungen binnen 72 Stunden**
+
+### Compliance-Empfehlung:
 Zur DSGVO-Compliance empfehle ich, Ihre Datenverarbeitungsaktivitäten zu überprüfen und angemessene technische und organisatorische Maßnahmen zu implementieren.`
       },
       aiact: {
-        'en': `The EU AI Act establishes requirements for AI systems based on risk levels:
+        'en': `## EU AI Act
 
-1. Prohibited AI practices (e.g., social scoring)
-2. High-risk AI systems require conformity assessments
-3. Limited risk systems need transparency obligations
-4. Minimal risk systems have voluntary codes of conduct
+The EU AI Act establishes requirements for AI systems based on risk levels:
 
-Organizations developing or deploying AI should assess their systems' risk levels and implement appropriate compliance measures.`,
-        'it': `L'AI Act UE stabilisce requisiti per i sistemi AI basati sui livelli di rischio:
+### Risk Categories:
 
-1. Pratiche AI proibite (es. punteggio sociale)
-2. Sistemi AI ad alto rischio richiedono valutazioni di conformità
-3. Sistemi a rischio limitato necessitano obblighi di trasparenza
-4. Sistemi a rischio minimo hanno codici di condotta volontari
+| Risk Level | Requirements | Examples |
+|------------|-------------|----------|
+| **Prohibited** | Complete ban | Social scoring systems |
+| **High-risk** | Conformity assessments | Recruitment AI, credit scoring |
+| **Limited risk** | Transparency obligations | Chatbots, deepfakes |
+| **Minimal risk** | Voluntary codes | Spam filters, games |
 
-Le organizzazioni che sviluppano o implementano AI dovrebbero valutare i livelli di rischio dei loro sistemi e implementare misure di conformità appropriate.`,
-        'es': `La Ley de IA de la UE establece requisitos para sistemas de IA basados en niveles de riesgo:
+### Compliance Steps:
+Organizations developing or deploying AI should:
+- **Assess** their systems' risk levels
+- **Implement** appropriate compliance measures
+- **Document** AI governance processes`,
 
-1. Prácticas de IA prohibidas (ej. puntuación social)
-2. Sistemas de IA de alto riesgo requieren evaluaciones de conformidad
-3. Sistemas de riesgo limitado necesitan obligaciones de transparencia
-4. Sistemas de riesgo mínimo tienen códigos de conducta voluntarios
+        'it': `## AI Act UE
 
-Las organizaciones que desarrollan o implementan IA deben evaluar los niveles de riesgo de sus sistemas e implementar medidas de cumplimiento apropiadas.`,
-        'fr': `La Loi sur l'IA de l'UE établit des exigences pour les systèmes d'IA basées sur les niveaux de risque:
+L'AI Act UE stabilisce requisiti per i sistemi AI basati sui livelli di rischio:
 
-1. Pratiques d'IA interdites (ex. notation sociale)
-2. Les systèmes d'IA à haut risque nécessitent des évaluations de conformité
-3. Les systèmes à risque limité ont des obligations de transparence
-4. Les systèmes à risque minimal ont des codes de conduite volontaires
+### Categorie di Rischio:
 
-Les organisations développant ou déployant l'IA doivent évaluer les niveaux de risque de leurs systèmes et implémenter des mesures de conformité appropriées.`,
-        'de': `Das EU-KI-Gesetz legt Anforderungen für KI-Systeme basierend auf Risikoebenen fest:
+| Livello di Rischio | Requisiti | Esempi |
+|-------------------|-----------|--------|
+| **Proibite** | Divieto completo | Sistemi di punteggio sociale |
+| **Alto rischio** | Valutazioni di conformità | AI per assunzioni, scoring creditizio |
+| **Rischio limitato** | Obblighi di trasparenza | Chatbot, deepfake |
+| **Rischio minimo** | Codici di condotta volontari | Filtri spam, giochi |
 
-1. Verbotene KI-Praktiken (z.B. Social Scoring)
-2. Hochrisiko-KI-Systeme benötigen Konformitätsbewertungen
-3. Systeme mit begrenztem Risiko haben Transparenzpflichten
-4. Systeme mit minimalem Risiko haben freiwillige Verhaltenskodizes
+### Passi per la Conformità:
+Le organizzazioni che sviluppano o implementano AI dovrebbero:
+- **Valutare** i livelli di rischio dei loro sistemi
+- **Implementare** misure di conformità appropriate
+- **Documentare** i processi di governance AI`,
 
-Organisationen, die KI entwickeln oder einsetzen, sollten die Risikoebenen ihrer Systeme bewerten und angemessene Compliance-Maßnahmen implementieren.`
+        'es': `## Ley de IA de la UE
+
+La Ley de IA de la UE establece requisitos para sistemas de IA basados en niveles de riesgo:
+
+### Categorías de Riesgo:
+
+| Nivel de Riesgo | Requisitos | Ejemplos |
+|----------------|------------|----------|
+| **Prohibidas** | Prohibición completa | Sistemas de puntuación social |
+| **Alto riesgo** | Evaluaciones de conformidad | IA de contratación, puntuación crediticia |
+| **Riesgo limitado** | Obligaciones de transparencia | Chatbots, deepfakes |
+| **Riesgo mínimo** | Códigos de conducta voluntarios | Filtros de spam, juegos |
+
+### Pasos de Cumplimiento:
+Las organizaciones que desarrollan o implementan IA deben:
+- **Evaluar** los niveles de riesgo de sus sistemas
+- **Implementar** medidas de cumplimiento apropiadas
+- **Documentar** procesos de gobernanza de IA`,
+
+        'fr': `## Loi sur l'IA de l'UE
+
+La Loi sur l'IA de l'UE établit des exigences pour les systèmes d'IA basées sur les niveaux de risque:
+
+### Catégories de Risque:
+
+| Niveau de Risque | Exigences | Exemples |
+|-----------------|-----------|----------|
+| **Interdites** | Interdiction complète | Systèmes de notation sociale |
+| **Haut risque** | Évaluations de conformité | IA de recrutement, notation de crédit |
+| **Risque limité** | Obligations de transparence | Chatbots, deepfakes |
+| **Risque minimal** | Codes de conduite volontaires | Filtres spam, jeux |
+
+### Étapes de Conformité:
+Les organisations développant ou déployant l'IA doivent:
+- **Évaluer** les niveaux de risque de leurs systèmes
+- **Implémenter** des mesures de conformité appropriées
+- **Documenter** les processus de gouvernance IA`,
+
+        'de': `## EU-KI-Gesetz
+
+Das EU-KI-Gesetz legt Anforderungen für KI-Systeme basierend auf Risikoebenen fest:
+
+### Risikokategorien:
+
+| Risikoebene | Anforderungen | Beispiele |
+|-------------|---------------|-----------|
+| **Verboten** | Vollständiges Verbot | Social Scoring Systeme |
+| **Hochrisiko** | Konformitätsbewertungen | Recruiting-KI, Kreditscoring |
+| **Begrenztes Risiko** | Transparenzpflichten | Chatbots, Deepfakes |
+| **Minimales Risiko** | Freiwillige Verhaltenskodizes | Spam-Filter, Spiele |
+
+### Compliance-Schritte:
+Organisationen, die KI entwickeln oder einsetzen, sollten:
+- **Bewerten** Sie die Risikoebenen ihrer Systeme
+- **Implementieren** Sie angemessene Compliance-Maßnahmen
+- **Dokumentieren** Sie KI-Governance-Prozesse`
       },
       analysis: {
-        'en': `To identify compliance gaps:
+        'en': `## Compliance Gap Analysis
 
-1. Upload your internal policies and procedures
-2. Run a compliance analysis against relevant regulations
-3. Review the identified gaps sorted by risk level
-4. Implement recommended remediation actions
+To identify compliance gaps effectively:
 
-Would you like me to analyze any specific documents you've uploaded?`,
-        'it': `Per identificare gap di conformità:
+### Process Steps:
 
-1. Carica le tue politiche e procedure interne
-2. Esegui un'analisi di conformità contro le normative pertinenti
-3. Rivedi i gap identificati ordinati per livello di rischio
-4. Implementa le azioni di rimedio raccomandate
+1. **📤 Upload** your internal policies and procedures
+2. **🔍 Run** a compliance analysis against relevant regulations
+3. **📊 Review** the identified gaps sorted by risk level
+4. **✅ Implement** recommended remediation actions
 
-Vorresti che analizzi qualche documento specifico che hai caricato?`,
-        'es': `Para identificar brechas de cumplimiento:
+### Next Steps:
+Would you like me to analyze any specific documents you've uploaded?
 
-1. Sube tus políticas y procedimientos internos
-2. Ejecuta un análisis de cumplimiento contra regulaciones relevantes
-3. Revisa las brechas identificadas ordenadas por nivel de riesgo
-4. Implementa las acciones de remediación recomendadas
+> **Tip:** Start with your most critical compliance documents for the best results.`,
 
-¿Te gustaría que analice algún documento específico que hayas subido?`,
-        'fr': `Pour identifier les lacunes de conformité:
+        'it': `## Analisi dei Gap di Conformità
 
-1. Téléchargez vos politiques et procédures internes
-2. Effectuez une analyse de conformité contre les réglementations pertinentes
-3. Examinez les lacunes identifiées triées par niveau de risque
-4. Implémentez les actions de remédiation recommandées
+Per identificare efficacemente i gap di conformità:
 
-Souhaiteriez-vous que j'analyse des documents spécifiques que vous avez téléchargés?`,
-        'de': `Um Compliance-Lücken zu identifizieren:
+### Passi del Processo:
 
-1. Laden Sie Ihre internen Richtlinien und Verfahren hoch
-2. Führen Sie eine Compliance-Analyse gegen relevante Vorschriften durch
-3. Überprüfen Sie die identifizierten Lücken sortiert nach Risikoebene
-4. Implementieren Sie empfohlene Abhilfemaßnahmen
+1. **📤 Carica** le tue politiche e procedure interne
+2. **🔍 Esegui** un'analisi di conformità contro le normative pertinenti
+3. **📊 Rivedi** i gap identificati ordinati per livello di rischio
+4. **✅ Implementa** le azioni di rimedio raccomandate
 
-Möchten Sie, dass ich spezifische Dokumente analysiere, die Sie hochgeladen haben?`
+### Prossimi Passi:
+Vorresti che analizzi qualche documento specifico che hai caricato?
+
+> **Suggerimento:** Inizia con i tuoi documenti di conformità più critici per i migliori risultati.`,
+
+        'es': `## Análisis de Brechas de Cumplimiento
+
+Para identificar brechas de cumplimiento efectivamente:
+
+### Pasos del Proceso:
+
+1. **📤 Sube** tus políticas y procedimientos internos
+2. **🔍 Ejecuta** un análisis de cumplimiento contra regulaciones relevantes
+3. **📊 Revisa** las brechas identificadas ordenadas por nivel de riesgo
+4. **✅ Implementa** las acciones de remediación recomendadas
+
+### Próximos Pasos:
+¿Te gustaría que analice algún documento específico que hayas subido?
+
+> **Consejo:** Comienza con tus documentos de cumplimiento más críticos para mejores resultados.`,
+
+        'fr': `## Analyse des Lacunes de Conformité
+
+Pour identifier efficacement les lacunes de conformité:
+
+### Étapes du Processus:
+
+1. **📤 Téléchargez** vos politiques et procédures internes
+2. **🔍 Effectuez** une analyse de conformité contre les réglementations pertinentes
+3. **📊 Examinez** les lacunes identifiées triées par niveau de risque
+4. **✅ Implémentez** les actions de remédiation recommandées
+
+### Prochaines Étapes:
+Souhaiteriez-vous que j'analyse des documents spécifiques que vous avez téléchargés?
+
+> **Conseil:** Commencez avec vos documents de conformité les plus critiques pour de meilleurs résultats.`,
+
+        'de': `## Compliance-Lücken-Analyse
+
+Um Compliance-Lücken effektiv zu identifizieren:
+
+### Prozessschritte:
+
+1. **📤 Laden** Sie Ihre internen Richtlinien und Verfahren hoch
+2. **🔍 Führen** Sie eine Compliance-Analyse gegen relevante Vorschriften durch
+3. **📊 Überprüfen** Sie die identifizierten Lücken sortiert nach Risikoebene
+4. **✅ Implementieren** Sie empfohlene Abhilfemaßnahmen
+
+### Nächste Schritte:
+Möchten Sie, dass ich spezifische Dokumente analysiere, die Sie hochgeladen haben?
+
+> **Tipp:** Beginnen Sie mit Ihren kritischsten Compliance-Dokumenten für beste Ergebnisse.`
       },
       generic: {
-        'en': `I understand you're asking about: "${question}"
+        'en': `## AI Assistant Response
 
-While I cannot access external AI services at the moment, I can help you with:
-- Understanding regulatory requirements (GDPR, AI Act, Financial Compliance)
-- Analyzing uploaded documents for compliance gaps
-- Providing remediation recommendations
-- Answering specific compliance questions
+I understand you're asking about: **"${question}"**
 
-Please feel free to upload documents or ask more specific questions about regulatory compliance.`,
-        'it': `Capisco che stai chiedendo informazioni su: "${question}"
+### How I Can Help:
 
-Anche se al momento non posso accedere ai servizi AI esterni, posso aiutarti con:
-- Comprensione dei requisiti normativi (GDPR, AI Act, Conformità Finanziaria)
-- Analisi di documenti caricati per gap di conformità
-- Fornire raccomandazioni di rimedio
-- Rispondere a domande specifiche sulla conformità
+- 📋 **Understanding regulatory requirements** (GDPR, AI Act, Financial Compliance)
+- 📄 **Analyzing uploaded documents** for compliance gaps
+- 🔧 **Providing remediation recommendations**
+- ❓ **Answering specific compliance questions**
 
-Sentiti libero di caricare documenti o fare domande più specifiche sulla conformità normativa.`,
-        'es': `Entiendo que estás preguntando sobre: "${question}"
+### Getting Started:
+Please feel free to upload documents or ask more specific questions about regulatory compliance.
 
-Aunque no puedo acceder a servicios de IA externos en este momento, puedo ayudarte con:
-- Entender requisitos regulatorios (RGPD, Ley de IA, Cumplimiento Financiero)
-- Analizar documentos subidos para brechas de cumplimiento
-- Proporcionar recomendaciones de remediación
-- Responder preguntas específicas de cumplimiento
+> **Note:** While I cannot access external AI services at the moment, I can provide comprehensive guidance based on regulatory knowledge.`,
 
-Por favor, siéntete libre de subir documentos o hacer preguntas más específicas sobre cumplimiento regulatorio.`,
-        'fr': `Je comprends que vous demandez des informations sur: "${question}"
+        'it': `## Risposta dell'Assistente AI
 
-Bien que je ne puisse pas accéder aux services IA externes pour le moment, je peux vous aider avec:
-- Comprendre les exigences réglementaires (RGPD, Loi sur l'IA, Conformité Financière)
-- Analyser les documents téléchargés pour les lacunes de conformité
-- Fournir des recommandations de remédiation
-- Répondre à des questions spécifiques de conformité
+Capisco che stai chiedendo informazioni su: **"${question}"**
 
-N'hésitez pas à télécharger des documents ou à poser des questions plus spécifiques sur la conformité réglementaire.`,
-        'de': `Ich verstehe, dass Sie nach folgendem fragen: "${question}"
+### Come Posso Aiutarti:
 
-Obwohl ich derzeit nicht auf externe KI-Dienste zugreifen kann, kann ich Ihnen helfen mit:
-- Verstehen von regulatorischen Anforderungen (DSGVO, KI-Gesetz, Finanz-Compliance)
-- Analysieren hochgeladener Dokumente für Compliance-Lücken
-- Bereitstellen von Abhilfe-Empfehlungen
-- Beantworten spezifischer Compliance-Fragen
+- 📋 **Comprensione dei requisiti normativi** (GDPR, AI Act, Conformità Finanziaria)
+- 📄 **Analisi di documenti caricati** per gap di conformità
+- 🔧 **Fornire raccomandazioni di rimedio**
+- ❓ **Rispondere a domande specifiche sulla conformità**
 
-Bitte laden Sie gerne Dokumente hoch oder stellen Sie spezifischere Fragen zur regulatorischen Compliance.`
+### Per Iniziare:
+Sentiti libero di caricare documenti o fare domande più specifiche sulla conformità normativa.
+
+> **Nota:** Anche se al momento non posso accedere ai servizi AI esterni, posso fornire una guida completa basata sulla conoscenza normativa.`,
+
+        'es': `## Respuesta del Asistente de IA
+
+Entiendo que estás preguntando sobre: **"${question}"**
+
+### Cómo Puedo Ayudar:
+
+- 📋 **Entender requisitos regulatorios** (RGPD, Ley de IA, Cumplimiento Financiero)
+- 📄 **Analizar documentos subidos** para brechas de cumplimiento
+- 🔧 **Proporcionar recomendaciones de remediación**
+- ❓ **Responder preguntas específicas de cumplimiento**
+
+### Para Empezar:
+Por favor, siéntete libre de subir documentos o hacer preguntas más específicas sobre cumplimiento regulatorio.
+
+> **Nota:** Aunque no puedo acceder a servicios de IA externos en este momento, puedo proporcionar orientación integral basada en conocimiento regulatorio.`,
+
+        'fr': `## Réponse de l'Assistant IA
+
+Je comprends que vous demandez des informations sur: **"${question}"**
+
+### Comment Je Peux Aider:
+
+- 📋 **Comprendre les exigences réglementaires** (RGPD, Loi sur l'IA, Conformité Financière)
+- 📄 **Analyser les documents téléchargés** pour les lacunes de conformité
+- 🔧 **Fournir des recommandations de remédiation**
+- ❓ **Répondre à des questions spécifiques de conformité**
+
+### Pour Commencer:
+N'hésitez pas à télécharger des documents ou à poser des questions plus spécifiques sur la conformité réglementaire.
+
+> **Note:** Bien que je ne puisse pas accéder aux services IA externes pour le moment, je peux fournir des conseils complets basés sur la connaissance réglementaire.`,
+
+        'de': `## KI-Assistent Antwort
+
+Ich verstehe, dass Sie nach folgendem fragen: **"${question}"**
+
+### Wie Ich Helfen Kann:
+
+- 📋 **Verstehen von regulatorischen Anforderungen** (DSGVO, KI-Gesetz, Finanz-Compliance)
+- 📄 **Analysieren hochgeladener Dokumente** für Compliance-Lücken
+- 🔧 **Bereitstellen von Abhilfe-Empfehlungen**
+- ❓ **Beantworten spezifischer Compliance-Fragen**
+
+### Erste Schritte:
+Bitte laden Sie gerne Dokumente hoch oder stellen Sie spezifischere Fragen zur regulatorischen Compliance.
+
+> **Hinweis:** Obwohl ich derzeit nicht auf externe KI-Dienste zugreifen kann, kann ich umfassende Beratung basierend auf regulatorischem Wissen bieten.`
       }
     };
 
