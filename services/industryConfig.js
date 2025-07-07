@@ -14,7 +14,7 @@ class IndustryConfig {
       'medicinal-gases': {
         name: 'Medicinal Gases',
         description: 'Medical gas manufacturing and distribution',
-        regulations: ['eu-gmp', 'iso-7396', 'medicinal-gas-manufacturing', 'gdpr'],
+        regulations: ['eu-gmp', 'iso-7396', 'medicinal-gas-manufacturing', 'gruppo-sol-regulatory-framework', 'gdpr'],
         icon: 'fa-lungs',
         color: '#059669'
       },
@@ -109,6 +109,7 @@ class IndustryConfig {
       'eu-gmp': 'EU GMP',
       'iso-7396': 'ISO 7396',
       'medicinal-gas-manufacturing': 'Medicinal Gas Manufacturing',
+      'gruppo-sol-regulatory-framework': 'Gruppo Sol Regulatory Framework',
       'haccp': 'HACCP',
       'eu-food-law': 'EU Food Law'
     };
