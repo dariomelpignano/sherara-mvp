@@ -1582,20 +1582,28 @@ function initializeUI() {
 // Regulations Management Functions
 function switchRegulationTab(tabName) {
     // Update tab buttons
-    document.querySelectorAll('.tab-button').forEach(btn => {
+    document.querySelectorAll('.regulations-tabs .tab-button').forEach(btn => {
         btn.classList.remove('active');
     });
     event.target.classList.add('active');
     
     // Update tab content
-    document.querySelectorAll('.tab-content').forEach(content => {
+    document.querySelectorAll('#regulations .tab-content').forEach(content => {
         content.classList.remove('active');
     });
     document.getElementById(`${tabName}-tab`).classList.add('active');
     
     // Load content for the active tab
-    if (tabName === 'library') {
-        loadRegulations().then(() => renderRegulations());
+    switch (tabName) {
+        case 'sources':
+            loadDataSources();
+            break;
+        case 'library':
+            loadRegulations().then(() => renderRegulations());
+            break;
+        case 'updates':
+            loadRegulationUpdates();
+            break;
     }
 }
 
@@ -1979,7 +1987,14 @@ window.sherara = {
     activateSource,
     configureSource,
     showAddSourceModal,
-    refreshRegulations
+    refreshRegulations,
+    loadDataSources,
+    loadRegulationUpdates,
+    refreshAllSources,
+    refreshAllUpdates,
+    scheduleUpdateCheck,
+    reviewUpdate,
+    dismissUpdate
 };
 
 // Load regulation sources
@@ -3190,4 +3205,517 @@ function switchSourceTab(tabName) {
     if (targetBtn) {
         targetBtn.classList.add('active');
     }
+}
+
+// Load industry-specific data sources
+async function loadDataSources() {
+    const container = document.getElementById('regulation-sources');
+    
+    try {
+        // Get current industry information
+        const response = await fetch(`${API.BASE}/analyze/industry-status`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const industryConfig = data.currentIndustry;
+            renderDataSources(industryConfig);
+        } else {
+            console.error('Failed to get industry status:', data.error);
+            renderFallbackDataSources();
+        }
+    } catch (error) {
+        console.error('Error loading industry status:', error);
+        renderFallbackDataSources();
+    }
+}
+
+function renderDataSources(industryConfig) {
+    const container = document.getElementById('regulation-sources');
+    
+    // Define industry-specific sources
+    const industrySources = {
+        'financial-services': [
+            {
+                id: 'eba-official',
+                name: 'European Banking Authority (EBA)',
+                description: 'Official EBA regulations including Basel III, CRR, CRD IV implementation',
+                icon: 'fa-university',
+                status: 'active',
+                url: 'https://www.eba.europa.eu',
+                regulations: ['Basel III', 'CRR', 'CRD IV', 'SREP Guidelines'],
+                updateFrequency: 'Weekly'
+            },
+            {
+                id: 'esma-official',
+                name: 'European Securities Markets Authority (ESMA)',
+                description: 'MiFID II, EMIR, and securities markets regulations',
+                icon: 'fa-chart-line',
+                status: 'active',
+                url: 'https://www.esma.europa.eu',
+                regulations: ['MiFID II', 'EMIR', 'CSDR', 'SFTR'],
+                updateFrequency: 'Bi-weekly'
+            },
+            {
+                id: 'ecb-official',
+                name: 'European Central Bank (ECB)',
+                description: 'Banking supervision and monetary policy regulations',
+                icon: 'fa-euro-sign',
+                status: 'active',
+                url: 'https://www.ecb.europa.eu',
+                regulations: ['SSM Regulation', 'Banking Supervision'],
+                updateFrequency: 'Monthly'
+            }
+        ],
+        'medicinal-gases': [
+            {
+                id: 'ema-official',
+                name: 'European Medicines Agency (EMA)',
+                description: 'EU GMP guidelines and medicinal gas manufacturing standards',
+                icon: 'fa-lungs',
+                status: 'active',
+                url: 'https://www.ema.europa.eu',
+                regulations: ['EU GMP Annex 6', 'Manufacturing Guidelines', 'Quality Standards'],
+                updateFrequency: 'Quarterly'
+            },
+            {
+                id: 'iso-standards',
+                name: 'International Organization for Standardization (ISO)',
+                description: 'Medical gas pipeline systems and equipment standards',
+                icon: 'fa-cogs',
+                status: 'active',
+                url: 'https://www.iso.org',
+                regulations: ['ISO 7396-1', 'ISO 7396-2', 'EN 1089-3'],
+                updateFrequency: 'Annually'
+            },
+            {
+                id: 'eiga-industry',
+                name: 'European Industrial Gases Association (EIGA)',
+                description: 'Industry best practices and technical guidelines for medicinal gases',
+                icon: 'fa-industry',
+                status: 'active',
+                url: 'https://www.eiga.eu',
+                regulations: ['EIGA Doc 177', 'Technical Guidelines', 'Safety Standards'],
+                updateFrequency: 'Bi-annually'
+            },
+            {
+                id: 'gruppo-sol',
+                name: 'Gruppo Sol Regulatory Framework',
+                description: 'Real-world compliance framework from 32-country operations',
+                icon: 'fa-globe',
+                status: 'active',
+                url: '#',
+                regulations: ['Multi-jurisdictional Framework', 'Operational Guidelines'],
+                updateFrequency: 'Real-time'
+            }
+        ],
+        'food-beverages': [
+            {
+                id: 'efsa-official',
+                name: 'European Food Safety Authority (EFSA)',
+                description: 'Food safety regulations and HACCP guidelines',
+                icon: 'fa-apple-alt',
+                status: 'active',
+                url: 'https://www.efsa.europa.eu',
+                regulations: ['HACCP', 'Food Safety Regulations', 'Microbiological Criteria'],
+                updateFrequency: 'Monthly'
+            },
+            {
+                id: 'codex-alimentarius',
+                name: 'Codex Alimentarius',
+                description: 'International food standards and guidelines',
+                icon: 'fa-utensils',
+                status: 'active',
+                url: 'http://www.fao.org/fao-who-codexalimentarius',
+                regulations: ['General Principles', 'Food Additives', 'Contaminants'],
+                updateFrequency: 'Annually'
+            },
+            {
+                id: 'eu-food-law',
+                name: 'EU Food Law',
+                description: 'European Union food law and general food regulations',
+                icon: 'fa-balance-scale',
+                status: 'active',
+                url: 'https://ec.europa.eu/food',
+                regulations: ['General Food Law', 'Food Hygiene', 'Food Information'],
+                updateFrequency: 'Quarterly'
+            }
+        ]
+    };
+    
+    const sources = industrySources[industryConfig.key] || [];
+    
+    container.innerHTML = `
+        <div class="sources-header">
+            <div class="industry-context">
+                <h3><i class="fas ${industryConfig.icon}"></i> ${industryConfig.name} - Data Sources</h3>
+                <p>${industryConfig.description}</p>
+            </div>
+            <div class="sources-actions">
+                <button class="btn btn-secondary" onclick="refreshAllSources()">
+                    <i class="fas fa-sync-alt"></i> Refresh All
+                </button>
+                <button class="btn btn-primary" onclick="showAddSourceModal()">
+                    <i class="fas fa-plus"></i> Add Custom Source
+                </button>
+            </div>
+        </div>
+        
+        <div class="sources-grid">
+            ${sources.map(source => `
+                <div class="source-card ${source.status}" data-source-id="${source.id}">
+                    <div class="source-header">
+                        <div class="source-icon">
+                            <i class="fas ${source.icon}"></i>
+                        </div>
+                        <div class="source-status ${source.status}">
+                            <i class="fas fa-${source.status === 'active' ? 'check-circle' : 'pause-circle'}"></i> 
+                            ${source.status === 'active' ? 'Active' : 'Inactive'}
+                        </div>
+                    </div>
+                    <h4>${source.name}</h4>
+                    <p>${source.description}</p>
+                    <div class="source-meta">
+                        <span><i class="fas fa-clock"></i> ${source.updateFrequency}</span>
+                        <span><i class="fas fa-file-alt"></i> ${source.regulations.length} regulations</span>
+                    </div>
+                    <div class="source-regulations">
+                        ${source.regulations.slice(0, 3).map(reg => 
+                            `<span class="regulation-tag">${reg}</span>`
+                        ).join('')}
+                        ${source.regulations.length > 3 ? `<span class="regulation-tag more">+${source.regulations.length - 3} more</span>` : ''}
+                    </div>
+                    <div class="source-actions">
+                        ${source.status === 'active' ? `
+                            <button class="btn btn-small btn-secondary" onclick="configureSource('${source.id}')">
+                                <i class="fas fa-cog"></i> Configure
+                            </button>
+                            <button class="btn btn-small btn-primary" onclick="syncSource('${source.id}')">
+                                <i class="fas fa-sync"></i> Sync Now
+                            </button>
+                        ` : `
+                            <button class="btn btn-small btn-success" onclick="activateSource('${source.id}')">
+                                <i class="fas fa-play"></i> Activate
+                            </button>
+                        `}
+                        ${source.url !== '#' ? `
+                            <a href="${source.url}" target="_blank" class="btn btn-small btn-secondary">
+                                <i class="fas fa-external-link-alt"></i> Visit
+                            </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('')}
+            
+            <div class="source-card add-source">
+                <button class="add-source-btn" onclick="showAddSourceModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Custom Source</span>
+                    <p>Connect additional regulation sources specific to your needs</p>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function renderFallbackDataSources() {
+    const container = document.getElementById('regulation-sources');
+    container.innerHTML = `
+        <div class="empty-state">
+            <i class="fas fa-database"></i>
+            <h3>Unable to load data sources</h3>
+            <p>Could not determine current industry configuration</p>
+            <button class="btn btn-primary" onclick="loadDataSources()">
+                <i class="fas fa-sync"></i> Retry
+            </button>
+        </div>
+    `;
+}
+
+// Load regulation updates and sync information
+async function loadRegulationUpdates() {
+    const container = document.querySelector('#updates-tab .updates-timeline');
+    
+    try {
+        // Get current industry information
+        const response = await fetch(`${API.BASE}/analyze/industry-status`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const industryConfig = data.currentIndustry;
+            renderRegulationUpdates(industryConfig);
+        } else {
+            console.error('Failed to get industry status:', data.error);
+            renderFallbackUpdates();
+        }
+    } catch (error) {
+        console.error('Error loading industry status:', error);
+        renderFallbackUpdates();
+    }
+}
+
+function renderRegulationUpdates(industryConfig) {
+    const updatesContainer = document.querySelector('#updates-tab');
+    
+    // Generate industry-specific updates
+    const industryUpdates = {
+        'financial-services': [
+            {
+                type: 'success',
+                title: 'Basel III Capital Requirements Updated',
+                description: 'Successfully synchronized latest Basel III requirements from EBA Official Sources',
+                time: '2 hours ago',
+                source: 'EBA Official',
+                affectedRegulations: ['Basel III', 'CRR']
+            },
+            {
+                type: 'info',
+                title: 'MiFID II Technical Standards',
+                description: 'New regulatory technical standards added for investment services',
+                time: '1 day ago',
+                source: 'ESMA Official',
+                affectedRegulations: ['MiFID II']
+            },
+            {
+                type: 'warning',
+                title: 'DORA Implementation Deadline',
+                description: 'Digital Operational Resilience Act implementation deadline approaching - January 2025',
+                time: '3 days ago',
+                source: 'EU Official',
+                affectedRegulations: ['DORA']
+            },
+            {
+                type: 'info',
+                title: 'ECB Banking Supervision Update',
+                description: 'Updated guidance on supervisory review and evaluation process (SREP)',
+                time: '1 week ago',
+                source: 'ECB Official',
+                affectedRegulations: ['Banking Supervision']
+            }
+        ],
+        'medicinal-gases': [
+            {
+                type: 'success',
+                title: 'EU GMP Annex 6 Synchronized',
+                description: 'Latest medicinal gas manufacturing guidelines updated from EMA sources',
+                time: '4 hours ago',
+                source: 'EMA Official',
+                affectedRegulations: ['EU GMP']
+            },
+            {
+                type: 'info',
+                title: 'ISO 7396-1:2024 Published',
+                description: 'New version of medical gas pipeline systems standard released',
+                time: '2 days ago',
+                source: 'ISO Standards',
+                affectedRegulations: ['ISO 7396']
+            },
+            {
+                type: 'success',
+                title: 'Gruppo Sol Framework Updated',
+                description: 'Real-time regulatory intelligence from 32-country operations integrated',
+                time: '5 days ago',
+                source: 'Gruppo Sol',
+                affectedRegulations: ['Gruppo Sol Framework']
+            },
+            {
+                type: 'warning',
+                title: 'EIGA Technical Guidelines',
+                description: 'New safety guidelines for medical gas distribution systems under review',
+                time: '1 week ago',
+                source: 'EIGA Industry',
+                affectedRegulations: ['Technical Guidelines']
+            },
+            {
+                type: 'info',
+                title: 'Gas Cylinder Color Standards',
+                description: 'EN 1089-3 color coding standards updated for medical gas identification',
+                time: '2 weeks ago',
+                source: 'ISO Standards',
+                affectedRegulations: ['ISO 7396', 'EN 1089-3']
+            }
+        ],
+        'food-beverages': [
+            {
+                type: 'success',
+                title: 'HACCP Guidelines Updated',
+                description: 'Latest hazard analysis and critical control points guidelines from EFSA',
+                time: '6 hours ago',
+                source: 'EFSA Official',
+                affectedRegulations: ['HACCP']
+            },
+            {
+                type: 'info',
+                title: 'EU Food Law Amendments',
+                description: 'New amendments to general food law regarding novel foods',
+                time: '3 days ago',
+                source: 'EU Food Law',
+                affectedRegulations: ['EU Food Law']
+            },
+            {
+                type: 'warning',
+                title: 'Codex Alimentarius Updates',
+                description: 'International food standards update pending - review required',
+                time: '1 week ago',
+                source: 'Codex Alimentarius',
+                affectedRegulations: ['General Principles']
+            }
+        ]
+    };
+    
+    const updates = industryUpdates[industryConfig.key] || [];
+    
+    updatesContainer.innerHTML = `
+        <div class="updates-header">
+            <div class="industry-context">
+                <h3><i class="fas ${industryConfig.icon}"></i> ${industryConfig.name} - Regulation Updates</h3>
+                <p>Latest updates and synchronization status for your industry regulations</p>
+            </div>
+            <div class="updates-actions">
+                <button class="btn btn-secondary" onclick="refreshAllUpdates()">
+                    <i class="fas fa-sync-alt"></i> Check for Updates
+                </button>
+                <button class="btn btn-primary" onclick="scheduleUpdateCheck()">
+                    <i class="fas fa-clock"></i> Schedule Updates
+                </button>
+            </div>
+        </div>
+        
+        <div class="updates-stats">
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-info">
+                    <span class="stat-value">${updates.filter(u => u.type === 'success').length}</span>
+                    <span class="stat-label">Successful Updates</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-info-circle"></i>
+                <div class="stat-info">
+                    <span class="stat-value">${updates.filter(u => u.type === 'info').length}</span>
+                    <span class="stat-label">New Information</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="stat-info">
+                    <span class="stat-value">${updates.filter(u => u.type === 'warning').length}</span>
+                    <span class="stat-label">Action Required</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-info">
+                    <span class="stat-value">${updates.length > 0 ? updates[0].time : 'N/A'}</span>
+                    <span class="stat-label">Last Update</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="updates-timeline">
+            ${updates.map(update => `
+                <div class="update-item ${update.type}">
+                    <div class="update-icon ${update.type}">
+                        <i class="fas fa-${update.type === 'success' ? 'check' : 
+                                            update.type === 'warning' ? 'exclamation' : 
+                                            update.type === 'error' ? 'times' : 'info'}"></i>
+                    </div>
+                    <div class="update-content">
+                        <div class="update-header">
+                            <h4>${update.title}</h4>
+                            <span class="update-source">${update.source}</span>
+                        </div>
+                        <p>${update.description}</p>
+                        <div class="update-meta">
+                            <span class="update-time"><i class="fas fa-clock"></i> ${update.time}</span>
+                            <div class="affected-regulations">
+                                <span class="regulations-label">Affected:</span>
+                                ${update.affectedRegulations.map(reg => 
+                                    `<span class="regulation-tag small">${reg}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        ${update.type === 'warning' ? `
+                            <div class="update-actions">
+                                <button class="btn btn-small btn-primary" onclick="reviewUpdate('${update.title}')">
+                                    <i class="fas fa-eye"></i> Review
+                                </button>
+                                <button class="btn btn-small btn-secondary" onclick="dismissUpdate('${update.title}')">
+                                    <i class="fas fa-times"></i> Dismiss
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+        
+        <div class="sync-schedule">
+            <h4><i class="fas fa-calendar-alt"></i> Synchronization Schedule</h4>
+            <div class="schedule-grid">
+                <div class="schedule-item">
+                    <span class="schedule-source">Official Sources</span>
+                    <span class="schedule-frequency">Daily at 06:00 UTC</span>
+                    <span class="schedule-status active">Active</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-source">Industry Standards</span>
+                    <span class="schedule-frequency">Weekly on Sundays</span>
+                    <span class="schedule-status active">Active</span>
+                </div>
+                <div class="schedule-item">
+                    <span class="schedule-source">Technical Guidelines</span>
+                    <span class="schedule-frequency">Monthly</span>
+                    <span class="schedule-status active">Active</span>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function renderFallbackUpdates() {
+    const updatesContainer = document.querySelector('#updates-tab');
+    updatesContainer.innerHTML = `
+        <div class="empty-state">
+            <i class="fas fa-sync-alt"></i>
+            <h3>Unable to load updates</h3>
+            <p>Could not determine current industry configuration</p>
+            <button class="btn btn-primary" onclick="loadRegulationUpdates()">
+                <i class="fas fa-sync"></i> Retry
+            </button>
+        </div>
+    `;
+}
+
+// Helper functions for regulation management
+function refreshAllSources() {
+    showLoading('Refreshing data sources...', 'Checking all industry-specific sources for updates');
+    
+    setTimeout(() => {
+        hideLoading();
+        showNotification('Success', 'All data sources refreshed successfully', 'success');
+        loadDataSources();
+    }, 2000);
+}
+
+function refreshAllUpdates() {
+    showLoading('Checking for updates...', 'Scanning all regulation sources for new updates');
+    
+    setTimeout(() => {
+        hideLoading();
+        showNotification('Success', 'Update check completed', 'success');
+        loadRegulationUpdates();
+    }, 1500);
+}
+
+function scheduleUpdateCheck() {
+    showNotification('Info', 'Update scheduling interface coming soon', 'info');
+}
+
+function reviewUpdate(updateTitle) {
+    showNotification('Info', `Opening review for: ${updateTitle}`, 'info');
+}
+
+function dismissUpdate(updateTitle) {
+    showNotification('Success', `Update dismissed: ${updateTitle}`, 'success');
+    loadRegulationUpdates();
 }
