@@ -2204,3 +2204,94 @@ a:hover {
     background: var(--success-bg);
     color: var(--success);
 }
+
+/* ===== Language Indicator Styles ===== */
+.language-indicator {
+    position: absolute;
+    top: -30px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: var(--primary);
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 500;
+    opacity: 0.9;
+    animation: slideInDown 0.3s ease-out;
+    z-index: 10;
+}
+
+.language-indicator::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--primary);
+}
+
+.language-flag {
+    font-size: 0.875rem;
+}
+
+.language-name {
+    font-weight: 500;
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 0.9;
+        transform: translateY(0);
+    }
+}
+
+/* Adjust chat form container to accommodate language indicator */
+.chat-form {
+    position: relative;
+}
+
+.chat-input-container {
+    position: relative;
+}
+
+/* Enhanced Chat Input Styles */
+#chat-input {
+    transition: all var(--transition-base);
+}
+
+#chat-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Multilingual Welcome Messages */
+.chat-welcome-message {
+    padding: 1rem;
+    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary);
+}
+
+.chat-welcome-message h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.chat-welcome-message p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}

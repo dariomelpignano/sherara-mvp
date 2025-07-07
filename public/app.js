@@ -675,29 +675,120 @@ function initializeChat() {
         console.error('Chat form elements not found');
         return;
     }
-    
-    // Remove any existing event listeners
+
+    // Remove existing listeners to prevent duplicates
     form.removeEventListener('submit', handleChatSubmit);
-    
-    // Add submit event listener
+    input.removeEventListener('input', handleLanguageDetection);
+
+    // Add event listeners
     form.addEventListener('submit', handleChatSubmit);
-    
-    // Auto-resize input
-    input.addEventListener('input', () => {
-        input.style.height = 'auto';
-        input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    input.addEventListener('input', handleLanguageDetection);
+
+    // Handle paste events for language detection
+    input.addEventListener('paste', (e) => {
+        setTimeout(() => handleLanguageDetection(e), 10);
     });
-    
-    // Handle Enter key
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            form.dispatchEvent(new Event('submit'));
-        }
-    });
+
+    // Set placeholder text based on browser language
+    setLocalizedPlaceholder(input);
     
     // Load initial suggestions
     loadChatSuggestions();
+}
+
+// Set localized placeholder text
+function setLocalizedPlaceholder(input) {
+    const userLang = navigator.language.split('-')[0].toLowerCase();
+    const placeholders = {
+        'it': 'Fai una domanda sulla conformità normativa...',
+        'es': 'Haz una pregunta sobre cumplimiento normativo...',
+        'fr': 'Posez une question sur la conformité réglementaire...',
+        'de': 'Stellen Sie eine Frage zur regulatorischen Compliance...',
+        'en': 'Ask a compliance question...'
+    };
+    
+    input.placeholder = placeholders[userLang] || placeholders['en'];
+}
+
+// Language detection for user input
+function handleLanguageDetection(e) {
+    const text = e.target.value;
+    if (text.length > 10) { // Only detect after user has typed some text
+        const detectedLang = detectLanguageClient(text);
+        showLanguageIndicator(detectedLang);
+    } else {
+        hideLanguageIndicator();
+    }
+}
+
+// Client-side language detection (simplified version)
+function detectLanguageClient(text) {
+    const patterns = {
+        'it': /\b(il|la|le|gli|sono|è|che|cosa|quando|dove|come|perché|questo|quella|molto|anche)\b/gi,
+        'es': /\b(el|la|los|las|que|cuando|donde|como|por|qué|esto|esa|muy|también)\b/gi,
+        'fr': /\b(le|la|les|que|quand|où|comment|pourquoi|ce|cette|très|aussi)\b/gi,
+        'de': /\b(der|die|das|dass|wann|wo|wie|warum|dieser|diese|sehr|auch)\b/gi
+    };
+
+    let maxMatches = 0;
+    let detectedLang = 'en';
+
+    for (const [lang, pattern] of Object.entries(patterns)) {
+        const matches = (text.match(pattern) || []).length;
+        if (matches > maxMatches) {
+            maxMatches = matches;
+            detectedLang = lang;
+        }
+    }
+
+    return maxMatches > 0 ? detectedLang : 'en';
+}
+
+// Show language indicator in chat interface
+function showLanguageIndicator(language) {
+    const chatInput = document.getElementById('chat-input');
+    const container = chatInput.parentElement;
+    
+    // Remove existing indicator
+    const existingIndicator = container.querySelector('.language-indicator');
+    if (existingIndicator) {
+        existingIndicator.remove();
+    }
+
+    // Create new indicator
+    const indicator = document.createElement('div');
+    indicator.className = 'language-indicator';
+    
+    const flags = {
+        'it': '🇮🇹',
+        'es': '🇪🇸', 
+        'fr': '🇫🇷',
+        'de': '🇩🇪',
+        'en': '🇬🇧'
+    };
+
+    const languages = {
+        'it': 'Italiano',
+        'es': 'Español',
+        'fr': 'Français', 
+        'de': 'Deutsch',
+        'en': 'English'
+    };
+
+    indicator.innerHTML = `
+        <span class="language-flag">${flags[language] || flags['en']}</span>
+        <span class="language-name">${languages[language] || languages['en']}</span>
+    `;
+    
+    container.appendChild(indicator);
+}
+
+// Hide language indicator
+function hideLanguageIndicator() {
+    const indicator = document.querySelector('.language-indicator');
+    if (indicator) {
+        indicator.remove();
+    }
 }
 
 // Separate function to handle form submission
