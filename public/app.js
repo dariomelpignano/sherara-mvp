@@ -48,7 +48,7 @@ function initializeApp() {
     // Load initial data
     loadDashboard();
     loadDocuments();
-    loadRegulations();
+    loadRegulations(); // Load regulations on startup for immediate availability
     loadInsights();
     
     // Set up periodic updates
@@ -132,6 +132,7 @@ async function loadSectionData(section) {
             loadInsights();
             break;
         case 'regulations':
+            await loadRegulations();
             renderRegulations();
             break;
         case 'reports':
@@ -1284,12 +1285,14 @@ async function loadInsights() {
 // Regulations Library
 async function loadRegulations() {
     try {
+        console.log('Loading industry-specific regulations...');
         const response = await fetch(`${API.BASE}/analyze/regulations`);
         const data = await response.json();
         
         if (data.success) {
             AppState.regulations = data.regulations;
-            console.log('Loaded regulations:', AppState.regulations);
+            console.log('Loaded regulations for current industry:', AppState.regulations);
+            console.log(`Found ${AppState.regulations.length} regulations:`, AppState.regulations.map(r => r.displayName).join(', '));
         } else {
             console.error('Failed to load regulations:', data.error);
             // Fallback to default regulations
@@ -1316,6 +1319,20 @@ async function loadRegulations() {
 
 function renderRegulations() {
     const container = document.getElementById('regulations-grid');
+    
+    if (!AppState.regulations || AppState.regulations.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-book"></i>
+                <h3>No regulations available</h3>
+                <p>Regulations are being loaded for your industry...</p>
+                <button class="btn btn-primary" onclick="loadRegulations().then(renderRegulations)">
+                    <i class="fas fa-sync"></i> Refresh Regulations
+                </button>
+            </div>
+        `;
+        return;
+    }
     
     container.innerHTML = AppState.regulations.map(reg => `
         <div class="regulation-card-large">
@@ -1578,7 +1595,7 @@ function switchRegulationTab(tabName) {
     
     // Load content for the active tab
     if (tabName === 'library') {
-        renderRegulations();
+        loadRegulations().then(() => renderRegulations());
     }
 }
 

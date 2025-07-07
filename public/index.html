@@ -556,10 +556,10 @@
 
                 <!-- Regulations Tabs -->
                 <div class="regulations-tabs">
-                    <button class="tab-button active" onclick="switchRegulationTab('sources')">
+                    <button class="tab-button" onclick="switchRegulationTab('sources')">
                         <i class="fas fa-database"></i> Data Sources
                     </button>
-                    <button class="tab-button" onclick="switchRegulationTab('library')">
+                    <button class="tab-button active" onclick="switchRegulationTab('library')">
                         <i class="fas fa-book"></i> Regulation Library
                     </button>
                     <button class="tab-button" onclick="switchRegulationTab('updates')">
@@ -568,7 +568,7 @@
                 </div>
 
                 <!-- Data Sources Tab -->
-                <div id="sources-tab" class="tab-content active">
+                <div id="sources-tab" class="tab-content">
                     <div class="sources-grid" id="regulation-sources">
                         <!-- Predefined sources -->
                         <div class="source-card" data-source-id="eu-official">
@@ -656,7 +656,7 @@
                 </div>
 
                 <!-- Library Tab -->
-                <div id="library-tab" class="tab-content">
+                <div id="library-tab" class="tab-content active">
                     <div class="library-controls">
                         <input type="search" class="search-input" placeholder="Search regulations..." id="reg-search">
                         <select class="filter-select" id="reg-filter">
