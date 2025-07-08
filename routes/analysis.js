@@ -31,7 +31,8 @@ router.get('/industry-status', async (req, res) => {
 // Get available regulations
 router.get('/regulations', async (req, res) => {
   try {
-    const availableRegulations = await regulatoryAnalyzer.getAvailableRegulations();
+    // Use industry-specific regulations instead of old regulatory analyzer
+    const availableRegulations = await industryConfig.getAvailableRegulations();
     res.json({
       success: true,
       regulations: availableRegulations
@@ -61,16 +62,35 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Document not found. Please upload a document first.' });
     }
 
-    // If no regulations specified, use all available regulations
+    // If no regulations specified, use all available regulations from current industry
     let targetRegulations = regulations;
     if (!targetRegulations || targetRegulations.length === 0) {
-      const availableRegulations = await regulatoryAnalyzer.getAvailableRegulations();
+      const availableRegulations = await industryConfig.getAvailableRegulations();
       targetRegulations = availableRegulations.map(r => r.id);
-      console.log('Using all available regulations:', targetRegulations);
+      console.log('Using all available industry regulations:', targetRegulations);
     }
 
-    // Load and parse regulatory requirements
-    const regulatoryRequirements = await regulatoryAnalyzer.loadRegulations(targetRegulations);
+    // Load regulatory requirements using industry-specific loader
+    const regulatoryRequirements = [];
+    for (const regulationId of targetRegulations) {
+      try {
+        const content = await industryConfig.loadRegulationFile(regulationId);
+        const requirements = regulatoryAnalyzer.parseRegulationContent(content, regulationId);
+        regulatoryRequirements.push(...requirements);
+      } catch (error) {
+        console.warn(`Failed to load regulation ${regulationId}:`, error.message);
+        // Continue with other regulations
+      }
+    }
+
+    if (regulatoryRequirements.length === 0) {
+      return res.status(400).json({ 
+        error: 'No valid regulations could be loaded',
+        message: 'Please ensure regulation files exist for the selected industry'
+      });
+    }
+
+    console.log(`Loaded ${regulatoryRequirements.length} requirements from ${targetRegulations.length} regulations`);
 
     // Perform gap analysis
     const analysisResult = await gapAnalysis.analyzeCompliance(

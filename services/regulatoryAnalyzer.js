@@ -202,6 +202,13 @@ class RegulatoryAnalyzer {
 
   parseRegulationContent(content, regulationType) {
     const requirements = [];
+    
+    // Detect if this is markdown format (contains ## headers)
+    if (content.includes('## ') || content.includes('### ')) {
+      return this.parseMarkdownRegulation(content, regulationType);
+    }
+    
+    // Legacy text format parsing
     const sections = content.split(/\n\s*\n/);
     
     sections.forEach((section, index) => {
@@ -214,6 +221,91 @@ class RegulatoryAnalyzer {
     });
 
     return requirements;
+  }
+
+  parseMarkdownRegulation(content, regulationType) {
+    const requirements = [];
+    
+    // Split content by ### headers (requirement sections)
+    const sections = content.split(/###\s+/);
+    
+    sections.forEach((section, index) => {
+      if (section.trim() && index > 0) { // Skip the first section (before first ###)
+        const requirement = this.extractMarkdownRequirement(section, regulationType, index);
+        if (requirement) {
+          requirements.push(requirement);
+        }
+      }
+    });
+
+    // If no ### sections found, try ## sections
+    if (requirements.length === 0) {
+      const majorSections = content.split(/##\s+/);
+      majorSections.forEach((section, index) => {
+        if (section.trim() && index > 0) {
+          const requirement = this.extractMarkdownRequirement(section, regulationType, index);
+          if (requirement) {
+            requirements.push(requirement);
+          }
+        }
+      });
+    }
+
+    return requirements;
+  }
+
+  extractMarkdownRequirement(text, regulationType, index) {
+    const lines = text.trim().split('\n');
+    const title = lines[0].trim();
+    
+    // Skip certain sections that aren't requirements
+    const skipSections = ['overview', 'key resources', 'compliance checklist', 'implementation', 'monitoring and updates'];
+    if (skipSections.some(skip => title.toLowerCase().includes(skip))) {
+      return null;
+    }
+    
+    // Extract requirement details
+    let requirement = null;
+    let article = '';
+    let category = '';
+    let description = '';
+    
+    // Look for structured requirement information
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      
+      if (line.startsWith('- **Requirement**:')) {
+        requirement = line.replace('- **Requirement**:', '').trim();
+      } else if (line.startsWith('- **Article**:')) {
+        article = line.replace('- **Article**:', '').trim();
+      } else if (line.startsWith('- **Category**:')) {
+        category = line.replace('- **Category**:', '').trim();
+      } else if (line.startsWith('- **Description**:')) {
+        description = line.replace('- **Description**:', '').trim();
+      }
+    }
+    
+    // If no structured format found, use the content as description
+    if (!requirement && !description) {
+      description = lines.slice(1).join(' ').trim();
+      requirement = title;
+    }
+    
+    // Determine category and risk level
+    const finalCategory = category || this.categorizeRequirement(text);
+    const riskLevel = this.assessRiskLevel(text, regulationType);
+
+    return {
+      id: `${regulationType}_${index}`,
+      regulation: regulationType,
+      title: requirement || title,
+      description: description || text.substring(0, 200) + '...',
+      fullText: text,
+      article: article,
+      category: finalCategory,
+      riskLevel: riskLevel,
+      keywords: this.extractKeywords(text)
+    };
   }
 
   extractRequirement(text, regulationType, index) {
