@@ -336,6 +336,9 @@ async function deleteDocument(documentId) {
 async function initializeAnalysisWizard() {
     const wizardContent = document.getElementById('analysis-wizard-content');
     
+    // Always reload documents when entering analysis section to ensure latest uploads are available
+    await loadDocuments();
+    
     // Ensure regulations are loaded
     if (!AppState.regulations || AppState.regulations.length === 0) {
         await loadRegulations();
