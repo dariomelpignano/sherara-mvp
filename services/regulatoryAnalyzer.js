@@ -121,19 +121,22 @@ class RegulatoryAnalyzer {
     try {
       // Try to load from industry-specific location first
       let content;
+      let filename = `${regulationType}.md`; // Define filename for classification
+      
       try {
         content = await industryConfig.loadRegulationFile(regulationType);
       } catch (industryError) {
         console.warn(`Could not load ${regulationType} from industry config, trying legacy method`);
         
         // Fallback to legacy method
-        const filename = await this.getRegulationFilename(regulationType);
-        if (!filename) {
+        const legacyFilename = await this.getRegulationFilename(regulationType);
+        if (!legacyFilename) {
           console.error(`No regulation file found for ${regulationType}`);
           return [];
         }
         
-        const filePath = path.join(this.regulationPath, filename);
+        filename = legacyFilename; // Update filename for legacy files
+        const filePath = path.join(this.regulationPath, legacyFilename);
         content = await fs.readFile(filePath, 'utf-8');
       }
       

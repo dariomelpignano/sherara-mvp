@@ -212,6 +212,11 @@ async function uploadDocument(formData) {
             loadDocuments();
             updateHeaderStats();
             
+            // If we're in the analysis section, refresh the analysis wizard
+            if (AppState.currentSection === 'analysis') {
+                await initializeAnalysisWizard();
+            }
+            
             // Add to activity timeline
             addActivity('upload', `Uploaded ${result.filename}`);
         } else {
